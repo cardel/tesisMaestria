@@ -1,0 +1,64 @@
+		/*for(int lb = 0; lb<lbMax; lb++){
+			
+			//Select one of the unsed color cjlij form all nodes j<i
+			//for wich lij >= lb. This is the color cilb of node i for the given
+			//lb value
+			std::set<int> validColors;  
+			std::set<int> nonValidColors;  
+			
+			for(int j=0; j<i; j++){
+					
+					/*if(lij[j]>=lb){
+						nonValidColors.insert(colorNodeForBox[lb][i]);
+					}
+					else{
+						validColors.insert(colorNodeForBox[lb][i]);
+					}
+					
+					std::set<int> unusedColors;
+					std::set_difference(validColors.begin(), validColors.end(), nonValidColors.begin(), nonValidColors.end(),std::inserter(unusedColors, unusedColors.end()));
+					*/
+					/*int color = 0;
+					if(unusedColors.size()==0){
+						color = *std::max_element(nonValidColors.begin(),nonValidColors.end());
+						color++;
+					}
+					else{
+						int random = rand() % unusedColors.size();
+						std::set<int>::const_iterator it(unusedColors.begin());
+						std::advance(it,random);
+						color = *(it);						
+					}
+					
+					colorNodeForBox[lb][i] = color;
+					*/
+		/*	}
+			
+		}*/
+
+	}
+	/*
+	//Number of boxes
+	TVec<TInt> boxes;
+	for(int lb = 0; lb<lbMax; lb++){
+		if(lb == 0){
+			boxes.Add(numNodes);
+		}
+		else{
+			std::set<int> numColors (colorNodeForBox[lb],colorNodeForBox[lb]+numNodes);
+			boxes.Add(numColors.size());  
+		
+		}
+	}
+	int minimumBox = numNodes;
+	int lbPosition = 0;
+	for(int i=0; i<boxes.Len(); i++){
+		if(boxes[i].Val<minimumBox){
+			lbPosition = i;
+			minimumBox = boxes[i].Val;
+		}
+		printf("%i\n", boxes[i].Val);
+	}
+	//lb + 1 due to the assumpsion of position
+	double db = log2(minimumBox)/log2(lbPosition+1);
+	printf("%f,%i",db,lbMax);*/

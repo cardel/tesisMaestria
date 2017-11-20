@@ -1,0 +1,7 @@
+digraph G {
+  graph [splines=true overlap=false]
+  node  [shape=ellipse, width=0.3, height=0.3]
+  1 [label="1"];
+  5 [label="5"];
+  1 -> 5;
+}
