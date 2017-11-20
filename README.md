@@ -1,5 +1,5 @@
-# Tesis de matestria
-## Librería prototipo para el analisis multifractal utilizando tenicas de inteligencia artificial
+# Tesis de maestría
+## Librería prototipo para el análisis multifractal y de robustez mediante técnicas de inteligencia artificial
 ### Estructura
 
 - Implementacion tiene la implementacion del proyecto
