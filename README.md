@@ -1,6 +1,6 @@
-#Tesis de matestria tesisMaestria
-#Librería prototipo para el analisis multifractal utilizando tenicas de inteligencia artificial
-#Estructura
+# Tesis de matestria
+## Librería prototipo para el analisis multifractal utilizando tenicas de inteligencia artificial
+### Estructura
 
 - Implementacion tiene la implementacion del proyecto
 - Anteproyecto tiene el anteproyecto
