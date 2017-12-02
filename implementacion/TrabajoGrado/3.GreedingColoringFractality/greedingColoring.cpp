@@ -3,13 +3,13 @@
 #include "bd.h"
 #include <set>
 #include <cmath>
-#include <ctime> 
-
+#include <algorithm> 
 using std::set;
+using std::min_element;
+
 
 int main(int argc, char* argv[]) {
 	
-	srand (time(NULL));
 	//typedef PUNGraph PGraph; //Grafo no dirigido
 	//PGraph G2 = TSnap::LoadPajek<PGraph>(argv[1]);
     PUNGraph G2 = TSnap::LoadEdgeList<PUNGraph>(argv[1], 0, 1);
@@ -42,7 +42,6 @@ int main(int argc, char* argv[]) {
 	}
 	printf("%s%i\n","LbMax ",lbMax);
     //Create colors
-    int color = 0;
 
     
     //Computational complex: O(n^2*b^n) --> Exponential
@@ -50,19 +49,24 @@ int main(int argc, char* argv[]) {
 		//printf("%s%i\n","Nodo: ",i);
 		int distanceij[i];
         //Cost is n(n+1)/2
+        
 		for(int j=0; j<i; j++){
             //Cost in worst case for each BFS execution O(b^d) where d is distance and b is factor
 			distanceij[j]=TSnap::GetShortPath(G2,listaID[i],listaID[j]);
 		}
 		//I suppose to lb is n (worst case)
-		for(int lb = 0; lb<lbMax; lb++){
+		//Distance is form 1 until lbMax
+        for(int lb = 1; lb<=lbMax; lb++){
 			//Cost is n(n+1)/2            
-            color++;
+            set <int> usedColors;
 			for(int j=0; j<i; j++){				
 				if(distanceij[j]>=lb){
-					colorForNodeNbyLB[i][lb]=color;
+                    usedColors.insert(colorForNodeNbyLB[j][distanceij[j]]);
 				}
 			}
+            //An unusedColor is not an element of the set of color cjlij
+            int unusedColor = *max_element(usedColors.begin(),usedColors.end()) + 1;
+            colorForNodeNbyLB[i][lb]=unusedColor;
 		}
 	}
 
