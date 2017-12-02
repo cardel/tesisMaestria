@@ -3,19 +3,21 @@
 #include "bd.h"
 #include <set>
 #include <cmath>
+#include <ctime> 
 
+using std::set;
 
 int main(int argc, char* argv[]) {
 	
 	srand (time(NULL));
-	typedef PUNGraph PGraph; //Grafo no dirigido
+	//typedef PUNGraph PGraph; //Grafo no dirigido
 	//PGraph G2 = TSnap::LoadPajek<PGraph>(argv[1]);
-	PGraph G2 = TSnap::LoadEdgeList<PGraph>(argv[1], 0, 1);
+    PUNGraph G2 = TSnap::LoadEdgeList<PUNGraph>(argv[1], 0, 1);
 	//.GenPrefAttach(30, 3, snap.TRnd())	
 	
 	//Get lbmax (max distance in the network)
 	int lbMax = TSnap::GetBfsFullDiam(G2,1000,false);
-	
+	lbMax++;
 	//Number of nodes in the graph
 	const int numNodes = G2->GetNodes();
 
@@ -26,7 +28,7 @@ int main(int argc, char* argv[]) {
 	}
 	
 	//Colores
-	int colorForNodeNbyLB[numNodes][lbMax+1];
+	int colorForNodeNbyLB[numNodes][lbMax];
 	
 	//Rellenar
 	for(int i=0; i<numNodes; i++){
@@ -34,29 +36,54 @@ int main(int argc, char* argv[]) {
 			colorForNodeNbyLB[0][i]=-1;
 		}
 	}
-	
 	//Para el ID = 0, el color es 0
 	for(int i=0; i<lbMax;i++){
 		colorForNodeNbyLB[0][i]=0;
 	}
 	printf("%s%i\n","LbMax ",lbMax);
-	for(int i=1; i<listaID.Len(); i++){	
-		printf("%s%i\n","Nodo: ",i);
+    //Create colors
+    int color = 0;
+
+    
+    //Computational complex: O(n^2*b^n) --> Exponential
+	for(int i=1; i<listaID.Len(); i++){	 //n (number of nodes)
+		//printf("%s%i\n","Nodo: ",i);
 		int distanceij[i];
+        //Cost is n(n+1)/2
 		for(int j=0; j<i; j++){
+            //Cost in worst case for each BFS execution O(b^d) where d is distance and b is factor
 			distanceij[j]=TSnap::GetShortPath(G2,listaID[i],listaID[j]);
 		}
-		
-		for(int lb = 0; lb<=lbMax; lb++){
-			
-			for(int j=0; j<i; j++){
-				int unUsedColor = colorForNodeNbyLB[j][distanceij[j]] + 1;
-				if(distanceij[j]>lb){
-					colorForNodeNbyLB[i][lb]=unUsedColor;
+		//I suppose to lb is n (worst case)
+		for(int lb = 0; lb<lbMax; lb++){
+			//Cost is n(n+1)/2            
+            color++;
+			for(int j=0; j<i; j++){				
+				if(distanceij[j]>=lb){
+					colorForNodeNbyLB[i][lb]=color;
 				}
 			}
 		}
 	}
+
+	
+	//Number of boxes
+	TVec<TInt> boxes;
+	// lb = 0, then each node is a box
+	boxes.Add(numNodes);
+	for(int lb = 1; lb<lbMax; lb++){
+		std::set<int> numColors;
+		for(int i=0; i<numNodes; i++){
+			numColors.insert(colorForNodeNbyLB[i][lb]);
+		}
+		boxes.Add(numColors.size());  		
+	}
+    printf("%s\t%s\n","Lb","Boxes");
+	for(int i=0; i<boxes.Len(); i++){
+		printf("%i\t%i\n", i+1,boxes[i].Val);
+	}
+}
+
 	//int colorNodeForBox[numNodes][lbMax];
 	
 	////In ID = 0 assign for all lb values color 0
@@ -108,24 +135,5 @@ int main(int argc, char* argv[]) {
 		//}
 	//}
 	
-	
-	//Number of boxes
-	TVec<TInt> boxes;
-	// lb = 0, then each node is a box
-	boxes.Add(numNodes);
-	for(int lb = 1; lb<=lbMax; lb++){
-		std::set<int> numColors;
-		for(int i=0; i<numNodes; i++){
-			numColors.insert(colorForNodeNbyLB[i][lb]);
-		}
-		boxes.Add(numColors.size());  		
-	}
-
-	for(int i=0; i<boxes.Len(); i++){
-		printf("%i\n", boxes[i].Val);
-	}
-}
-
-
 
 	
