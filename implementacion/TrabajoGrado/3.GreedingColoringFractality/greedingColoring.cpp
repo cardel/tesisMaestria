@@ -9,11 +9,36 @@ using std::min_element;
 using std::max_element;
 using std::advance;
 
+//Lb is calculated with potencial regression
+double calculateLb(TVec<TInt> boxes){
+	double lb = 0;
+	
+	//Calculate others
+	double sumLogX = 0;
+	double sumLogY = 0;
+	double sumLogXLogY = 0;
+	double sumQuadLogX = 0;
+	int N = boxes.Len();
+	
+	for(int i=0; i<boxes.Len(); i++){
+		int x = i+1;
+		int y = boxes[i].Val;
+		
+		sumLogX+=log10(x);
+		sumLogY+=log10(y);
+		sumLogXLogY+=(log10(x)*log10(y));
+		sumQuadLogX+=(log10(x)*log10(x));
+	}	
+	
+	lb = (-1)*(N*sumLogXLogY - sumLogX*sumLogY)/(N*sumQuadLogX-sumLogX*sumLogX);
+	
+	return lb;	
+}
 
 int main(int argc, char* argv[]) {
 	
 	srand(NULL);
-	//Parametros
+	//Parameters
 	char* typeNet="";
 	char* path="";
 	for(int i=1; i<argc; i++){
@@ -119,68 +144,17 @@ int main(int argc, char* argv[]) {
 		}
 		boxes.Add(numColors.size());  		
 	}
-	for(int i=0; i<numNodes; i++){
-		for(int j=0; j<lbMax;j++){
-			printf("%i,",colorForNodeNbyLB[i][j]);
-		}
-		printf("\n");
-	}
+
     printf("%s\t%s\n","Lb","Boxes");
 	for(int i=0; i<boxes.Len(); i++){
 		printf("%i\t%i\n", i+1,boxes[i].Val);
 	}
+	
+	double lb = calculateLb(boxes);
+	printf("%s\t%f\n","Value of leb is ",lb);
+	//Create table of regression
 }
 
-	//int colorNodeForBox[numNodes][lbMax];
-	
-	////In ID = 0 assign for all lb values color 0
-	
-	//for(int i=0; i<lbMax; i++){
-		//colorNodeForBox[0][i] = 0;	
-	//}
-	
-	
-	////For i = 1 until i = numNodes
-	//int i = 1;
-	//int color[lbMax];
-	
-	//for(int i=0; i<lbMax; i++){
-		//color[i] = 0;		
-	//}
-	
-	//for (TUNGraph::TNodeI NI = G2->BegNI(); NI < G2->EndNI(); NI++){
-		//if(NI != G2->BegNI()){
-		////for(int i=2; i<=numNodes; i++){
-			////Calculate distance lij from i to all the nodes in the network with id j less than i
-			////i is the index of the node
-			
-			////Calculate distance lij fron i to all nodes j
-			////with j < i, all nodes j < i
-			//TVec<TInt> lij;
-			
-			//for(TUNGraph::TNodeI NJ=G2->BegNI(); NJ<NI; NJ++){
-				//int distance = TSnap::GetShortPath(G2,NI.GetId(),NJ.GetId());
-				//lij.Add(distance);
-			//}		
-			//int lb = 1;
-			
-			////Repeat lb = 1 until lb = lbmax
-			//while(lb<=lbMax){
-				////Select on of the unused colors C[j][lij] para todos los nodos j< i for
-				////which lij >= lb. This is color cilb of node i the given lb value
-				
-				//for(int k=0; k<lij.Len(); k++){
-					////int colorBox = color[lij[k]];
-					//if(lij[k]>=lb){
-						//color[lij[k]]+=1;
-						//colorNodeForBox[i][lij[k]] = color[lij[k]];
-					//}
-				//}
-				//lb++;
-			//}
-			//i++;
-		//}
-	//}
-	
+
 
 	
