@@ -58,9 +58,20 @@ int main(int argc, char* argv[]) {
 		G2 = TSnap::LoadPajek<PUNGraph>(path);
 		
 	}
+	//Create set of nodes
+	//Create vector of ID
+	set<TUNGraph::TNodeI> nodes;
+	for (TUNGraph::TNodeI NI = G2->BegNI(); NI < G2->EndNI(); NI++){
+		nodes.insert(NI);
+	}	
 	
+	//Get 
 	//Select a random node
 	int nodeRand = rand() % G2->GetNodes(); 
+	TUNGraph::TNodeI startNode = G2-> GetNI(nodeRand);
+	
+	//Remove this node
+	nodes.erase (nodes.find(startNode));
 	
 	
 }
