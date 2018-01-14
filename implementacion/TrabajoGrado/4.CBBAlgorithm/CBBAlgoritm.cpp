@@ -62,26 +62,31 @@ int main(int argc, char* argv[]) {
 	//Get lbmax
 	int lbMax = TSnap::GetBfsFullDiam(G2,1000,false);
 	lbMax++;
+	int countBoxes[lbMax];
 	
+	for(int lb=0; lb<lbMax; lb++){
+		countBoxes[lb]=0;
+	}
 
-	for(int i=1; i<=lbMax; i++){
+	for(int lb=1; lb<=lbMax; lb++){
 		//Create set of nodes
 		//Create vector of ID
 		set<TUNGraph::TNodeI> nodes;
 		for (TUNGraph::TNodeI NI = G2->BegNI(); NI < G2->EndNI(); NI++){
 			nodes.insert(NI);
-		}	
-				
+		}				
 
 		
 		while(!nodes.empty()){
 			//Select a random node
 			int nodeRand = rand() % nodes.size(); 
-			TUNGraph::TNodeI startNode = G2-> GetNI(nodeRand);
+			
+			set<TUNGraph::TNodeI>::const_iterator random(nodes.begin());
+			advance(random, nodeRand);
+			TUNGraph::TNodeI startNode = *random;
 			
 			//Remove this node
-			nodes.erase (nodes.find(startNode));	
-			
+			nodes.erase (nodes.find(startNode));
 			//Remove all nodes whose distance is 
 			
 			set<TUNGraph::TNodeI>::iterator it;
@@ -89,13 +94,22 @@ int main(int argc, char* argv[]) {
 			for(it=nodes.begin(); it!=nodes.end(); ++it){
 				int distance = TSnap::GetShortPath(G2,startNode.GetId(),(*it).GetId());	
 				
+				if(distance >= lb){
+					countBoxes[lb-1]++;
+					nodes.erase (nodes.find(*it));	
+				}
+
 			}
 			
-		}
-		
-		
+		}	
 			
 	}
+    printf("%s\t%s\n","Lb","Boxes");
+	for(int i=0; i<lbMax; i++){
+		printf("%i\t%i\n", i+1,countBoxes[i]);
+	}
 	
+	//double lb = calculateLb(boxes);
+	//printf("%s\t%f\n","Value of leb is ",lb);	
 	
 }
