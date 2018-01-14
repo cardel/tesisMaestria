@@ -58,20 +58,44 @@ int main(int argc, char* argv[]) {
 		G2 = TSnap::LoadPajek<PUNGraph>(path);
 		
 	}
-	//Create set of nodes
-	//Create vector of ID
-	set<TUNGraph::TNodeI> nodes;
-	for (TUNGraph::TNodeI NI = G2->BegNI(); NI < G2->EndNI(); NI++){
-		nodes.insert(NI);
-	}	
+
+	//Get lbmax
+	int lbMax = TSnap::GetBfsFullDiam(G2,1000,false);
+	lbMax++;
 	
-	//Get 
-	//Select a random node
-	int nodeRand = rand() % G2->GetNodes(); 
-	TUNGraph::TNodeI startNode = G2-> GetNI(nodeRand);
-	
-	//Remove this node
-	nodes.erase (nodes.find(startNode));
+
+	for(int i=1; i<=lbMax; i++){
+		//Create set of nodes
+		//Create vector of ID
+		set<TUNGraph::TNodeI> nodes;
+		for (TUNGraph::TNodeI NI = G2->BegNI(); NI < G2->EndNI(); NI++){
+			nodes.insert(NI);
+		}	
+				
+
+		
+		while(!nodes.empty()){
+			//Select a random node
+			int nodeRand = rand() % nodes.size(); 
+			TUNGraph::TNodeI startNode = G2-> GetNI(nodeRand);
+			
+			//Remove this node
+			nodes.erase (nodes.find(startNode));	
+			
+			//Remove all nodes whose distance is 
+			
+			set<TUNGraph::TNodeI>::iterator it;
+			
+			for(it=nodes.begin(); it!=nodes.end(); ++it){
+				int distance = TSnap::GetShortPath(G2,startNode.GetId(),(*it).GetId());	
+				
+			}
+			
+		}
+		
+		
+			
+	}
 	
 	
 }
