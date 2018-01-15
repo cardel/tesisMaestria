@@ -3,8 +3,10 @@
 #include "bd.h"
 #include <set>
 #include <cmath>
+#include <vector>
 #include <algorithm> 
 using std::set;
+using std::vector;
 using std::min_element;
 using std::max_element;
 using std::advance;
@@ -62,54 +64,63 @@ int main(int argc, char* argv[]) {
 	//Get lbmax
 	int lbMax = TSnap::GetBfsFullDiam(G2,1000,false);
 	lbMax++;
-	int countBoxes[lbMax];
 	
-	for(int lb=0; lb<lbMax; lb++){
-		countBoxes[lb]=0;
-	}
-
+	//Vector of sets
+	vector<set<TUNGraph::TNodeI> > setBoxes[lbMax];
+	
+	
 	for(int lb=1; lb<=lbMax; lb++){
 		//Create set of nodes
 		//Create vector of ID
-		set<TUNGraph::TNodeI> nodes;
+		set<TUNGraph::TNodeI> uncoveredNodes;
 		for (TUNGraph::TNodeI NI = G2->BegNI(); NI < G2->EndNI(); NI++){
-			nodes.insert(NI);
+			uncoveredNodes.insert(NI);
 		}				
 
 		
-		while(!nodes.empty()){
+		while(!uncoveredNodes.empty()){
 			//Select a random node
-			int nodeRand = rand() % nodes.size(); 
+			int nodeRand = rand() % uncoveredNodes.size(); 
 			
-			set<TUNGraph::TNodeI>::const_iterator random(nodes.begin());
+			set<TUNGraph::TNodeI>::const_iterator random(uncoveredNodes.begin());
 			advance(random, nodeRand);
 			TUNGraph::TNodeI startNode = *random;
 			
 			//Remove this node
-			nodes.erase (nodes.find(startNode));
+			uncoveredNodes.erase (uncoveredNodes.find(startNode));
 			//Remove all nodes whose distance is 
 			
-			set<TUNGraph::TNodeI>::iterator it;
+			//Candidate set
+			set<TUNGraph::TNodeI> candidateSet;
+			candidateSet.insert(startNode);
 			
-			for(it=nodes.begin(); it!=nodes.end(); ++it){
+			for(set<TUNGraph::TNodeI>::iterator it=uncoveredNodes.begin(); it!=uncoveredNodes.end(); ++it){
 				int distance = TSnap::GetShortPath(G2,startNode.GetId(),(*it).GetId());	
 				
-				if(distance >= lb){
-					countBoxes[lb-1]++;
-					nodes.erase (nodes.find(*it));	
+				if(distance < lb){
+					candidateSet.insert(*it);
+					uncoveredNodes.erase (uncoveredNodes.find(*it));
 				}
 
 			}
+			setBoxes[lb-1].push_back(candidateSet);
 			
 		}	
 			
 	}
+	
+	TVec<TInt> boxes;
+	// lb = 0, then each node is a box
+	for(int lb = 0; lb<lbMax; lb++){
+		boxes.Add(setBoxes[lb].size());  		
+	}
+
     printf("%s\t%s\n","Lb","Boxes");
-	for(int i=0; i<lbMax; i++){
-		printf("%i\t%i\n", i+1,countBoxes[i]);
+	for(int i=0; i<boxes.Len(); i++){
+		printf("%i\t%i\n", i+1,boxes[i].Val);
 	}
 	
-	//double lb = calculateLb(boxes);
-	//printf("%s\t%f\n","Value of leb is ",lb);	
+	double lb = calculateLb(boxes);
+	printf("%s\t%f\n","Value of leb is ",lb);
 	
 }
