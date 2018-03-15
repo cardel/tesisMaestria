@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
 
-#Autor: Carlos Andres Delgado
-#Fecha 14 marzo 2018
-#Descripción: Aplicación para calcular la dimensión fractal mediante el método CBB.
-
+#Author: Carlos Andres Delgado
+#Creation date 14th March 2018
+#Last edition date 14th March 2018
+#Description: This algorithm calculates the fractal dimension with CBB method
 import snap
 import sys
 import getopt
