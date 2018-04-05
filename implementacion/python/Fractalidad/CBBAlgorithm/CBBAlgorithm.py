@@ -87,7 +87,7 @@ def main(argv):
 			#Remove this node
 			uncoveredNodes.remove(node)
 			#Candidate set
-			candidateSet = []
+			candidateSet = [node]
 			for nd in uncoveredNodes:
 				distance=snap.GetShortPath(grafo,node,nd)
 				
