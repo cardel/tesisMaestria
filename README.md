@@ -15,6 +15,7 @@ Este repositorio contiene todo el proyecto
 python SBAlgorithm.py --file <ruta> --type <tipo>
 
 Tipos
-
+Edge: Lista aristas
+Pajek: Pajek
 - 
 
