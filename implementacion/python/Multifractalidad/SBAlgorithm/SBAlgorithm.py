@@ -17,23 +17,12 @@ import matplotlib.pyplot as plt
 
 def generateFlowerUV():
 	
-	#Number of vertices 2^n
-	
-	#With n = 1
-	a = numpy.array([[0,1],[1,0]])
-	size = 0
-	#Adjacence matriz
-	for i in range(2,8):
-		b=numpy.concatenate([[a,a],[a,a]],axis=2)
-		b = b.reshape(int(math.pow(2,i)),int(math.pow(2,i)),order='C')
-		a = b
-		size = int(math.pow(2,i))
-	
+	a = numpy.genfromtxt('flower223thGeneration.csv', delimiter=',')
+	size = 44
 	G1 = snap.TUNGraph.New()
 	#Add nodes
 	for i in range(0,size):
 		G1.AddNode(i)
-	#numpy.savetxt("Grado.csv",a,fmt="%i",delimiter=",")
 	#Add edges
 	for i in range(0,size):
 		for j in range(i, size):
@@ -75,7 +64,7 @@ def main(argv):
 			typeNet = arg
 
 	
-	
+	Rnd = snap.TRnd(1,0)
 	if typeNet == "Edge":
 		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
 	elif typeNet == "ConnList":
@@ -83,10 +72,14 @@ def main(argv):
 	elif typeNet == "Pajek":
 		grafo = snap.LoadPajek(snap.PUNGraph, fileInput)
 	elif typeNet == "TinyWorld":
-		Rnd = snap.TRnd(1,0)
+		
 		grafo = snap.GenSmallWorld(200, 3, 0, Rnd)
 	elif typeNet == "ScaleFree":
-		grafo = snap.GenRndPowerLaw(200, 3)
+		grafo = snap.GenRndPowerLaw(300, 1.5)
+	elif typeNet == "ScaleFree":
+		grafo = snap.GenPrefAttach(400, 30,Rnd)
+	elif typeNet == "Random":
+		grafo = snap.GenRndGnm(snap.PUNGraph, 300, 1200)
 	elif typeNet == "Flower":
 		grafo = generateFlowerUV()
 	else:
