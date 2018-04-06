@@ -15,6 +15,33 @@ from datetime import datetime
 from sets import Set
 import matplotlib.pyplot as plt
 
+def generateFlowerUV():
+	
+	#Number of vertices 2^n
+	
+	#With n = 1
+	a = numpy.array([[0,1],[1,0]])
+	size = 0
+	#Adjacence matriz
+	for i in range(2,8):
+		b=numpy.concatenate([[a,a],[a,a]],axis=2)
+		b = b.reshape(int(math.pow(2,i)),int(math.pow(2,i)),order='C')
+		a = b
+		size = int(math.pow(2,i))
+	
+	G1 = snap.TUNGraph.New()
+	#Add nodes
+	for i in range(0,size):
+		G1.AddNode(i)
+	#numpy.savetxt("Grado.csv",a,fmt="%i",delimiter=",")
+	#Add edges
+	for i in range(0,size):
+		for j in range(i, size):
+			if(a[i][j]==1):
+				G1.AddEdge(i,j)
+	
+	return G1
+
 def linealRegresssion(x, y):
 
 	m = 0
@@ -60,6 +87,8 @@ def main(argv):
 		grafo = snap.GenSmallWorld(200, 3, 0, Rnd)
 	elif typeNet == "ScaleFree":
 		grafo = snap.GenRndPowerLaw(200, 3)
+	elif typeNet == "Flower":
+		grafo = generateFlowerUV()
 	else:
 		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
 		
@@ -83,58 +112,61 @@ def main(argv):
 	fig1 = plt.figure()
 
 	minq = -10
-	maxq = 10
+	maxq = 12
 	#Mass Exponents
-	Tq = numpy.zeros(maxq-minq)
+	Tq = numpy.zeros(maxq-minq+1)
 	
 	
-	#Permutation of 20 percent of nodes8
+	#Rearrange the nodes of the entire network into ran- dom order. More specifically, in a random order, nodes which will be selected as the center of a sandbox box are randomly arrayed.
 	randomNodes = numpy.random.permutation(listaID)	
-		
+	#I select 40 percent of nodes
+	numberOfBoxes = int(0.4*numpy.size(randomNodes));
 	
-	totalSandBoxes = numpy.array([])
+	sandBoxes = numpy.zeros([d,numberOfBoxes])
 	logR = numpy.array([])
+	
 	for radius in range(1,d+1):
-		#Rearrange the nodes of the entire network into ran- dom order. More specifically, in a random order, nodes which will be selected as the center of a sandbox box are randomly arrayed.
-
-		#setOfNodes = Set(listaID)
-		sandBoxes = numpy.array([])
-				 
+		
 		logR = numpy.append(logR,math.log(float(radius)/d))
 		
-		for i in range(0,int(0.4*numpy.size(randomNodes))):
-			currentNode = int(randomNodes[i])
-			countNodes = 0
-			#Discard current node
+		for i in range(0, numberOfBoxes):
+			currentNode = randomNodes[i]
+			countNodes = 1
 			for ni in grafo.Nodes():
-				distance = snap.GetShortPath(grafo,ni.GetId(),currentNode);
+				#High computational cost operation
+				distance = snap.GetShortPath(grafo,ni.GetId(),int(currentNode));
 				if  distance <= radius and distance > 0:
 					countNodes+=1
-			sandBoxes = numpy.append(sandBoxes,countNodes)
-		totalSandBoxes = numpy.append(totalSandBoxes,numpy.average(sandBoxes)) 
+			sandBoxes[radius-1][i] = countNodes
+	
+	count = 0
+	for q in range(minq,maxq+1,1):
+		infoPlot = numpy.array([])
+	
+		for sand in sandBoxes:
+			Mr = numpy.power(sand,q-1)
+			Mr = numpy.log(numpy.average(Mr))
+			infoPlot=numpy.append(infoPlot, Mr)			
+		
+		if math.fmod(q,2)==0 and q >= 0:
+			plt.plot(logR,infoPlot,symbols[int(math.fmod(count,numpy.size(symbols)))], label="q="+str(q))
+		
+		m,b = linealRegresssion(logR,infoPlot)
+		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
+		if q == 0: 
+			countDim = count;
+	
 
-	#Calculate Dq, variate q from 0 to 10	
-	count = 0	
-	countDim = 0;
-	fractalInformation = numpy.zeros(3);
-	for q in range(minq,maxq,1):	
-		if q==0:
-			countDim = count
-				
-		totalSandBoxesLog = numpy.log(numpy.power(totalSandBoxes,q-1))
-		if math.fmod(q,4)==0:
-			plt.plot(logR,totalSandBoxesLog,symbols[int(math.fmod(count,numpy.size(symbols)))], label="q="+str(q))
-		m,b = linealRegresssion(logR,totalSandBoxesLog)
 		Tq[count] = m
 		count+=1
 		
-	
-	
-	#Box counting dimension
+
+	##Box counting dimension
+	fractalInformation = numpy.zeros(3);
 	fractalInformation[0] = -1*Tq[countDim] #Fractal dimension
-	fractalInformation[1] = math.log(totalSandBoxes[0])/math.log(d) #Information dimension
+	
+	#fractalInformation[1] = math.log(totalSandBoxes[0])/math.log(d) #Information dimension
 	fractalInformation[2] = Tq[countDim+2]/2 #Correlation dimension
-	print fractalInformation
 	plt.xlabel('ln(r/d)')
 	plt.ylabel('ln(<M(r)>)^q')
 
@@ -147,8 +179,11 @@ def main(argv):
 	plt.xlabel('q')
 	plt.ylabel('T(q)')	
 	plt.title("Dimension fractal generalizada "+str(fractalInformation[0]))
-	plt.plot(range(minq,maxq), Tq,'o-r')
+	plt.plot(range(minq,maxq+1), Tq,'bo-')
 	plt.show()
+
+
+	
 			
 if __name__ == "__main__":
    main(sys.argv[1:])
