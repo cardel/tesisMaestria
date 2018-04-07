@@ -1,0 +1,5 @@
+# Compiler-generated files
+*.o
+*.dSYM/
+*.pyc
+
