@@ -6,59 +6,16 @@
 #Last edition date 14th March 2018
 #Description: This algorithm calculates the multifractal dimension with SB method
 import snap
-import sys
-import getopt
 import numpy
-import random
 import math
-from datetime import datetime
 from sets import Set
 import matplotlib.pyplot as plt
 
-import utils
-
-def main(argv):
-	random.seed(datetime.now())
-	fileInput = "";
-	typeNet = "";
-	try:
-		opts, args = getopt.getopt(argv,'f:t:',['file=','type='])
-	except getopt.GetoptError as err:
-		print(err)
-		print("You must execute: python GreedyAlgorithm.py --file <file> --type <type>")
-		sys.exit(2)
-	
-	for opt, arg in opts:
-		if opt in ('-f', '--file'):
-			fileInput = arg
-		elif opt in ('-t','--type'):
-			typeNet = arg
-
-	
-	Rnd = snap.TRnd(1,0)
-	if typeNet == "Edge":
-		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
-	elif typeNet == "ConnList":
-		grafo = snap.LoadConnList(snap.PUNGraph, fileInput)
-	elif typeNet == "Pajek":
-		grafo = snap.LoadPajek(snap.PUNGraph, fileInput)
-	elif typeNet == "TinyWorld":
+import utils 
 		
-		grafo = snap.GenSmallWorld(200, 3, 0, Rnd)
-	elif typeNet == "ScaleFree":
-		grafo = snap.GenRndPowerLaw(300, 1.5)
-	elif typeNet == "ScaleFree":
-		grafo = snap.GenPrefAttach(400, 30,Rnd)
-	elif typeNet == "Random":
-		grafo = snap.GenRndGnm(snap.PUNGraph, 300, 1200)
-	elif typeNet == "Flower":
-		grafo = generateFlowerUV()
-	else:
-		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
-		
-	#Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
-	
-	#Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
+#Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
+#Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
+def SBAlgorithm(grafo):
 	
 	d = snap.GetBfsFullDiam(grafo,10,False)
 	numNodes = grafo.GetNodes()
@@ -115,7 +72,7 @@ def main(argv):
 		if math.fmod(q,2)==0 and q >= 0:
 			plt.plot(logR,infoPlot,symbols[int(math.fmod(count,numpy.size(symbols)))], label="q="+str(q))
 		
-		m,b = linealRegresssion(logR,infoPlot)
+		m,b = utils.linealRegresssion(logR,infoPlot)
 		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
 		if q == 0: 
 			countDim = count;
@@ -146,8 +103,3 @@ def main(argv):
 	plt.plot(range(minq,maxq+1), Tq,'bo-')
 	plt.show()
 
-
-	
-			
-if __name__ == "__main__":
-   main(sys.argv[1:])

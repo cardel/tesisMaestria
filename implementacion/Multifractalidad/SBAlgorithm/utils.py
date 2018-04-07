@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*- 
 
 #Author: Carlos Andres Delgado
-#Creation date 14th March 2018
-#Last edition date 14th March 2018
+#Creation date 07th April 2018
+#Last edition date 07th April 2018
 #Description: This file contains some utilities for multifractality app
+import numpy
+import snap
+
 def generateFlowerUV():
 	
 	a = numpy.genfromtxt('flower223thGeneration.csv', delimiter=',')
