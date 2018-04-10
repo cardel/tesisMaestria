@@ -9,6 +9,7 @@ import sys
 import getopt
 import snap
 import SBAlgorithm
+import utils
 
 def main(argv):
 	fileInput = "";

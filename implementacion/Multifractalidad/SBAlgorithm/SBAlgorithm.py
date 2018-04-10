@@ -10,8 +10,7 @@ import numpy
 import math
 from sets import Set
 import matplotlib.pyplot as plt
-
-import utils 
+import utils
 		
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
