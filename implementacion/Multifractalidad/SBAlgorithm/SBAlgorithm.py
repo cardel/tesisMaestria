@@ -18,12 +18,12 @@ def SBAlgorithm(grafo):
 	
 	d = snap.GetBfsFullDiam(grafo,10,False)
 	numNodes = grafo.GetNodes()
-	listaID = numpy.zeros(numNodes)
 	
+	listID = snap.TIntV(numNodes)
 	
 	index = 0
 	for ni in grafo.Nodes():
-		listaID[index] = ni.GetId()
+		listID[index] = ni.GetId()
 		index+=1
 
 	#Matplotlib
@@ -38,12 +38,30 @@ def SBAlgorithm(grafo):
 	
 	
 	#Rearrange the nodes of the entire network into ran- dom order. More specifically, in a random order, nodes which will be selected as the center of a sandbox box are randomly arrayed.
-	randomNodes = numpy.random.permutation(listaID)	
+	randomNodes = numpy.random.permutation(numNodes)	
 	#I select 40 percent of nodes
 	numberOfBoxes = int(0.4*numpy.size(randomNodes));
 	
 	sandBoxes = numpy.zeros([d,numberOfBoxes])
 	logR = numpy.array([])
+	
+	#High computational cost operation
+	#I generated a matriz with distancies between nodes
+	distances = numpy.zeros([numNodes,numNodes])
+	
+	#Due to ID nodes are not contiguous, I use the array with relation beetween index of array and ID node (listaID)
+	for i in range(0, numNodes):
+		for j in range(i, numNodes):
+			#Seme node
+			if i == j:				
+				distances[i][j] = 0
+				distances[j][i] = 0
+			else:
+				dis = snap.GetShortPath(grafo,listID[i],listID[j]);
+				distances[i][j] = dis
+				distances[j][i] = dis
+	
+	
 	
 	for radius in range(1,d+1):
 		
@@ -52,9 +70,9 @@ def SBAlgorithm(grafo):
 		for i in range(0, numberOfBoxes):
 			currentNode = randomNodes[i]
 			countNodes = 1
-			for ni in grafo.Nodes():
-				#High computational cost operation
-				distance = snap.GetShortPath(grafo,ni.GetId(),int(currentNode));
+			print i, radius
+			for ni in range(0, numNodes):
+				distance = distances[currentNode][ni];
 				if  distance <= radius and distance > 0:
 					countNodes+=1
 			sandBoxes[radius-1][i] = countNodes
