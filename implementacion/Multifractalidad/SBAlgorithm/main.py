@@ -43,7 +43,7 @@ def main(argv):
 	elif typeNet == "ScaleFreePrefAttach":
 		grafo = snap.GenPrefAttach(400, 30,Rnd)
 	elif typeNet == "Random":
-		grafo = snap.GenRndGnm(snap.PUNGraph, 300, 1200)
+		grafo = snap.GenRndGnm(snap.PUNGraph, 1000, 999)
 	elif typeNet == "Flower":
 		grafo = utils.generateFlowerUV()
 	else:
