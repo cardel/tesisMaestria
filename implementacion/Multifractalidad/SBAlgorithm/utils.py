@@ -74,8 +74,8 @@ def linealRegresssion(x, y):
 	m = 0
 	b = 0
 	n = numpy.size(x)
-	sumXplusY = numpy.sum(numpy.dot(x,y))
-	sumXplusX = numpy.sum(numpy.dot(x,x))
+	sumXplusY = numpy.sum(x*y)
+	sumXplusX = numpy.sum(x*x)
 	sumX = numpy.sum(x)
 	sumY = numpy.sum(y)
 	m = (n*sumXplusY - sumX*sumY)/(n*sumXplusX-sumX*sumX)

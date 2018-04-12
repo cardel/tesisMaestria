@@ -38,9 +38,9 @@ def main(argv):
 	elif typeNet == "TinyWorld":
 		
 		grafo = snap.GenSmallWorld(200, 3, 0, Rnd)
-	elif typeNet == "ScaleFreePoweLaw":
-		grafo = snap.GenRndPowerLaw(300, 1.5)
-	elif typeNet == "ScaleFreePreAttach":
+	elif typeNet == "ScaleFreePowerLaw":
+		grafo = snap.GenRndPowerLaw(500, 2.5)
+	elif typeNet == "ScaleFreePrefAttach":
 		grafo = snap.GenPrefAttach(400, 30,Rnd)
 	elif typeNet == "Random":
 		grafo = snap.GenRndGnm(snap.PUNGraph, 300, 1200)

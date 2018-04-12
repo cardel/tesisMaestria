@@ -36,6 +36,8 @@ def SBAlgorithm(grafo):
 	#Mass Exponents
 	Tq = numpy.zeros(maxq-minq+1)
 	
+	#Generalized dimensions
+	Dq = numpy.zeros(maxq-minq+1)
 	
 	#Rearrange the nodes of the entire network into ran- dom order. More specifically, in a random order, nodes which will be selected as the center of a sandbox box are randomly arrayed.
 	randomNodes = numpy.random.permutation(numNodes)	
@@ -70,7 +72,7 @@ def SBAlgorithm(grafo):
 		for i in range(0, numberOfBoxes):
 			currentNode = randomNodes[i]
 			countNodes = 1
-			print i, radius
+			#print i, radius
 			for ni in range(0, numNodes):
 				distance = distances[currentNode][ni];
 				if  distance <= radius and distance > 0:
@@ -78,33 +80,53 @@ def SBAlgorithm(grafo):
 			sandBoxes[radius-1][i] = countNodes
 	
 	count = 0
-	for q in range(minq,maxq+1,1):
-		infoPlot = numpy.array([])
+	Indexzero  = 0 
 	
+	for q in range(minq,maxq+1,1):
+		lnMrq = numpy.array([])
+		
 		for sand in sandBoxes:
 			Mr = numpy.power(sand,q-1)
 			Mr = numpy.log(numpy.average(Mr))
-			infoPlot=numpy.append(infoPlot, Mr)			
+			lnMrq=numpy.append(lnMrq, Mr)
+			
+			
 		
 		if math.fmod(q,2)==0 and q >= 0:
-			plt.plot(logR,infoPlot,symbols[int(math.fmod(count,numpy.size(symbols)))], label="q="+str(q))
+			plt.plot(logR,lnMrq,symbols[int(math.fmod(count,numpy.size(symbols)))], label="q="+str(q))
 		
-		m,b = utils.linealRegresssion(logR,infoPlot)
+		m,b = utils.linealRegresssion(logR,lnMrq)
 		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
+		#Find the mass exponents
 		if q == 0: 
 			countDim = count;
 	
 
 		Tq[count] = m
+		
+		#Find the Generalizated Fractal dimensions
+		if q != 1:
+			m,b = utils.linealRegresssion((q-1)*logR,lnMrq)
+		#else:
+			#Z1e = numpy.array([])
+			#for sand in sandBoxes:
+				#Ze = sand*numpy.log(sand)
+				#Ze = numpy.average(Ze)
+				#Z1e = numpy.append(Z1e,Ze)
+			#m,b = utils.linealRegresssion(logR,Z1e)	
+		Dq[count] = m
+		if q == 0:
+			Indexzero = count
+
 		count+=1
 		
 
-	##Box counting dimension
-	fractalInformation = numpy.zeros(3);
-	fractalInformation[0] = -1*Tq[countDim] #Fractal dimension
+		
+
+	##Adjust T(q) with q = 1 (Review)
 	
-	#fractalInformation[1] = math.log(totalSandBoxes[0])/math.log(d) #Information dimension
-	fractalInformation[2] = Tq[countDim+2]/2 #Correlation dimension
+	Dq[Indexzero+1] = (Dq[Indexzero] + Dq[Indexzero+2])/2
+
 	plt.xlabel('ln(r/d)')
 	plt.ylabel('ln(<M(r)>)^q')
 
@@ -115,8 +137,19 @@ def SBAlgorithm(grafo):
 	
 	fig2 = plt.figure()
 	plt.xlabel('q')
-	plt.ylabel('T(q)')	
-	plt.title("Dimension fractal generalizada "+str(fractalInformation[0]))
+	plt.ylabel('t(q)')	
+	plt.title("Mass exponents")
 	plt.plot(range(minq,maxq+1), Tq,'bo-')
 	plt.show()
-
+	
+	fig3 = plt.figure()
+	plt.xlabel('q')
+	plt.ylabel('D(q)')	
+	plt.title("Generalizated Fractal dimensions")
+	plt.plot(range(minq,maxq+1), Dq,'ro-')
+	
+	ymin, ymax = plt.ylim()
+	xmin, xmax = plt.xlim()
+	plt.ylim((ymin, 1.1*ymax))
+	plt.text(xmin/2,ymax,'Fractal Dim '+str(Dq[Indexzero])+'Dim inf '+str(Dq[Indexzero+1])+'Corr '+str(Dq[Indexzero+2]))
+	plt.show()
