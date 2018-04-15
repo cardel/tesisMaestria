@@ -57,11 +57,25 @@ def main(argv):
 	minq = -10
 	maxq = 10
 	percentOfSandBoxes = 0.4
-	robustness.robustness_analysis_GC(grafo,'degree',minq,maxq,percentOfSandBoxes)
-	#logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(grafo,minq,maxq,percentOfSandBoxes)
+	RTq=robustness.robustness_analysis_GC(grafo,'centrality',minq,maxq,percentOfSandBoxes)
+	#print RTq
+	logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(grafo,minq,maxq,percentOfSandBoxes)
+	
 	
 	##Matplotlib
-	#symbols = ['r-p','b-s','g-^','y-o','m->','c-<']
+	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
+	fig0 = plt.figure()
+	r = numpy.arange(0.0, 0.7, 0.1)
+	for i in range(0,7):
+		plt.plot(range(minq,maxq+1),RTq[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(r[i]))
+	
+	ymin, ymax = plt.ylim()
+	plt.ylim((ymin, ymax*1.2))
+	plt.legend(loc=1, bbox_to_anchor=(0.1, 1))
+	plt.xlabel('q')
+	plt.ylabel('D(q)')
+	plt.title('Multifractality by loss of highest degree nodes')
+	plt.show()
 	
 	#fig1 = plt.figure()
 	#i = 0
@@ -83,7 +97,6 @@ def main(argv):
 	#plt.title("Mass exponents")
 	#plt.plot(range(minq,maxq+1), Tq,'bo-')
 	#plt.show()
-	
 	#fig3 = plt.figure()
 	#plt.xlabel('q')
 	#plt.ylabel('D(q)')	

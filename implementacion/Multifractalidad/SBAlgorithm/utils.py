@@ -94,21 +94,38 @@ def getAveragePathLength(graph):
 	N = graph.GetNodes()
 	return snap.GetBfsEffDiam(graph, int(random.uniform(1,N)), False)
 
+#Copy a graph
 
-#Remove nodes
-def removeNodes(graph, DegV,typeRemoval, percent):
-	if typeRemoval == 'degree':
+def copyGraph(graph):
+	g = snap.TUNGraph.New()
+	for NI in graph.Nodes():
+		g.AddNode(NI.GetId())
+	
+	for EI in graph.Edges():
+		g.AddEdge(EI.GetSrcNId(),EI.GetDstNId())
 		
-
-		N = DegV.Len()
-		TotalRemoved = int(N*percent)
-			
+	return g
+	
+#Remove nodes
+def removeNodes(graph,typeRemoval, percent, p, N,ClosenessCentrality):
+	TotalRemoved = int(N*percent)
+	if typeRemoval == 'degree':		
 		for i in range(0, TotalRemoved):
-			graph.DelNode(DegV[i].GetVal1())
+			node = snap.GetMxDegNId(graph)
+			graph.DelNode(node)		
 			
-		return graph		
 	elif typeRemoval == 'centrality':
-		print 1
+		startNode = int((p-0.1)*N)
+		endNode = int(p*N)
+		for i in range(startNode, endNode):
+			graph.DelNode(int(ClosenessCentrality[i][0]))		
+		
+	elif typeRemoval == 'random':
+		Rnd = snap.TRnd(int(N))
+		
+		for i in range(0, TotalRemoved):
+			Rnd.Randomize()
+			node = graph.GetRndNId(Rnd)
+			graph.DelNode(node)	
 	else:
 		print 'Error: Invalid option'
-	return graph
