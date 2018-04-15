@@ -9,7 +9,11 @@ import sys
 import getopt
 import snap
 import SBAlgorithm
+import robustness
 import utils
+import matplotlib.pyplot as plt
+import math
+import numpy
 
 def main(argv):
 	fileInput = "";
@@ -49,7 +53,48 @@ def main(argv):
 	else:
 		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
 	
-	SBAlgorithm.SBAlgorithm(grafo)
+
+	minq = -10
+	maxq = 10
+	percentOfSandBoxes = 0.4
+	robustness.robustness_analysis_GC(grafo,'degree',minq,maxq,percentOfSandBoxes)
+	#logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(grafo,minq,maxq,percentOfSandBoxes)
+	
+	##Matplotlib
+	#symbols = ['r-p','b-s','g-^','y-o','m->','c-<']
+	
+	#fig1 = plt.figure()
+	#i = 0
+	#for q in range(minq,maxq+1):
+		#plt.plot(logR,lnMrq[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
+		#i+=1
+	
+	#plt.xlabel('ln(r/d)')
+	#plt.ylabel('ln(<M(r)>)^q')
+	#plt.title("Mass exponents")
+	#ymin, ymax = plt.ylim()
+	#plt.ylim((ymin, ymax+20)) 
+	#plt.legend(loc=9, bbox_to_anchor=(0.1, 1))
+	#plt.show()
+	
+	#fig2 = plt.figure()
+	#plt.xlabel('q')
+	#plt.ylabel('t(q)')	
+	#plt.title("Mass exponents")
+	#plt.plot(range(minq,maxq+1), Tq,'bo-')
+	#plt.show()
+	
+	#fig3 = plt.figure()
+	#plt.xlabel('q')
+	#plt.ylabel('D(q)')	
+	#plt.title("Generalizated Fractal dimensions")
+	#plt.plot(range(minq,maxq+1), Dq,'ro-')
+	
+	#ymin, ymax = plt.ylim()
+	#xmin, xmax = plt.xlim()
+	#plt.ylim((ymin, 1.1*ymax))
+	#plt.text(xmin/2,ymax,'Fractal Dim '+str(Dq[Indexzero])+'Dim inf '+str(Dq[Indexzero+1])+'Corr '+str(Dq[Indexzero+2]))
+	#plt.show()
 			
 if __name__ == "__main__":
    main(sys.argv[1:])

@@ -3,18 +3,17 @@
 
 #Author: Carlos Andres Delgado
 #Creation date 14th March 2018
-#Last edition date 14th March 2018
+#Last edition date 14th April 2018
 #Description: This algorithm calculates the multifractal dimension with SB method
 import snap
 import numpy
 import math
 from sets import Set
-import matplotlib.pyplot as plt
 import utils
 		
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
-def SBAlgorithm(grafo):
+def SBAlgorithm(grafo,minq,maxq,percentSandBox):
 	
 	d = snap.GetBfsFullDiam(grafo,10,False)
 	numNodes = grafo.GetNodes()
@@ -26,23 +25,20 @@ def SBAlgorithm(grafo):
 		listID[index] = ni.GetId()
 		index+=1
 
-	#Matplotlib
-	symbols = ['r-p','b-s','g-^','y-o','m->','c-<']
+	rangeQ = maxq-minq+1
+	#Total q
+	lnMrq = numpy.zeros([rangeQ,d],dtype=float)
 	
-	fig1 = plt.figure()
-
-	minq = -10
-	maxq = 12
 	#Mass Exponents
-	Tq = numpy.zeros(maxq-minq+1)
+	Tq = numpy.zeros(rangeQ)
 	
 	#Generalized dimensions
-	Dq = numpy.zeros(maxq-minq+1)
+	Dq = numpy.zeros(rangeQ)
 	
 	#Rearrange the nodes of the entire network into ran- dom order. More specifically, in a random order, nodes which will be selected as the center of a sandbox box are randomly arrayed.
 	randomNodes = numpy.random.permutation(numNodes)	
 	#I select 40 percent of nodes
-	numberOfBoxes = int(0.4*numpy.size(randomNodes));
+	numberOfBoxes = int(percentSandBox*numpy.size(randomNodes));
 	
 	sandBoxes = numpy.zeros([d,numberOfBoxes])
 	logR = numpy.array([])
@@ -54,7 +50,7 @@ def SBAlgorithm(grafo):
 	#Due to ID nodes are not contiguous, I use the array with relation beetween index of array and ID node (listaID)
 	for i in range(0, numNodes):
 		for j in range(i, numNodes):
-			#Seme node
+			#Same node
 			if i == j:				
 				distances[i][j] = 0
 				distances[j][i] = 0
@@ -83,18 +79,14 @@ def SBAlgorithm(grafo):
 	Indexzero  = 0 
 	
 	for q in range(minq,maxq+1,1):
-		lnMrq = numpy.array([])
-		
+		i = 0
 		for sand in sandBoxes:
 			Mr = numpy.power(sand,q-1)
 			Mr = numpy.log(numpy.average(Mr))
-			lnMrq=numpy.append(lnMrq, Mr)
+			lnMrq[count][i]=Mr
+			i+=1
 			
-			
-		
-		if math.fmod(q,2)==0 and q >= 0:
-			plt.plot(logR,lnMrq,symbols[int(math.fmod(count,numpy.size(symbols)))], label="q="+str(q))
-		
+	
 		m,b = utils.linealRegresssion(logR,lnMrq)
 		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
 		#Find the mass exponents
@@ -106,7 +98,7 @@ def SBAlgorithm(grafo):
 		
 		#Find the Generalizated Fractal dimensions
 		if q != 1:
-			m,b = utils.linealRegresssion((q-1)*logR,lnMrq)
+			m,b = utils.linealRegresssion((q-1)*logR,lnMrq[count])
 		else:
 			Z1e = numpy.array([])
 			for sand in sandBoxes:
@@ -119,36 +111,5 @@ def SBAlgorithm(grafo):
 			Indexzero = count
 
 		count+=1
-		
-
-		
-
-	##Adjust T(q) with q = 1 (Review)
-
-
-	plt.xlabel('ln(r/d)')
-	plt.ylabel('ln(<M(r)>)^q')
-
-	ymin, ymax = plt.ylim()
-	plt.ylim((ymin, ymax+20)) 
-	plt.legend(loc=9, bbox_to_anchor=(0.1, 1))
-	plt.show()
 	
-	fig2 = plt.figure()
-	plt.xlabel('q')
-	plt.ylabel('t(q)')	
-	plt.title("Mass exponents")
-	plt.plot(range(minq,maxq+1), Tq,'bo-')
-	plt.show()
-	
-	fig3 = plt.figure()
-	plt.xlabel('q')
-	plt.ylabel('D(q)')	
-	plt.title("Generalizated Fractal dimensions")
-	plt.plot(range(minq,maxq+1), Dq,'ro-')
-	
-	ymin, ymax = plt.ylim()
-	xmin, xmax = plt.xlim()
-	plt.ylim((ymin, 1.1*ymax))
-	plt.text(xmin/2,ymax,'Fractal Dim '+str(Dq[Indexzero])+'Dim inf '+str(Dq[Indexzero+1])+'Corr '+str(Dq[Indexzero+2]))
-	plt.show()
+	return logR, Indexzero,Tq, Dq, lnMrq

@@ -10,9 +10,7 @@ import snap
 
 def generateFlowerUV():
 	
-	#a = numpy.genfromtxt('flower223thGeneration.csv', delimiter=',')
-	#size = 44
-	
+
 	#First generation
 	
 	a = numpy.array([[0,1],[1,0]])
@@ -68,7 +66,8 @@ def generateFlowerUV():
 	
 	#snap.SaveEdgeList(G1, 'mygraph.txt')
 	return G1
-
+	
+#Lineal regression for calculte derivatives
 def linealRegresssion(x, y):
 
 	m = 0
@@ -83,3 +82,33 @@ def linealRegresssion(x, y):
 	
 	
 	return m,b
+	
+#Get size giant component
+def getSizeOfGiantComponent(graph):
+	Component = snap.GetMxScc(graph)
+	return Component.GetNodes()
+
+# Get average path lenght
+def getAveragePathLength(graph):
+	Rnd = snap.TRnd(1,0)
+	N = graph.GetNodes()
+	return snap.GetBfsEffDiam(graph, int(random.uniform(1,N)), False)
+
+
+#Remove nodes
+def removeNodes(graph, DegV,typeRemoval, percent):
+	if typeRemoval == 'degree':
+		
+
+		N = DegV.Len()
+		TotalRemoved = int(N*percent)
+			
+		for i in range(0, TotalRemoved):
+			graph.DelNode(DegV[i].GetVal1())
+			
+		return graph		
+	elif typeRemoval == 'centrality':
+		print 1
+	else:
+		print 'Error: Invalid option'
+	return graph
