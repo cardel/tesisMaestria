@@ -12,6 +12,12 @@ python main.py --file ../../datos/cellular.dat --type Edge --output cellularDegr
 python main.py --file ../../datos/cellular.dat --type Edge --output cellularRandom --message "random attack" --attack random &
 python main.py --file ../../datos/cellular.dat --type Edge --output cellularCnt --message "centrality attack" --attack centrality &
 
+#(2,2)-flower 7th generation
+
+python main.py --type Flower --output FlowerDegree --message "degree attack" --attack degree &
+python main.py --type Flower --output FlowerRandom --message "random attack" --attack random &
+python main.py --type Flower --output FlowerCnt --message "centrality attack" --attack centrality &
+
 #Scalefree 3000 nodos, 100 grado de salida
 
 python main.py --type ScaleFreePrefAttach --output ScaleFreePrefAttachDegree --message "degree attack" --attack degree &

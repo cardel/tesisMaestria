@@ -15,7 +15,7 @@ def generateFlowerUV():
 	G1 = snap.TUNGraph.New()
 	
 	if os.path.isfile('../../datos/flower.txt'):
-		snap.LoadEdgeList(G1, '../../datos/flower.txt', 0, 1)
+		G1 = snap.LoadEdgeList(snap.PUNGraph, '../../datos/flower.txt', 0, 1)
 	else:
 		#First generation
 		a = numpy.array([[0,1],[1,0]])
