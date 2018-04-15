@@ -3,7 +3,7 @@
 
 #Author: Carlos Andres Delgado
 #Creation date 14th March 2018
-#Last edition date 14th March 2018
+#Last edition date 14th Aprim 2018
 #Description: This algorithm provide some methods for robustness in complex networks
 
 import snap
