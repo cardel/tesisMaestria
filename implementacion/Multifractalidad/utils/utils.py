@@ -6,10 +6,29 @@
 #Last edition date 07th April 2018
 #Description: This file contains some utilities for multifractality app
 import numpy
-import snap
 import random
 import os.path
+import lib.snap as snap
 
+#Get distances matrix
+#Reduce high computational cost operation
+def getDistancesMatrix(graph,numNodes,listID):
+	#Due to ID nodes are not contiguous, I use the array with relation beetween index of array and ID node (listaID)
+	distances = numpy.zeros([numNodes,numNodes])
+	for i in range(0, numNodes):
+		for j in range(i, numNodes):
+			#Same node
+			if i == j:				
+				distances[i][j] = 0
+				distances[j][i] = 0
+			else:
+				dis = snap.GetShortPath(graph,listID[i],listID[j]);
+				distances[i][j] = dis
+				distances[j][i] = dis
+	
+	return distances
+
+#Generate fractal network (u,v)->flower with u = 2 and v = 2
 def generateFlowerUV():
 	
 	G1 = snap.TUNGraph.New()
@@ -145,5 +164,23 @@ def removeNodes(graph,typeRemoval, percent, p, N,ClosenessCentrality, typeMeasur
 				measure = numpy.append(measure,float(getAveragePathLength(graph)))
 	else:
 		print 'Error: Invalid option'
+	
+	return measure
+
+def removeNodesGenetic(graph,nodesToRemove, N,listID, typeMeasure):
+	measure = numpy.array([],dtype=float)
+
+	for node in nodesToRemove:
+		print "ok--"
+		#ni = listID[int(node)]
+		print "ok"
+		#graph.DelNode(ni)
+		print "ok2"	
+		if typeMeasure=='GC':
+			#measure = numpy.append(measure,float(getSizeOfGiantComponent(graph))/N)
+			measure = 0
+		elif typeMeasure=='APL':
+			#measure = numpy.append(measure,float(getAveragePathLength(graph)))	
+			measure = 0	
 	
 	return measure

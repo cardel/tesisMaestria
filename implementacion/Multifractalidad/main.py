@@ -7,10 +7,11 @@
 #Description: The main file
 import sys
 import getopt
-import snap
-import SBAlgorithm
-import robustness
-import utils
+import lib.snap as snap
+import SBAlgorithm.SBAlgorithm as SBAlgorithm
+import robustness.robustness as robustness
+import Genetic.SBGenetic as SBGenetic
+import utils.utils as utils
 import matplotlib.pyplot as plt
 import math
 import numpy
@@ -47,36 +48,47 @@ def main(argv):
 										
 	Rnd = snap.TRnd(1,0)
 	if typeNet == "Edge":
-		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
+		graph = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
 	elif typeNet == "ConnList":
-		grafo = snap.LoadConnList(snap.PUNGraph, fileInput)
+		graph = snap.LoadConnList(snap.PUNGraph, fileInput)
 	elif typeNet == "Pajek":
-		grafo = snap.LoadPajek(snap.PUNGraph, fileInput)
+		graph = snap.LoadPajek(snap.PUNGraph, fileInput)
 	elif typeNet == "SmallWorld":		
-		grafo = snap.GenSmallWorld(1000, 300, 0, Rnd)
+		graph = snap.GenSmallWorld(1000, 300, 0, Rnd)
 	elif typeNet == "ScaleFreePowerLaw":
-		grafo = snap.GenRndPowerLaw(500, 2.5)
+		graph = snap.GenRndPowerLaw(500, 2.5)
 	elif typeNet == "ScaleFreePrefAttach":
-		grafo = snap.GenPrefAttach(1000, 300,Rnd)
+		graph = snap.GenPrefAttach(1000, 300,Rnd)
 	elif typeNet == "Random":
-		grafo = snap.GenRndGnm(snap.PUNGraph, 1000, 999)
+		graph = snap.GenRndGnm(snap.PUNGraph, 1000, 999)
 	elif typeNet == "Flower":
-		grafo = utils.generateFlowerUV()
+		graph = utils.generateFlowerUV()
 	else:
-		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
+		graph = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
 	
 
 	minq = -10
 	maxq = 10
 	percentOfSandBoxes = 0.4
-	RTq,measure,robustnessmeasure=robustness.robustness_analysis_GC(grafo,attack,minq,maxq,percentOfSandBoxes)
-	#print robustnessmeasure
-	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_APL(grafo,'centrality',minq,maxq,percentOfSandBoxes)
-	#print robustnessmeasure
-	#logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(grafo,minq,maxq,percentOfSandBoxes)
+	#SandBox and Genetic
+	iterations = 300
+	iterationsSandBox = 100
+	sizePopulation = 100 
+	percentCrossOver = 0.3
+	percentMutation = 0.05	
+	typeMeasure = 'GC'
+	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_GC(graph,attack,minq,maxq,percentOfSandBoxes,iterations)
+
+	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_APL(graph,attack,minq,maxq,percentOfSandBoxes,iterations)
 	
+	#print robustnessmeasure
+	logRA, IndexzeroA,TqA, DqA = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,iterationsSandBox)
 	
-	##Matplotlib
+	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBGenetic.SBGenetic(graph,minq,maxq,percentOfSandBoxes,sizePopulation,iterations, percentCrossOver, percentMutation)
+	
+	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure)
+	
+	#Matplotlib
 	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 	fig0 = plt.figure()
 	r = numpy.arange(0.0, 1.0, 0.1)
@@ -94,7 +106,7 @@ def main(argv):
 	plt.xlabel('q')
 	plt.ylabel('D(q)')
 	plt.title('Multifractality '+message)
-	plt.savefig('../Results/'+timestr+'_'+fileOutput+'.png')
+	plt.savefig('Results/'+timestr+'_'+fileOutput+'.png')
 		
 	#fig1 = plt.figure()
 	#i = 0
@@ -116,17 +128,17 @@ def main(argv):
 	#plt.title("Mass exponents")
 	#plt.plot(range(minq,maxq+1), Tq,'bo-')
 	#plt.show()
-	#fig3 = plt.figure()
-	#plt.xlabel('q')
-	#plt.ylabel('D(q)')	
-	#plt.title("Generalizated Fractal dimensions")
-	#plt.plot(range(minq,maxq+1), Dq,'ro-')
-	
-	#ymin, ymax = plt.ylim()
-	#xmin, xmax = plt.xlim()
-	#plt.ylim((ymin, 1.1*ymax))
+	fig3 = plt.figure()
+	plt.xlabel('q')
+	plt.ylabel('D(q)')	
+	plt.title("Generalizated Fractal dimensions")
+	plt.plot(range(minq,maxq+1), DqA,'ro-')
+	plt.plot(range(minq,maxq+1), DqB,'bo-')
+	ymin, ymax = plt.ylim()
+	xmin, xmax = plt.xlim()
+	plt.ylim((ymin, 1.1*ymax))
 	#plt.text(xmin/2,ymax,'Fractal Dim '+str(Dq[Indexzero])+'Dim inf '+str(Dq[Indexzero+1])+'Corr '+str(Dq[Indexzero+2]))
-	#plt.show()
+	plt.show()
 			
 if __name__ == "__main__":
    main(sys.argv[1:])
