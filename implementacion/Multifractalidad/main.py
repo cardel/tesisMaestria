@@ -13,6 +13,8 @@ import robustness.robustness as robustness
 import Genetic.SBGenetic as SBGenetic
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import utils.utils as utils
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import math
 import numpy
@@ -176,6 +178,7 @@ def main(argv):
 	#plt.title("Mass exponents")
 	#plt.plot(range(minq,maxq+1), Tq,'bo-')
 	#plt.show()
+	
 	fig3 = plt.figure()
 	plt.xlabel('q')
 	plt.ylabel('D(q)')	
