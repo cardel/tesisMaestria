@@ -20,18 +20,26 @@ def calculateFitness(graph, element, radius, distances, listID):
 	#Count nodes to distancie sqrt(N)
 	averageDistance = 0.0
 	closeNessCentralityNode = 0.0
+	averageCountNodes = 0.0
 	for node in element:		
 		#Box of size sqr(N)
 		distanceOtherNode = 0.0
+		countNodesPerNode = 0.0
 			#Distance to other centers
+		for ni in range(0,numNodes):
+				dis = distances[int(node)][ni];
+				if dis <= sqrDistance:
+					countNodesPerNode+=1
+					
 		for ni in element:
 			distanceOtherNode+=distances[int(node)][int(ni)]/radius	
 		
 		averageDistance += distanceOtherNode/element.size
-	
+		averageCountNodes+=countNodesPerNode/element.size
 		closeNessCentralityNode+=snap.GetClosenessCentr(graph,listID[int(node)])	
-			
-	fitness = closeNessCentralityNode*averageDistance		
+	
+	fitness = averageDistance*averageCountNodes*closeNessCentralityNode
+	#fitness = closeNessCentralityNode*averageDistance		
 	return fitness
 	
 #Return neighbors of a specific node

@@ -23,27 +23,29 @@ def calculateFitness(graph, population, sizePopulation,radius, distances,listID)
 		closeNessCentralityAllNodes = 0.0
 		averageDistance = 0.0
 		chromosome = population[i]
+		averageCountNodes = 0.0
 		
 		for node in chromosome:
 			distanceOtherNode = 0.0
 			countNodesPerNode=0.0
 			
 			#Box of size sqr(N)
-			#for ni in range(0,numNodes):
-			#	dis = distances[int(node)][ni];
-			#	if dis <= sqrDistance:
-			#		countNodesPerNode+=1		
+			for ni in range(0,numNodes):
+				dis = distances[int(node)][ni];
+				if dis <= sqrDistance:
+					countNodesPerNode+=1		
 
 			#Distance to other centers
 			for ni in chromosome:
 				distanceOtherNode+=distances[int(node)][int(ni)]/radius	
 			
 			averageDistance += distanceOtherNode/chromosome.size
-		
+			averageCountNodes+=countNodesPerNode/chromosome.size
 			closeNessCentralityNode = snap.GetClosenessCentr(graph,listID[int(node)])	
 			closeNessCentralityAllNodes+=closeNessCentralityNode/chromosome.size	
 			
-		fitness[i] = closeNessCentralityAllNodes*averageDistance
+		#fitness[i] = closeNessCentralityAllNodes*averageDistance
+		fitness[i] = averageDistance*averageCountNodes*closeNessCentralityNode
 	return fitness
 
 def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listID):
