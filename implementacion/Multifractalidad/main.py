@@ -128,7 +128,7 @@ def main(argv):
 	plt.xlabel('q')
 	plt.ylabel('D(q)')
 	plt.title('Multifractality Attack Genetic '+message)
-	plt.show()
+	#plt.show()
 	plt.savefig('Results/'+timestr+'_'+'genetic'+fileOutput+'.png')
 	
 	fig5 = plt.figure()
@@ -184,6 +184,7 @@ def main(argv):
 	fontP = FontProperties()
 	fontP.set_size('small')
 	plt.legend(prop=fontP)
+	plt.savefig('Results/'+timestr+'_'+'fractality'+fileOutput+'.png')
 	#plt.show()
 	
 	fig4 = plt.figure()
