@@ -68,7 +68,7 @@ def main(argv):
 	elif typeNet == "ScaleFreePrefAttach":
 		graph = snap.GenPrefAttach(1000, 300,Rnd)
 	elif typeNet == "Random":
-		graph = snap.GenRndGnm(snap.PUNGraph, 1000, 999)
+		graph = snap.GenRndGnm(snap.PUNGraph, nodes, desiredGrade)
 	elif typeNet == "Flower":
 		graph = utils.generateFlowerUV()
 	else:
@@ -93,22 +93,22 @@ def main(argv):
 	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_APL(graph,attack,minq,maxq,percentOfSandBoxes,iterations)
 	
 	#print robustnessmeasure
-	#executionTime = numpy.zeros(3,dtype=float)
-	#executionTime[0] = time.time()
+	executionTime = numpy.zeros(3,dtype=float)
+	executionTime[0] = time.time()
 
 	logRA, IndexzeroA,TqA, DqA = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,iterationsSandBox)
-	print DqA
-	#executionTime[1] = time.time()
-	#executionTime[0] = executionTime[1] - executionTime[0]
+	
+	executionTime[1] = time.time()
+	executionTime[0] = executionTime[1] - executionTime[0]
 
-	#logRB, IndexzeroB,TqB, DqB, lnMrqB = SBGenetic.SBGenetic(graph,minq,maxq,percentOfSandBoxes,sizePopulation,iterations, percentCrossOver, percentMutation)
+	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBGenetic.SBGenetic(graph,minq,maxq,percentOfSandBoxes,sizePopulation,iterations, percentCrossOver, percentMutation)
 	
-	##executionTime[2] = time.time()
-	#executionTime[1] = executionTime[2] - executionTime[1]
+	executionTime[2] = time.time()
+	executionTime[1] = executionTime[2] - executionTime[1]
 	
-	#logRC, IndexzeroC,TqC, DqC, lnMrqB = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax)
+	logRC, IndexzeroC,TqC, DqC, lnMrqB = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax)
 	
-	#executionTime[2] = time.time() - executionTime[2]
+	executionTime[2] = time.time() - executionTime[2]
 	
 	
 	##Robustness measure Genetic Algorithm
@@ -182,8 +182,8 @@ def main(argv):
 	plt.title("Generalizated Fractal dimensions")
 
 	plt.plot(range(minq,maxq+1), DqA,'ro-', label='SBAlgorithm')
-	#plt.plot(range(minq,maxq+1), DqB,'bo-', label='Genetic')
-	#plt.plot(range(minq,maxq+1), DqC,'mo-', label='Simulated Annealing')
+	plt.plot(range(minq,maxq+1), DqB,'bo-', label='Genetic')
+	plt.plot(range(minq,maxq+1), DqC,'mo-', label='Simulated Annealing')
 	ymin, ymax = plt.ylim()
 	xmin, xmax = plt.xlim()
 	plt.ylim((ymin, 1.1*ymax))
@@ -194,13 +194,13 @@ def main(argv):
 	plt.savefig('Results/'+timestr+'_'+'fractality'+fileOutput+'.png')
 	#plt.show()
 	
-	#fig4 = plt.figure()
-	#plt.xlabel('Strategy')
-	#plt.ylabel('Time(s)')
-	#x=numpy.arange(3)
-	#plt.bar(x, executionTime)
-	#plt.xticks(x, ('SBAlgorithm', 'Evolutive', 'Simulated'))
-	#plt.savefig('Results/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
+	fig4 = plt.figure()
+	plt.xlabel('Strategy')
+	plt.ylabel('Time(s)')
+	x=numpy.arange(3)
+	plt.bar(x, executionTime)
+	plt.xticks(x, ('SBAlgorithm', 'Evolutive', 'Simulated'))
+	plt.savefig('Results/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
 	#plt.show()
 					
 if __name__ == "__main__":

@@ -12,34 +12,37 @@ from sets import Set
 import lib.snap as snap
 import utils.utils as utils
 	
-def calculateFitness(graph, element, radius, distances, listID):
+def calculateFitness(graph, element, radius, distances, listID,listDegree):
 	numNodes = graph.GetNodes()	
 	sqrDistance = int(math.sqrt(radius))
 	#First position ID node, second position Fitness
 	
 	#Count nodes to distancie sqrt(N)
 	averageDistance = 0.0
-	closeNessCentralityNode = 0.0
-	averageCountNodes = 0.0
+	averageDegree = 0.0
+	#closeNessCentralityNode = 0.0
+	#averageCountNodes = 0.0
 	for node in element:		
 		#Box of size sqr(N)
 		distanceOtherNode = 0.0
-		countNodesPerNode = 0.0
+		#countNodesPerNode = 0.0
 			#Distance to other centers
-		for ni in range(0,numNodes):
-				dis = distances[int(node)][ni];
-				if dis <= sqrDistance:
-					countNodesPerNode+=1
+		#for ni in range(0,numNodes):
+				#dis = distances[int(node)][ni];
+				#if dis <= sqrDistance:
+					#countNodesPerNode+=1
 					
 		for ni in element:
 			distanceOtherNode+=distances[int(node)][int(ni)]/radius	
 		
 		averageDistance += distanceOtherNode/element.size
-		averageCountNodes+=countNodesPerNode/element.size
-		closeNessCentralityNode+=snap.GetClosenessCentr(graph,listID[int(node)])	
-	
-	fitness = averageDistance*averageCountNodes*closeNessCentralityNode
-	#fitness = closeNessCentralityNode*averageDistance		
+		#averageCountNodes+=countNodesPerNode/element.size
+		#closeNessCentralityNode+=snap.GetClosenessCentr(graph,listID[int(node)])	
+		averageDegree += listDegree[int(node)]/element.size
+		
+	#fitness = averageDistance*averageCountNodes*closeNessCentralityNode
+	#fitness = closeNessCentralityNode*averageDistance	
+	fitness = averageDegree + averageDistance
 	return fitness
 	
 #Return neighbors of a specific node
@@ -52,7 +55,7 @@ def createNeighbors(node,numNodes, distances):
 			
 	return neighbors
 
-def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID):
+def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,listDegree):
 	
 	numberNodosState = int(percentSandBox*numNodes);
 	currentState = numpy.random.permutation(numNodes)[0:numberNodosState]
@@ -81,8 +84,8 @@ def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID):
 			
 		
 		#Calculate fitness each state
-		fitNessCurrentState = calculateFitness(graph, currentState, radius, distances,listID)
-		fitNessNewState = calculateFitness(graph, newState, radius, distances, listID)
+		fitNessCurrentState = calculateFitness(graph, currentState, radius, distances,listID,listDegree)
+		fitNessNewState = calculateFitness(graph, newState, radius, distances, listID,listDegree)
 	
 		difference = fitNessCurrentState - fitNessNewState
 		r3 = rnd.random()
@@ -105,10 +108,12 @@ def SBSA(graph,minq,maxq,percentSandBox,sizePopulation, Kmax):
 	numNodes = graph.GetNodes()
 	
 	listID = snap.TIntV(numNodes)
+	listDegree =  snap.TIntV(numNodes)
 	
 	index = 0
 	for ni in graph.Nodes():
 		listID[index] = ni.GetId()
+		listDegree[index] = ni.GetOutDeg()
 		index+=1
 
 	rangeQ = maxq-minq+1
@@ -125,7 +130,7 @@ def SBSA(graph,minq,maxq,percentSandBox,sizePopulation, Kmax):
 	##I generated a matriz with distancies between nodes
 	distances = utils.getDistancesMatrix(graph,numNodes, listID)	
 	#Create a random population of nodes	
-	centerNodes = calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID)
+	centerNodes = calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,listDegree)
 
 	numberOfBoxes = int(percentSandBox*numNodes);
 	sandBoxes = numpy.zeros([d,numberOfBoxes])

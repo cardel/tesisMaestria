@@ -12,7 +12,7 @@ from sets import Set
 import lib.snap as snap
 import utils.utils as utils
 	
-def calculateFitness(graph, population, sizePopulation,radius, distances,listID):
+def calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree):
 	numNodes = graph.GetNodes()	
 	sqrDistance = int(math.sqrt(radius))
 	#First position ID node, second position Fitness
@@ -20,35 +20,38 @@ def calculateFitness(graph, population, sizePopulation,radius, distances,listID)
 	
 	#Count nodes to distancie sqrt(N)
 	for i in range(0,sizePopulation):
-		closeNessCentralityAllNodes = 0.0
+		#closeNessCentralityAllNodes = 0.0
 		averageDistance = 0.0
 		chromosome = population[i]
-		averageCountNodes = 0.0
+		averageDegree = 0.0
+		#averageCountNodes = 0.0
 		
 		for node in chromosome:
 			distanceOtherNode = 0.0
 			countNodesPerNode=0.0
 			
 			#Box of size sqr(N)
-			for ni in range(0,numNodes):
-				dis = distances[int(node)][ni];
-				if dis <= sqrDistance:
-					countNodesPerNode+=1		
+			#for ni in range(0,numNodes):
+				#dis = distances[int(node)][ni];
+				#if dis <= sqrDistance:
+					#countNodesPerNode+=1		
 
 			#Distance to other centers
 			for ni in chromosome:
-				distanceOtherNode+=distances[int(node)][int(ni)]/radius	
+				distanceOtherNode+=distances[int(node)][int(ni)]
 			
 			averageDistance += distanceOtherNode/chromosome.size
-			averageCountNodes+=countNodesPerNode/chromosome.size
-			closeNessCentralityNode = snap.GetClosenessCentr(graph,listID[int(node)])	
-			closeNessCentralityAllNodes+=closeNessCentralityNode/chromosome.size	
+			averageDegree += listDegree[int(node)]/chromosome.size
+			#averageCountNodes+=countNodesPerNode/chromosome.size
+			#closeNessCentralityNode = snap.GetClosenessCentr(graph,listID[int(node)])	
+			#closeNessCentralityAllNodes+=closeNessCentralityNode/chromosome.size	
 			
 		#fitness[i] = closeNessCentralityAllNodes*averageDistance
-		fitness[i] = averageDistance*averageCountNodes*closeNessCentralityNode
+		#fitness[i] = averageDistance*averageCountNodes*closeNessCentralityNode
+		fitness[i] = averageDegree + averageDistance
 	return fitness
 
-def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listID):
+def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listID,listDegree):
 	sizeChromosome = int(percentSandBox*numNodes);
 	population = numpy.zeros([sizePopulation,sizeChromosome])
 
@@ -59,7 +62,7 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 		
 	for i in range(0,iterations):
 		#Calculate fitness
-		fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID)
+		fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree)
 		##Select nodes Fitness proportionate selection
 		sumFitness = numpy.sum(fitness)
 		
@@ -125,7 +128,7 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 			population[i] = individual
 		
 	#Fitness 100th generation
-	fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID)
+	fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree)
 	index =  numpy.argmax(fitness)
 	best = population[index]
 		
@@ -138,10 +141,12 @@ def SBGenetic(graph,minq,maxq,percentSandBox,sizePopulation, iterations, percent
 	numNodes = graph.GetNodes()
 	
 	listID = snap.TIntV(numNodes)
+	listDegree =  snap.TIntV(numNodes)
 	
 	index = 0
 	for ni in graph.Nodes():
 		listID[index] = ni.GetId()
+		listDegree[index] = ni.GetOutDeg()
 		index+=1
 
 	rangeQ = maxq-minq+1
@@ -158,7 +163,7 @@ def SBGenetic(graph,minq,maxq,percentSandBox,sizePopulation, iterations, percent
 	##I generated a matriz with distancies between nodes
 	distances = utils.getDistancesMatrix(graph,numNodes, listID)	
 	#Create a random population of nodes	
-	centerNodes = calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listID)
+	centerNodes = calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listID,listDegree)
 
 	numberOfBoxes = int(percentSandBox*numNodes);
 	sandBoxes = numpy.zeros([d,numberOfBoxes])

@@ -5,6 +5,6 @@ for Nodes in 150 250 300
 do
 	for Edges in 500 700
 	do
-		echo python main.py --type SmallWorld --output "SmallWorldDegree"$Nodes"d"$Edges --message "SmallWorldn"$Nodes"d"$Edges --node $Nodes --desired $Edges&
+		python main.py --type ScaleFreePrefAttach --output "ScaleFree"$Nodes"d"$Edges --message "ScaleFree"$Nodes"d"$Edges --node $Nodes --desired $Edges&
 	done
 done
