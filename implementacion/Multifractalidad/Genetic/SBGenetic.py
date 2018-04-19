@@ -29,10 +29,10 @@ def calculateFitness(graph, population, sizePopulation,radius, distances,listID)
 			countNodesPerNode=0.0
 			
 			#Box of size sqr(N)
-			for ni in range(0,numNodes):
-				dis = distances[int(node)][ni];
-				if dis <= sqrDistance:
-					countNodesPerNode+=1		
+			#for ni in range(0,numNodes):
+			#	dis = distances[int(node)][ni];
+			#	if dis <= sqrDistance:
+			#		countNodesPerNode+=1		
 
 			#Distance to other centers
 			for ni in chromosome:

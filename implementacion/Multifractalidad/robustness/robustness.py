@@ -12,6 +12,7 @@ import sys
 import utils.utils as utils
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
 import Genetic.SBGenetic as SBGenetic
+import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import lib.snap as snap
 
 #Get meseaure of Robustness according giant component
@@ -115,13 +116,45 @@ def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,si
 		distances = utils.getDistancesMatrix(g,Ng, listID)
 			
 		nodesToRemove = SBGenetic.calculateCenters(g, Ng,percent, iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listID)
-		for node in nodesToRemove:
-			print listID[int(node)]
-			g.DelNode(listID[int(node)])
 		
 		#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
-		me = 0
-		#me=utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
+		me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
+
+		logR, Indexzero,Tq, Dq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
+		RTq = numpy.vstack((RTq,Dq))
+		
+		measure = measure = numpy.append(measure,me)
+	robustnessmeasure = numpy.sum(measure)/N
+	return RTq, measure,robustnessmeasure
+	
+	
+def robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsSandBox,typeMeasure):
+	
+	radius = snap.GetBfsFullDiam(graph,10,False)
+	percent = 0.1
+	r = numpy.arange(0.1, 1.0,percent)
+	g = utils.copyGraph(graph)	
+	N = g.GetNodes()	
+	
+	measure = numpy.array([],dtype=float)
+	
+	logR, Indexzero,Tq, Dq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
+	RTq = Dq
+	for p in r:
+		##I generated a matriz with distancies between nodes
+		Ng = g.GetNodes()	
+		listID = snap.TIntV(Ng)
+		index = 0
+		for ni in g.Nodes():
+			listID[index] = ni.GetId()
+			index+=1
+			
+		distances = utils.getDistancesMatrix(g,Ng, listID)
+		
+		nodesToRemove = SimulatedAnnealing.calculateCenters(g, Ng,percent, Kmax, radius, distances, listID)
+		
+		#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
+		me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
 
 		logR, Indexzero,Tq, Dq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
 		RTq = numpy.vstack((RTq,Dq))

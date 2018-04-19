@@ -171,16 +171,13 @@ def removeNodesGenetic(graph,nodesToRemove, N,listID, typeMeasure):
 	measure = numpy.array([],dtype=float)
 
 	for node in nodesToRemove:
-		print "ok--"
-		#ni = listID[int(node)]
-		print "ok"
-		#graph.DelNode(ni)
-		print "ok2"	
+		ni = listID[int(node)]
+		graph.DelNode(ni)
 		if typeMeasure=='GC':
-			#measure = numpy.append(measure,float(getSizeOfGiantComponent(graph))/N)
+			measure = numpy.append(measure,float(getSizeOfGiantComponent(graph))/N)
 			measure = 0
 		elif typeMeasure=='APL':
-			#measure = numpy.append(measure,float(getAveragePathLength(graph)))	
+			measure = numpy.append(measure,float(getAveragePathLength(graph)))	
 			measure = 0	
 	
 	return measure
