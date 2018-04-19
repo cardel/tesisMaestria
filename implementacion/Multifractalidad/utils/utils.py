@@ -111,10 +111,11 @@ def getSizeOfGiantComponent(graph):
 	Component = snap.GetMxScc(graph)
 	return Component.GetNodes()
 
-# Get average path lenght
+# Get average path lenght in the giant component
 def getAveragePathLength(graph):
-	N = graph.GetNodes()
-	return snap.GetBfsEffDiam(graph, int(random.uniform(1,N)), False)
+	component = snap.GetMxScc(graph)
+	N = component.GetNodes()
+	return snap.GetBfsEffDiam(component, int(random.uniform(1,N)), False)
 
 #Copy a graph
 

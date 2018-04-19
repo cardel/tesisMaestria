@@ -20,13 +20,16 @@ import time
 from matplotlib.font_manager import FontProperties
 
 def main(argv):
-	fileInput = "";
-	typeNet = "";
-	fileOutput = "";
-	message="";
-	attack="";
+	fileInput = ""
+	typeNet = ""
+	fileOutput = ""
+	message=""
+	attack=""
+	nodes=0
+	desiredGrade=0
+	
 	try:
-		opts, args = getopt.getopt(argv,'f:t:o:m:a:h',['file=','type=','output=', 'message=','attack=','help='])
+		opts, args = getopt.getopt(argv,'f:t:o:m:a:h:n:d',['file=','type=','output=', 'message=','attack=','help=','node=','desired='])
 	except getopt.GetoptError as err:
 		print(err)
 		print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> --attack centrality|degree|random")
@@ -43,6 +46,10 @@ def main(argv):
 			message = arg
 		elif opt in ('-a','--attack'):
 			attack = arg
+		elif opt in ('-d','--desired'):
+			nodes = int(arg)
+		elif opt in ('-n','--node'):
+			desiredGrade = int(arg)
 		elif opt in ('-h','--help'):
 			print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> --attack centrality|degree|random")
 			sys.exit(0)
@@ -55,7 +62,7 @@ def main(argv):
 	elif typeNet == "Pajek":
 		graph = snap.LoadPajek(snap.PUNGraph, fileInput)
 	elif typeNet == "SmallWorld":		
-		graph = snap.GenSmallWorld(1000, 300, 0, Rnd)
+		graph = snap.GenSmallWorld(nodes, desiredGrade, 0, Rnd)
 	elif typeNet == "ScaleFreePowerLaw":
 		graph = snap.GenRndPowerLaw(500, 2.5)
 	elif typeNet == "ScaleFreePrefAttach":
@@ -74,7 +81,7 @@ def main(argv):
 	#SandBox and Genetic
 	iterations = 300
 	iterationsSandBox = 100
-	sizePopulation = 300 
+	sizePopulation = 100 
 	percentCrossOver = 0.3
 	percentMutation = 0.05	
 	typeMeasure = 'GC'
@@ -104,50 +111,50 @@ def main(argv):
 	executionTime[2] = time.time() - executionTime[2]
 	
 	
-	#Robustness measure Genetic Algorithm
-	RTq,measure,robustnessmeasure=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure)
+	##Robustness measure Genetic Algorithm
+	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure)
 	
-	#Robusness messure  Simulated Annealing
-	RTqB,measureB,robustnessmeasureB=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsSandBox,typeMeasure)
+	##Robusness messure  Simulated Annealing
+	#RTqB,measureB,robustnessmeasureB=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsSandBox,typeMeasure)
 	
-	#Matplotlib
-	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
-	fig0 = plt.figure()
-	r = numpy.arange(0.0, 1.0, 0.1)
-	for i in range(0,7):
-		plt.plot(range(minq,maxq+1),RTq[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")
+	##Matplotlib
+	#symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
+	#fig0 = plt.figure()
+	#r = numpy.arange(0.0, 1.0, 0.1)
+	#for i in range(0,7):
+		#plt.plot(range(minq,maxq+1),RTq[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")
 
 	
-	timestr = time.strftime("%Y%m%d_%H%M%S")
+	#timestr = time.strftime("%Y%m%d_%H%M%S")
 	
-	ymin, ymax = plt.ylim()
-	plt.ylim((ymin, ymax*1.2))
-	fontP = FontProperties()
-	fontP.set_size('small')
-	plt.legend(prop=fontP)
-	plt.xlabel('q')
-	plt.ylabel('D(q)')
-	plt.title('Multifractality Attack Genetic '+message)
-	#plt.show()
-	plt.savefig('Results/'+timestr+'_'+'genetic'+fileOutput+'.png')
+	#ymin, ymax = plt.ylim()
+	#plt.ylim((ymin, ymax*1.2))
+	#fontP = FontProperties()
+	#fontP.set_size('small')
+	#plt.legend(prop=fontP)
+	#plt.xlabel('q')
+	#plt.ylabel('D(q)')
+	#plt.title('Multifractality Attack Genetic '+message)
+	##plt.show()
+	#plt.savefig('Results/'+timestr+'_'+'genetic'+fileOutput+'.png')
 	
-	fig5 = plt.figure()
-	r = numpy.arange(0.0, 1.0, 0.1)
-	for i in range(0,7):
-		plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")
+	#fig5 = plt.figure()
+	#r = numpy.arange(0.0, 1.0, 0.1)
+	#for i in range(0,7):
+		#plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")
 
 	
-	timestr = time.strftime("%Y%m%d_%H%M%S")
+	#timestr = time.strftime("%Y%m%d_%H%M%S")
 	
-	ymin, ymax = plt.ylim()
-	plt.ylim((ymin, ymax*1.2))
-	fontP = FontProperties()
-	fontP.set_size('small')
-	plt.legend(prop=fontP)
-	plt.xlabel('q')
-	plt.ylabel('D(q)')
-	plt.title('Multifractality Attack Simulated Annealing '+message)
-	plt.savefig('Results/'+timestr+'_'+'simulated'+fileOutput+'.png')
+	#ymin, ymax = plt.ylim()
+	#plt.ylim((ymin, ymax*1.2))
+	#fontP = FontProperties()
+	#fontP.set_size('small')
+	#plt.legend(prop=fontP)
+	#plt.xlabel('q')
+	#plt.ylabel('D(q)')
+	#plt.title('Multifractality Attack Simulated Annealing '+message)
+	#plt.savefig('Results/'+timestr+'_'+'simulated'+fileOutput+'.png')
 	#plt.show()		
 	#fig1 = plt.figure()
 	#i = 0
