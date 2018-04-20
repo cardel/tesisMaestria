@@ -42,7 +42,7 @@ def calculateFitness(graph, element, radius, distances, listID,listDegree):
 		
 	#fitness = averageDistance*averageCountNodes*closeNessCentralityNode
 	#fitness = closeNessCentralityNode*averageDistance	
-	fitness = averageDegree + averageDistance
+	fitness = averageDegree/max(listDegree) + averageDistance/radius
 	return fitness
 	
 #Return neighbors of a specific node
@@ -62,7 +62,7 @@ def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,l
 	
 	#In graah problems To is a sqrt(nodes)
 	for k in range(1,Kmax+1):
-		Temperature = k/Kmax
+		Temperature = float(k)/Kmax
 		#Select random node
 		r = rnd.randint(0,numberNodosState-1)
 		node = currentState[r]
@@ -89,11 +89,10 @@ def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,l
 	
 		difference = fitNessCurrentState - fitNessNewState
 		r3 = rnd.random()
-
-		p = math.exp(-1.0*difference/Temperature)
+		p = math.exp(-difference/Temperature)
 		if fitNessNewState > fitNessCurrentState:
 			currentState = newState
-		elif p > r3:
+		elif p < r3:
 			currentState = newState
 	
 	return currentState
@@ -186,5 +185,4 @@ def SBSA(graph,minq,maxq,percentSandBox,sizePopulation, Kmax):
 			Indexzero = count
 
 		count+=1
-	
 	return logR, Indexzero,Tq, Dq, lnMrq

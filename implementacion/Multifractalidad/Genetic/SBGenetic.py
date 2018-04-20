@@ -11,55 +11,54 @@ import random as rnd
 from sets import Set
 import lib.snap as snap
 import utils.utils as utils
-	
+from joblib import Parallel, delayed
+import time
+
+		
+#Search profile about the algortihm
 def calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree):
+	
+
 	numNodes = graph.GetNodes()	
 	sqrDistance = int(math.sqrt(radius))
 	#First position ID node, second position Fitness
 	fitness = numpy.zeros([sizePopulation])
 	
 	#Count nodes to distancie sqrt(N)
+	
 	for i in range(0,sizePopulation):
-		#closeNessCentralityAllNodes = 0.0
+		
 		averageDistance = 0.0
 		chromosome = population[i]
 		averageDegree = 0.0
-		#averageCountNodes = 0.0
 		
 		for node in chromosome:
 			distanceOtherNode = 0.0
 			countNodesPerNode=0.0
 			
-			#Box of size sqr(N)
-			#for ni in range(0,numNodes):
-				#dis = distances[int(node)][ni];
-				#if dis <= sqrDistance:
-					#countNodesPerNode+=1		
-
-			#Distance to other centers
 			for ni in chromosome:
 				distanceOtherNode+=distances[int(node)][int(ni)]
 			
 			averageDistance += distanceOtherNode/chromosome.size
 			averageDegree += listDegree[int(node)]/chromosome.size
-			#averageCountNodes+=countNodesPerNode/chromosome.size
-			#closeNessCentralityNode = snap.GetClosenessCentr(graph,listID[int(node)])	
-			#closeNessCentralityAllNodes+=closeNessCentralityNode/chromosome.size	
-			
-		#fitness[i] = closeNessCentralityAllNodes*averageDistance
-		#fitness[i] = averageDistance*averageCountNodes*closeNessCentralityNode
-		fitness[i] = averageDegree + averageDistance
+
+		fitness[i] = averageDistance + averageDistance
+	
 	return fitness
 
 def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listID,listDegree):
+
 	sizeChromosome = int(percentSandBox*numNodes);
 	population = numpy.zeros([sizePopulation,sizeChromosome])
 
+	#Initial will be degree (highest)
+	#Heurusitca para eso. %Highs restos son middles
 	for i in range(0,sizePopulation):
 		random = numpy.random.permutation(numNodes)[0:sizeChromosome]
 		population[i] = random
 		
-		
+	totalStartTime = time.time()	
+	#Grado deaburrimiento 5% variación
 	for i in range(0,iterations):
 		#Calculate fitness
 		fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree)
@@ -94,26 +93,15 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 			#Mutation
 			r3 = rnd.random() 
 			
-			#Search neighbors
+			#Cambiar el nodo por uno cualquiera
 			if r3 <= percentMutation:
-				#Select random node
-				r4 = rnd.randint(0, sizeChromosome-1) 
-				element = int(individual[r4])
-				neighbors = numpy.array([])
+				#Select node to change
+				r4 = rnd.randint(0,sizeChromosome-1)
+				#Select random node				
+				newElement = rnd.randint(0, numNodes-1) 
 				
-				for i in range(0,numNodes):
-					if i != element and distances[i][element] == 1:
-						neighbors=numpy.append(neighbors,i)
-				
-				#Change item
-				for i in range(0,numpy.size(neighbors)):
-					r5 = rnd.randint(0, numpy.size(neighbors)-1) 
-					newElement = neighbors[r5]
-					
-					#If no exists
-					if numpy.size(numpy.where(individual==newElement))==0:
-						individual[r4] = newElement
-						break
+				if numpy.size(numpy.where(individual==newElement))==0:
+					individual[r4] = newElement
 						
 			if numpy.size(newPopulation)==0:
 				newPopulation = individual
@@ -126,6 +114,8 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 			#Replace a random old individual
 			index = rnd.randint(0, sizePopulation-1) 
 			population[i] = individual
+		
+		#print numpy.average(fitness)
 		
 	#Fitness 100th generation
 	fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree)

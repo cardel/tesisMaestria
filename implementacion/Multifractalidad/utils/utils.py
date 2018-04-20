@@ -16,15 +16,28 @@ def getDistancesMatrix(graph,numNodes,listID):
 	#Due to ID nodes are not contiguous, I use the array with relation beetween index of array and ID node (listaID)
 	distances = numpy.zeros([numNodes,numNodes])
 	for i in range(0, numNodes):
-		for j in range(i, numNodes):
+		for j in range(0, numNodes):
 			#Same node
 			if i == j:				
 				distances[i][j] = 0
-				distances[j][i] = 0
 			else:
 				dis = snap.GetShortPath(graph,listID[i],listID[j]);
 				distances[i][j] = dis
-				distances[j][i] = dis
+	
+	return distances
+	
+#Get adjacence pathMatrix
+#Reduce high computational cost operation
+def getAdjacenceMatriz(distances, numNodes):
+	#Due to ID nodes are not contiguous, I use the array with relation beetween index of array and ID node (listaID)
+	adjMatrix = numpy.zeros([numNodes,numNodes])
+	for i in range(0, numNodes):
+		for j in range(0, numNodes):
+			#Same node
+			if distances[i][j]==1:		
+				adjMatrix[i][j] = 1
+			else:
+				adjMatrix[i][j] = 0
 	
 	return distances
 

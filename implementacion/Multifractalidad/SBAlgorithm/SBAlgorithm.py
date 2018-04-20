@@ -38,7 +38,10 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 	logR = numpy.array([])
 	for radius in range(1,d+1):
 		logR = numpy.append(logR,math.log(float(radius)/d))
-		
+	
+	#LnrqTotal
+	lnMrqTotal = numpy.zeros([rangeQ,d],dtype=float)	
+	
 	#Index of Tq[0]
 	Indexzero = 0
 	
@@ -63,13 +66,13 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 			for i in range(0, numberOfBoxes):
 				currentNode = randomNodes[i]
 				countNodes = 1
-				#print i, radius
 				for ni in range(0, numNodes):
 					distance = distances[currentNode][ni];
 					if  distance <= radius and distance > 0:
 						countNodes+=1
 				sandBoxes[radius-1][i] = countNodes
 		
+		#Index of q
 		count = 0
 		Indexzero  = 0 
 		
@@ -79,10 +82,10 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 				Mr = numpy.power(sand,q-1)
 				Mr = numpy.log(numpy.average(Mr))
 				lnMrq[count][i]=Mr
-				i+=1
-				
-		
-			m,b = utils.linealRegresssion(logR,lnMrq)
+				lnMrqTotal[count][i]+=Mr
+				i+=1				
+			
+			m,b = utils.linealRegresssion(logR,lnMrq[count])
 			#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
 			#Find the mass exponents
 			if q == 0: 
@@ -106,6 +109,7 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 
 			count+=1
 	
+	lnMrqTotalA = numpy.mean(lnMrqTotal,axis=0)
 	TqA = numpy.mean(Tq,axis=0)
 	DqA = numpy.mean(Dq,axis=0)
-	return logR, Indexzero,TqA, DqA
+	return logR, Indexzero,TqA, DqA,lnMrqTotalA

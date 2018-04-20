@@ -9,8 +9,10 @@ import sys
 import getopt
 import lib.snap as snap
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
-import robustness.robustness as robustness
 import Genetic.SBGenetic as SBGenetic
+import SBAlgorithm.SBAlgorithm as SBAlgorithm
+import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
+import robustness.robustness as robustness
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import utils.utils as utils
 import matplotlib as mpl
@@ -79,14 +81,19 @@ def main(argv):
 
 	minq = -10
 	maxq = 10
+	
+	#SandBox
 	percentOfSandBoxes = 0.4
-	#SandBox and Genetic
-	iterations = 300
-	iterationsSandBox = 100
+	#Genetic
+	iterations = 100
+	iterationsDeterminics = 100
 	sizePopulation = 100 
 	percentCrossOver = 0.3
 	percentMutation = 0.05	
 	typeMeasure = 'GC'
+	
+	#Box counting
+	percentNodesT = 0.8
 	
 	#Simulated annealing
 	Kmax = 3000
@@ -95,26 +102,28 @@ def main(argv):
 	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_APL(graph,attack,minq,maxq,percentOfSandBoxes,iterations)
 	
 	#print robustnessmeasure
-	executionTime = numpy.zeros(3,dtype=float)
+	executionTime = numpy.zeros(4,dtype=float)
 	executionTime[0] = time.time()
 
-	logRA, IndexzeroA,TqA, DqA = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,iterationsSandBox)
+	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,iterationsDeterminics)
 	
+	executionTime[0] = time.time() - executionTime[0]
 	executionTime[1] = time.time()
-	executionTime[0] = executionTime[1] - executionTime[0]
-
-	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBGenetic.SBGenetic(graph,minq,maxq,percentOfSandBoxes,sizePopulation,iterations, percentCrossOver, percentMutation)
 	
+	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,iterationsDeterminics)
+	
+	executionTime[1] = time.time() -  executionTime[1]
 	executionTime[2] = time.time()
-	executionTime[1] = executionTime[2] - executionTime[1]
 	
-	logRC, IndexzeroC,TqC, DqC, lnMrqB = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax)
+	logRC, IndexzeroC,TqC, DqC, lnMrqC = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax)
 	
 	executionTime[2] = time.time() - executionTime[2]
+	executionTime[3] = time.time()
 	
+	logRD, IndexzeroD,TqD, DqD, lnMrqD = SBGenetic.SBGenetic(graph,minq,maxq,percentOfSandBoxes,sizePopulation,iterations, percentCrossOver, percentMutation)
+	executionTime[3] = time.time() - executionTime[3]
 	
-	##Robustness measure Genetic Algorithm
-	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure)
+	##Robustness measure Genetic Algorithm	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure)
 	
 	##Robusness messure  Simulated Annealing
 	#RTqB,measureB,robustnessmeasureB=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsSandBox,typeMeasure)
@@ -184,9 +193,10 @@ def main(argv):
 	plt.ylabel('D(q)')	
 	plt.title("Generalizated Fractal dimensions")
 
-	plt.plot(range(minq,maxq+1), DqA,'ro-', label='SBAlgorithm')
-	plt.plot(range(minq,maxq+1), DqB,'bo-', label='Genetic')
+	plt.plot(range(minq,maxq+1), DqA,'ro-', label='Box Counting')
+	plt.plot(range(minq,maxq+1), DqB,'bo-', label='SBAlgorithm')
 	plt.plot(range(minq,maxq+1), DqC,'mo-', label='Simulated Annealing')
+	plt.plot(range(minq,maxq+1), DqD,'ko-', label='Evolutive')
 	ymin, ymax = plt.ylim()
 	xmin, xmax = plt.xlim()
 	plt.ylim((ymin, 1.1*ymax))
@@ -200,9 +210,9 @@ def main(argv):
 	fig4 = plt.figure()
 	plt.xlabel('Strategy')
 	plt.ylabel('Time(s)')
-	x=numpy.arange(3)
+	x=numpy.arange(4)
 	plt.bar(x, executionTime)
-	plt.xticks(x, ('SBAlgorithm', 'Evolutive', 'Simulated'))
+	plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Simulated', 'Evolutive'))
 	plt.savefig('Results/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
 	#plt.show()
 					
