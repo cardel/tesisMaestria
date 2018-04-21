@@ -46,8 +46,8 @@ def generateFlowerUV():
 	
 	G1 = snap.TUNGraph.New()
 	
-	if os.path.isfile('../../datos/flower.txt'):
-		G1 = snap.LoadEdgeList(snap.PUNGraph, '../../datos/flower.txt', 0, 1)
+	if os.path.isfile('../datos/flower.txt'):
+		G1 = snap.LoadEdgeList(snap.PUNGraph, '../datos/flower.txt', 0, 1)
 	else:
 		#First generation
 		a = numpy.array([[0,1],[1,0]])
@@ -100,7 +100,7 @@ def generateFlowerUV():
 				if(a[i][j]==1):
 					G1.AddEdge(i,j)
 		
-		snap.SaveEdgeList(G1, '../../datos/flower.txt')
+		snap.SaveEdgeList(G1, '../datos/flower.txt')
 	return G1
 	
 #Lineal regression for calculte derivatives

@@ -80,7 +80,9 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 				nodesMark = numpy.zeros(numNodes)				
 				
 				for center in randomCenters:				
-					countNodes = 0.0
+					countNodes = 1.0
+					#Mark center
+					nodesMark[int(center)]=1
 					#Count number of nodes per box
 					for ni in range(0, numNodes):
 						if nodesMark[ni]==0:
@@ -92,10 +94,7 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 						#Add non-empty boxes
 					if countNodes > 0:	
 						boxes = numpy.append(boxes,countNodes/numNodes)
-					#If all nodes are marked visited, we stop the search of boxes
-					if numpy.prod(nodesMark) == 1:
-						break		
-				
+					#If all nodes are marked visited, we stop the search of boxes				
 				Ub.append(boxes)
 				
 
@@ -110,22 +109,22 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 					ubQ = numpy.sum(ubQ)
 					Zrq.append(ubQ)
 				Zq.append(Zrq)
+
 			ZqAverage.append(Zq)
-			
+
 			#Z1e
 			for ubr in Ub:
 				ubQ = ubr*numpy.log(ubr)
-				ubQ = numpy.sum(ubQ)				
+				ubQ = numpy.sum(ubQ)
 				Z1e.append(ubQ)
 			Z1eAverage.append(Z1e)
 
 		ZqAverage = numpy.mean(ZqAverage,axis=0)
+
 		lnZqA = numpy.log(ZqAverage)
 		lnZATotal+=numpy.log(ZqAverage)
-		
+
 		Z1eAverage = numpy.mean(Z1eAverage,axis=0)
-		
-		
 		##I take average of T
 		
 		count = 0
@@ -141,7 +140,7 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 		 
 			###Find the Generalizated Fractal dimensions
 			if q != 1:
-				m,b = utils.linealRegresssion((q-1)*logR,lnZqA[count])
+				m,b = utils.linealRegresssion(logR,lnZqA[count]/(q-1))
 			else:
 				m,b = utils.linealRegresssion(logR,Z1eAverage)	
 			
