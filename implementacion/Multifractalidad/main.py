@@ -85,7 +85,7 @@ def main(argv):
 	#SandBox
 	percentOfSandBoxes = 0.4
 	#Genetic
-	iterations = 100
+	iterations = 200
 	iterationsDeterminics = 100
 	sizePopulation = 100 
 	percentCrossOver = 0.3
@@ -94,6 +94,7 @@ def main(argv):
 	
 	#Box counting
 	percentNodesT = 0.8
+	repetitionsBC = 100
 	
 	#Simulated annealing
 	Kmax = 3000
@@ -105,7 +106,7 @@ def main(argv):
 	executionTime = numpy.zeros(4,dtype=float)
 	executionTime[0] = time.time()
 
-	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,iterationsDeterminics)
+	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsBC)
 	
 	executionTime[0] = time.time() - executionTime[0]
 	executionTime[1] = time.time()

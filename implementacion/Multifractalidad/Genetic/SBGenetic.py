@@ -11,38 +11,35 @@ import random as rnd
 from sets import Set
 import lib.snap as snap
 import utils.utils as utils
-from joblib import Parallel, delayed
+import multiprocessing
+from functools import partial
+
 import time
 
-		
 #Search profile about the algortihm
-def calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree):
+def calculateFitness(graph, chromosome,radius, distances,listID,listDegree):
 	
 
 	numNodes = graph.GetNodes()	
 	sqrDistance = int(math.sqrt(radius))
 	#First position ID node, second position Fitness
-	fitness = numpy.zeros([sizePopulation])
 	
 	#Count nodes to distancie sqrt(N)
+		
+	averageDistance = 0.0
+	averageDegree = 0.0
 	
-	for i in range(0,sizePopulation):
+	for node in chromosome:
+		distanceOtherNode = 0.0
+		countNodesPerNode=0.0
 		
-		averageDistance = 0.0
-		chromosome = population[i]
-		averageDegree = 0.0
+		for ni in chromosome:
+			distanceOtherNode+=distances[int(node)][int(ni)]
 		
-		for node in chromosome:
-			distanceOtherNode = 0.0
-			countNodesPerNode=0.0
-			
-			for ni in chromosome:
-				distanceOtherNode+=distances[int(node)][int(ni)]
-			
-			averageDistance += distanceOtherNode/chromosome.size
-			averageDegree += listDegree[int(node)]/chromosome.size
+		averageDistance += distanceOtherNode/chromosome.size
+		averageDegree += listDegree[int(node)]/chromosome.size
 
-		fitness[i] = averageDistance + averageDistance
+	fitness = averageDegree/max(listDegree) + averageDistance/radius
 	
 	return fitness
 
@@ -51,17 +48,19 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 	sizeChromosome = int(percentSandBox*numNodes);
 	population = numpy.zeros([sizePopulation,sizeChromosome])
 
-	#Initial will be degree (highest)
-	#Heurusitca para eso. %Highs restos son middles
 	for i in range(0,sizePopulation):
 		random = numpy.random.permutation(numNodes)[0:sizeChromosome]
 		population[i] = random
 		
-	totalStartTime = time.time()	
-	#Grado deaburrimiento 5% variación
+	totalStartTime = time.time()
+
 	for i in range(0,iterations):
 		#Calculate fitness
-		fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree)
+		fitness = numpy.zeros([sizePopulation])
+		
+		for j in range(0, sizePopulation):
+			fitness[j] = calculateFitness(graph, population[j],radius, distances,listID,listDegree)
+
 		##Select nodes Fitness proportionate selection
 		sumFitness = numpy.sum(fitness)
 		
@@ -115,12 +114,9 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 			index = rnd.randint(0, sizePopulation-1) 
 			population[i] = individual
 		
-		#print numpy.average(fitness)
-		
-	#Fitness 100th generation
-	fitness = calculateFitness(graph, population, sizePopulation,radius, distances,listID,listDegree)
-	index =  numpy.argmax(fitness)
-	best = population[index]
+			
+		index =  numpy.argmax(fitness)
+		best = population[index]
 		
 	return best
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
