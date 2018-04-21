@@ -16,7 +16,7 @@ import robustness.robustness as robustness
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import utils.utils as utils
 import matplotlib as mpl
-#mpl.use('Agg')
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import math
 import numpy
@@ -173,10 +173,11 @@ def main(argv):
 	for q in range(minq,maxq+1):
 		plt.plot(logRA,lnMrqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
 		i+=1
-	
+	plt.title("Mass exponents Box Counting")
 	plt.xlabel('ln(r/d)')
 	plt.ylabel('ln(<M(r)>)^q')
-	plt.show()
+	plt.savefig('Results/'+timestr+'_'+'TqLnrBC'+fileOutput+'.png')
+	#plt.show()
 	
 	fig8 = plt.figure()
 	i = 0
@@ -184,9 +185,11 @@ def main(argv):
 		plt.plot(logRB,lnMrqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
 		i+=1
 	
+	plt.title("Mass exponents SB")
 	plt.xlabel('ln(r/d)')
 	plt.ylabel('ln(<M(r)>)^q')	
-	plt.show()
+	plt.savefig('Results/'+timestr+'_'+'TqLnrSB'+fileOutput+'.png')
+	#plt.show()
 	
 	#plt.title("Mass exponents")
 	#ymin, ymax = plt.ylim()
@@ -197,17 +200,19 @@ def main(argv):
 	fig2 = plt.figure()
 	plt.xlabel('q')
 	plt.ylabel('t(q)')	
-	plt.title("Mass exponents")
+	plt.title("Mass exponents Box Counting")
 	plt.plot(range(minq,maxq+1), TqA,'bo-')
-	plt.show()
+	plt.savefig('Results/'+timestr+'_'+'massBC'+fileOutput+'.png')
+	#plt.show()
 
 	
 	fig9 = plt.figure()
 	plt.xlabel('q')
 	plt.ylabel('t(q)')	
-	plt.title("Mass exponents")
+	plt.title("Mass exponents SBAlgorithm")
 	plt.plot(range(minq,maxq+1), TqB,'bo-')
-	plt.show()
+	plt.savefig('Results/'+timestr+'_'+'massSB'+fileOutput+'.png')
+	#plt.show()
 	
 	
 	fig3 = plt.figure()
