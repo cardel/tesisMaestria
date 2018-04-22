@@ -14,35 +14,136 @@ import utils.utils as utils
 import multiprocessing as mp
 import time
 
+
 #Search profile about the algortihm
 def calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree,output):
 	
-
 	numNodes = graph.GetNodes()	
 	sqrDistance = int(math.sqrt(radius))
 	#First position ID node, second position Fitness
 	
-	#Count nodes to distancie sqrt(N)
-		
+	#Covered nodes
+	#Initally noone is covered
+	nodesCovered = numpy.zeros([numNodes], dtype=float)
+	
+	
+	#Count boxes to distancie sqrt(N)
+	sizeBox = numpy.array([], dtype=float)
+	for node in chromosome:
+		#If node hasn't covered
+		if nodesCovered[int(node)] == 0:
+			countNodesInBox = 0.
+			nodesCovered[int(node)] = 1
+			#Optimization, we check only 10% of nodes
+			for ni in range(0,numNodes):				
+				#Box with size sqr(N)
+				if nodesCovered[ni] == 0:
+					dis=distances[int(node)][int(ni)]
+					if dis <= sqrDistance:					
+						nodesCovered[ni] = 1
+						countNodesInBox+=1.
+			sizeBox= numpy.append(sizeBox, countNodesInBox)	
+	
+	standardDesviation = 1.0+numpy.std(sizeBox)
 	averageDistance = 0.0
 	averageDegree = 0.0
-	punishment = 0.5
+	percentCovered = numpy.sum(nodesCovered)/numNodes
 	
 	for node in chromosome:
-		distanceOtherNode = 0.0
-		countNodesPerNode=0.0
+		averageDegree += listDegree[int(node)]
 		
-		for ni in chromosome:
-			distanceOtherNode+=distances[int(node)][int(ni)]/radius
-			if distanceOtherNode == 0:
-				punishment+=1.5
-		
-		averageDistance += distanceOtherNode/chromosome.size
-		averageDegree += listDegree[int(node)]/(chromosome.size*maxDegree)
-
-	fitness = (averageDegree + averageDistance)/punishment
-	
+	averageDegree/=chromosome.size
+	fitness = 100*percentCovered*(averageDegree/maxDegree )/(standardDesviation)
 	return output.put((index, fitness))
+
+def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome):
+	
+	population = numpy.zeros([sizePopulation,sizeChromosome])
+
+	for i in range(0,sizePopulation):
+		random = numpy.random.permutation(numNodes)[0:sizeChromosome]
+		population[i] = random
+		
+	
+	for it in range(0,iterations):
+		#Calculate fitness
+		fitness = numpy.zeros([sizePopulation])	
+		
+		#Multiprocessing
+		output = mp.Queue()
+		#Process
+		processes = [mp.Process(target=calculateFitness, args=(index, graph, population[index],radius, distances,listDegree,maxDegree,output)) for index in range(0, sizePopulation)]
+		#Start process
+		for p in processes:
+			p.start()
+
+		# Exit the completed processes
+		for p in processes:
+			p.join()
+			
+		results = [output.get() for p in processes]
+		
+		for r in results:
+			fitness[int(r[0])]=r[1]
+			 
+
+		##Select nodes Fitness proportionate selection
+		sumFitness = numpy.sum(fitness)
+		
+		accFiness = fitness/sumFitness
+		
+		for i in range(1,sizePopulation):
+			accFiness[i]+=accFiness[i-1]
+		#Crossover, we select percent of new individuals
+		numberOfNewIndividuals = int(percentCrossOver*sizePopulation)
+		newPopulation = numpy.array([[],[]])
+		for i in range(0, numberOfNewIndividuals):
+			#Select parents
+			r1 = rnd.random() 
+			r2 = rnd.random() 
+			parent1 = population[0]
+			parent2 = population[0]
+			#Search individuals
+			for i in range(1,sizePopulation):
+				if accFiness[i-1]<=r1 and accFiness[i]>=r1:
+					parent1 = population[i]
+				if accFiness[i-1]<=r2 and accFiness[i]>=r2:
+					parent2 = population[i]	
+			
+		
+			#Cross		
+			individual = numpy.random.permutation(numpy.unique(numpy.append(parent1,parent2)))[0:sizeChromosome]
+			
+			#Mutation
+			r3 = rnd.random() 
+			
+			#Cambiar el nodo por uno cualquiera
+			if r3 <= percentMutation:
+				#Select node to change
+				r4 = rnd.randint(0,sizeChromosome-1)
+				#Select random node				
+				newElement = rnd.randint(0, numNodes-1) 
+				
+				if numpy.size(numpy.where(individual==newElement))==0:
+					individual[r4] = newElement
+						
+			if numpy.size(newPopulation)==0:
+				newPopulation = individual
+			else:
+				newPopulation = numpy.vstack((newPopulation,individual))
+				
+			
+		#Add new individuals to pull, and delete randomly old individuals
+		for individual in newPopulation:
+			#Replace a random old individual
+			index = rnd.randint(0, sizePopulation-1) 
+			population[i] = individual
+		
+			
+		index =  numpy.argmax(fitness)
+		best = population[index]
+
+	return best
 
 def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree):
 	
@@ -79,7 +180,7 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 		
 		for r in results:
 			fitness[int(r[0])]=r[1]
-			 
+		
 		sumFitness = numpy.sum(fitness)
 		
 		accFiness = fitness/sumFitness
@@ -88,6 +189,7 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 			accFiness[i]+=accFiness[i-1]
 		
 		#Crossover, we select percent of new individuals
+		
 		numberOfNewIndividuals = int(percentCrossOver*float(sizePopulation))
 		newPopulation = []
 		for i in range(0, numberOfNewIndividuals):
@@ -152,7 +254,6 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 		index =  numpy.argmax(fitness)
 		if bestFiness < fitness[index]:
 			best = population[index]
-
 	return best,fitNessAverage,fitNessMax,fitNessMin
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network

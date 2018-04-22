@@ -42,18 +42,23 @@ def robustness_analysis_GC(graph,typeRemoval,minq,maxq,percentOfSandBoxes,iterat
 	
 	RTq = Dq
 	for p in r:
-		Ng = g.GetNodes()	
-		listID = snap.TIntV(Ng)
-		index = 0
-		for ni in g.Nodes():
-			listID[index] = ni.GetId()
-			index+=1	
-		me=utils.removeNodes(g,typeRemoval,percent,p,N,ClosenessCentrality,'GC',listID)
-		#There are errors if p > 0.7
-		if p <= 0.7:
+		me = 0.
+		try:
+			Ng = g.GetNodes()	
+			listID = snap.TIntV(Ng)
+			index = 0
+			for ni in g.Nodes():
+				listID[index] = ni.GetId()
+				index+=1	
+			me=utils.removeNodes(g,typeRemoval,percent,p,N,ClosenessCentrality,'GC',listID)
+			#There are errors if p > 0.7
 			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
 			RTq = numpy.vstack((RTq,Dq))
-		measure = numpy.append(measure,me)
+		except:
+			me=float('nan')
+			print "Error try to delete ",p," percent of nodes in GC"			
+		finally:
+			measure = numpy.append(measure,me)
 		
 	robustnessmeasure = numpy.sum(measure)/N
 	return RTq, measure,robustnessmeasure
@@ -85,20 +90,27 @@ def robustness_analysis_APL(graph,typeRemoval,minq,maxq,percentOfSandBoxes,itera
 	logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
 	RTq = Dq
 	for p in r:
-		Ng = g.GetNodes()	
-		listID = snap.TIntV(Ng)
-		index = 0
-		for ni in g.Nodes():
-			listID[index] = ni.GetId()
-			index+=1
-		me=utils.removeNodes(g,typeRemoval,percent,p,N,ClosenessCentrality,'APL',listID)
-		#There are errors if p > 0.7
-		if p <= 0.7:
-			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
-			RTq = numpy.vstack((RTq,Dq))
-		measure = numpy.append(measure,me/initial)
-		
-	robustnessmeasure = numpy.sum(measure)/N
+		me = 0.
+		try:
+			Ng = g.GetNodes()	
+			listID = snap.TIntV(Ng)
+			index = 0
+			for ni in g.Nodes():
+				listID[index] = ni.GetId()
+				index+=1
+			me=utils.removeNodes(g,typeRemoval,percent,p,N,ClosenessCentrality,'APL',listID)
+			#There are errors if p > 0.7
+			if p <= 0.7:
+				logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
+				RTq = numpy.vstack((RTq,Dq))
+		except:
+			me=float('nan')
+			print "Error try to delete ",p," percent of nodes in APL"
+			
+		finally:
+			measure = numpy.append(measure,me/initial)
+			
+		robustnessmeasure = numpy.sum(measure)/N
 	return RTq, measure,robustnessmeasure
 	
 def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure):
@@ -115,29 +127,34 @@ def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,si
 	RTq = Dq
 	for p in r:
 		##I generated a matriz with distancies between nodes
-		Ng = g.GetNodes()	
-		listID = snap.TIntV(Ng)
-		listDegree =  snap.TIntV(Ng)
-		maxDegree = 0.
-		index = 0
-		for ni in g.Nodes():
-			listID[index] = ni.GetId()
-			listDegree[index] = ni.GetOutDeg()
-			if listDegree[index] > maxDegree:
-				maxDegree=listDegree[index]
-			index+=1
+		me = 0.
+		try:	
+			Ng = g.GetNodes()	
+			listID = snap.TIntV(Ng)
+			listDegree =  snap.TIntV(Ng)
+			maxDegree = 0.
+			index = 0
+			for ni in g.Nodes():
+				listID[index] = ni.GetId()
+				listDegree[index] = ni.GetOutDeg()
+				if listDegree[index] > maxDegree:
+					maxDegree=listDegree[index]
+				index+=1
+			distances = utils.getDistancesMatrix(g,Ng, listID)
+			sizeChromosome = int(float(Ng)*percent)
+			nodesToRemove = SBGenetic.calculateCentersFixedSize(g, Ng,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree,sizeChromosome)
+	
+			#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
 			
-		distances = utils.getDistancesMatrix(g,Ng, listID)
-			
-		nodesToRemove,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.calculateCenters(g, Ng,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree)
-		#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
-		nodesToRemove = numpy.unique(nodesToRemove)
-		me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
+			me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
 
-		logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
-		RTq = numpy.vstack((RTq,Dq))
-		
-		measure = measure = numpy.append(measure,me)
+			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
+			RTq = numpy.vstack((RTq,Dq))
+		except:
+			me=float('nan')
+			print "Error try to delete ",p," percent of nodes in Genetic"
+		finally:
+			measure = numpy.append(measure,me)
 	robustnessmeasure = numpy.sum(measure)/N
 	return RTq, measure,robustnessmeasure
 	
@@ -156,23 +173,30 @@ def robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterat
 	RTq = Dq
 	for p in r:
 		##I generated a matriz with distancies between nodes
-		Ng = g.GetNodes()	
-		listID = snap.TIntV(Ng)
-		index = 0
-		for ni in g.Nodes():
-			listID[index] = ni.GetId()
-			index+=1
-			
-		distances = utils.getDistancesMatrix(g,Ng, listID)
-		
-		nodesToRemove = SimulatedAnnealing.calculateCenters(g, Ng,percent, Kmax, radius, distances, listID)
-		
-		#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
-		me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
+		me = 0.
+		try:
+			Ng = g.GetNodes()	
+			listDegree =  snap.TIntV(Ng)
+			listID = snap.TIntV(Ng)
+			index = 0
+			for ni in g.Nodes():
+				listID[index] = ni.GetId()
+				listDegree[index] = ni.GetOutDeg()
+				index+=1
+				
+			distances = utils.getDistancesMatrix(g,Ng, listID)
 
-		logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
-		RTq = numpy.vstack((RTq,Dq))
-		
-		measure = numpy.append(measure,me)
+			nodesToRemove = SimulatedAnnealing.calculateCenters(g, Ng,percent, Kmax, radius, distances, listID,listDegree)
+			
+			#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
+			me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
+
+			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
+			RTq = numpy.vstack((RTq,Dq))
+		except:
+			me=float('nan')
+			print "Error try to delete ",p," percent of nodes in Simulated Annealing"
+		finally:
+			measure = numpy.append(measure,me)
 	robustnessmeasure = numpy.sum(measure)/N
 	return RTq, measure,robustnessmeasure

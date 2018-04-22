@@ -126,9 +126,17 @@ def getSizeOfGiantComponent(graph):
 	return Component.GetNodes()
 
 # Get average path lenght in the giant component
-def getFullDiameter(graph,N,listID):
-	return snap.GetBfsFullDiam(graph,1,False)
-
+def getAveragePathLength(graph):
+	g = snap.GetMxScc(graph)
+	NumNodes = g.GetNodes()	
+	average = 0.
+	for ni in g.Nodes():
+		for nj in g.Nodes():
+			average+=snap.GetShortPath(g,ni.GetId(),nj.GetId())
+		
+	average=average/(2.*NumNodes)		
+			
+	return average
 #Copy a graph
 
 def copyGraph(graph):
@@ -168,7 +176,7 @@ def removeNodes(graph,typeRemoval, percent, p, N,ClosenessCentrality, typeMeasur
 	if typeMeasure=='GC':
 		measure = float(getSizeOfGiantComponent(graph))/N
 	elif typeMeasure=='APL':
-		measure = float(getFullDiameter(graph,N,listID))
+		measure = float(getAveragePathLength(graph))
 		
 	return measure
 
@@ -181,5 +189,5 @@ def removeNodesGenetic(graph,nodesToRemove, N,listID, typeMeasure):
 	if typeMeasure=='GC':
 		measure = float(getSizeOfGiantComponent(graph))/N
 	elif typeMeasure=='APL':
-		measure=float(getFullDiameter(graph,N,listID))		
+		measure=float(getAveragePathLength(graph))		
 	return measure

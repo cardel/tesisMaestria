@@ -85,18 +85,17 @@ def main(argv):
 	maxq = 10
 	
 	#SandBox
-	percentOfSandBoxes = 0.4
+	percentOfSandBoxes = 0.5
 	#Genetic
-	iterations = 150
+	iterations = 100
 	iterationsDeterminics = 200
-	sizePopulation = 100 
+	sizePopulation = 50 
 	percentCrossOver = 0.3
 	percentMutation = 0.05	
 	
 	
 	#Box counting
 	percentNodesT = 0.7
-	repetitionsBC = 300
 	
 	#Simulated annealing
 	Kmax = 3000
@@ -105,7 +104,7 @@ def main(argv):
 	executionTime = numpy.zeros(4,dtype=float)
 	executionTime[0] = time.time()
 
-	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsBC)
+	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT)
 	
 	executionTime[0] = time.time() - executionTime[0]
 	executionTime[1] = time.time()
@@ -229,6 +228,8 @@ def main(argv):
 	plt.savefig('Results/Fractality/'+timestr+'_'+'evolutiveBehaviour'+fileOutput+'.png')
 	#plt.show()
 	
+	#Files with open('multisave.npy','wb') as f:
+	#https://stackoverflow.com/questions/42204368/how-to-append-many-numpy-files-into-one-numpy-file-in-python?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 					
 if __name__ == "__main__":
    main(sys.argv[1:])

@@ -51,9 +51,9 @@ def main(argv):
 		elif opt in ('-a','--attack'):
 			attack = arg
 		elif opt in ('-d','--desired'):
-			nodes = int(arg)
-		elif opt in ('-n','--node'):
 			desiredGrade = int(arg)
+		elif opt in ('-n','--node'):
+			nodes = int(arg)
 		elif opt in ('-y','--measure'):
 			typeMeasure=arg
 		else:
@@ -86,6 +86,7 @@ def main(argv):
 	
 	#SandBox
 	percentOfSandBoxes = 0.4
+	
 	#Genetic
 	iterations = 150
 	iterationsDeterminics = 200
@@ -117,14 +118,17 @@ def main(argv):
 	RTqC,measureC,robustnessmeasureC=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsDeterminics,typeMeasure)
 
 	#Analysis with Simulated Annealing
-	RTqBD,measureD,robustnessmeasureD=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsDeterminics,typeMeasure)
-	timestr = time.strftime("%Y%m%d_%H%M%S")
+	RTqD,measureD,robustnessmeasureD=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsDeterminics,typeMeasure)
 	
+	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
+
+	timestr = time.strftime("%Y%m%d_%H%M%S")
 	if typeMeasure=='GC':
 		fig0 = plt.figure()
 		r = numpy.arange(0.0, 0.9, 0.1)
-		for i in range(0,7):
-			plt.plot(range(minq,maxq+1),RTqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
+		for i in range(0,9):
+			if i < RTqA.shape[0]:
+				plt.plot(range(minq,maxq+1),RTqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 		ymin, ymax = plt.ylim()
 		plt.ylim((ymin, ymax*1.2))
 		fontP = FontProperties()
@@ -139,8 +143,9 @@ def main(argv):
 	if typeMeasure=='APL':
 		fig1 = plt.figure()
 		r = numpy.arange(0.0, 0.9, 0.1)
-		for i in range(0,7):
-			plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
+		for i in range(0,9):
+			if i < RTqB.shape[0]:
+				plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 		ymin, ymax = plt.ylim()
 		plt.ylim((ymin, ymax*1.2))
 		fontP = FontProperties()
@@ -155,7 +160,8 @@ def main(argv):
 	fig2 = plt.figure()
 	r = numpy.arange(0.0, 0.9, 0.1)
 	for i in range(0,7):
-		plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
+		if i < RTqC.shape[0]:
+			plt.plot(range(minq,maxq+1),RTqC[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 	ymin, ymax = plt.ylim()
 	plt.ylim((ymin, ymax*1.2))
 	fontP = FontProperties()
@@ -169,8 +175,9 @@ def main(argv):
 	
 	fig3 = plt.figure()
 	r = numpy.arange(0.0, 0.9, 0.1)
-	for i in range(0,7):
-		plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
+	for i in range(0,9):
+		if i < RTqD.shape[0]:
+			plt.plot(range(minq,maxq+1),RTqD[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 	ymin, ymax = plt.ylim()
 	plt.ylim((ymin, ymax*1.2))
 	fontP = FontProperties()
@@ -185,13 +192,13 @@ def main(argv):
 	fig4 = plt.figure()	
 	r = numpy.arange(0.0, 0.9, 0.1)
 	if typeMeasure=='GC':
-		plt.plot(r,measureA,symbols[int(math.fmod(i,numpy.size(symbols)))], label="Size gigaint component")	
+		plt.plot(r[0:numpy.size(measureA)],measureA,'.-r', label="Size gigaint component")	
 		
 	if typeMeasure=='APL':
-		plt.plot(r,measureB,symbols[int(math.fmod(i,numpy.size(symbols)))], label="Average path lenght")	
+		plt.plot(r[0:numpy.size(measureB)],measureB,'.-b', label="Average path lenght")	
 		
-	plt.plot(r,measureC,symbols[int(math.fmod(i,numpy.size(symbols)))], label="Genetic "+typeMeasure)	
-	plt.plot(r,measureD,symbols[int(math.fmod(i,numpy.size(symbols)))], label="Simulated annealing "+typeMeasure)		
+	plt.plot(r[0:numpy.size(measureC)],measureC,'.-k', label="Genetic "+typeMeasure)	
+	plt.plot(r[0:numpy.size(measureD)],measureD,'.-m', label="Simulated annealing "+typeMeasure)		
 	ymin, ymax = plt.ylim()
 	plt.ylim((ymin, ymax*1.2))
 	fontP = FontProperties()
@@ -199,7 +206,7 @@ def main(argv):
 	plt.legend(prop=fontP)
 	plt.xlabel('q')
 	plt.ylabel('D(q)')
-	plt.title('Robustness measure '+measure)
+	plt.title('Robustness measure ')
 	#plt.show()
 	plt.savefig('Results/Robustness/'+timestr+'_'+'measure'+fileOutput+'.png')	
 							
