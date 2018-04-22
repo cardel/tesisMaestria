@@ -1,13 +1,13 @@
 #!/bin/sh
-python pruebasFractalidad.py --file ../datos/football.net --type Pajek --output footballDegree --message "football"  
+#python pruebasFractalidad.py --file ../datos/football.net --type Pajek --output footballDegree --message "football"  
 
-python pruebasFractalidad.py --file ../datos/karate.net --type Pajek --output karateDegree --message "karate"  
+#python pruebasFractalidad.py --file ../datos/karate.net --type Pajek --output karateDegree --message "karate"  
 
-python pruebasFractalidad.py --file ../datos/cellular.dat --type Edge --output cellularDegree --message "cellular"  
+#python pruebasFractalidad.py --file ../datos/cellular.dat --type Edge --output cellularDegree --message "cellular"  
 
 #(2,2)-flower 7th generation
 
-python pruebasFractalidad.py --type Flower --output FlowerDegree --message "flower" 
+#python pruebasFractalidad.py --type Flower --output FlowerDegree --message "flower" 
 
 #Scalefree 3000 nodos, 100 grado de salida
 
