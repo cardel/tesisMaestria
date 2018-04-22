@@ -60,23 +60,20 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 		
 		#sandBoxes = numpy.zeros([d,numberOfBoxes])	
 		sandBoxes = []
-		nodesMark = numpy.zeros(numNodes)
 		
 		for radius in range(1,d+1):		
-			radiusSandBox = []
+			sand = []
 			for i in range(0, numberOfBoxes):
 				currentNode = randomNodes[i]
 				countNodes = 0.
 				for ni in range(0, numNodes):
-					if nodesMark[ni]==0:
-						distance = distances[currentNode][ni];
-						if  distance <= radius:
-							countNodes+=1
-							nodesMark[ni] == 1
-				if countNodes > 0:
-					radiusSandBox.append(countNodes)
+					distance = distances[currentNode][ni];
+					if  distance <= radius:
+						countNodes+=1
+				
+				sand.append(countNodes)
 			
-			sandBoxes.append(radiusSandBox)
+			sandBoxes.append(sand)
 		
 
 		#Index of q
@@ -105,7 +102,7 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 				m,b = utils.linealRegresssion((q-1)*logR,lnMrq[count])
 			else:
 				Z1e = numpy.array([])
-				for sand in sandBoxes:
+				for sand in sandBoxes:					
 					Ze = numpy.log(sand)
 					Ze = numpy.average(Ze)
 					Z1e = numpy.append(Z1e,Ze)

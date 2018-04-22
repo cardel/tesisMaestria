@@ -28,7 +28,7 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 	Anxn = utils.getAdjacenceMatriz(Bnxn, numNodes)
 	
 	#According to the number of nodes in the network, set t = 1, 2, . . . ,T appropriately
-	T = int(numNodes*percentNodesT)
+	T = int(float(numNodes)*percentNodesT)
 	
 	#Set the size of the box in the range r ∈ [1, d ],where d is the diameter of the network.
 	d = snap.GetBfsFullDiam(graph,10,False)
@@ -36,13 +36,13 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 	rangeQ = maxq-minq+1
 	
 	#Mass Exponents
-	Tq = numpy.zeros([repetitions,rangeQ])
+	Tq = numpy.zeros([rangeQ])
 	
 	#Generalized dimensions
-	Dq = numpy.zeros([repetitions,rangeQ])
+	Dq = numpy.zeros([rangeQ])
 	
-	#LnrqTotal
-	lnZATotal = numpy.zeros([rangeQ,d],dtype=float)	
+	#Total q
+	lnMrq = numpy.zeros([rangeQ,d],dtype=float)
 	
 	#Calculate loge = logR/d
 	logR = numpy.array([])
@@ -51,106 +51,99 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 		
 	#Index of Tq[0]
 	Indexzero = 0
+	#Generate T random sequences
+	#According to the number of nodes in the network, set t = 1, 2, . . . ,T appropriately. Group the nodes into T different ordered random sequences. More specifically, in each sequence, nodes which will be chosen as a seed or center of a box are randomly arrayed
+	RandomSequences = numpy.empty([T,numNodes])
 	
+	for i in range(0,T):
+		RandomSequences[i] = numpy.random.permutation(numNodes)	
+		
+	#Total boxes content all boxes for T repetitions
+	totalBoxes = []		
 	#We take T repetitions
-	for r in range(0,repetitions):
+	
+	for randomSequence in RandomSequences:
+		#I select 40 percent of nodes
 		
+		#sandBoxes = numpy.zeros([d,numberOfBoxes])	
+		BoxesRadio = []
 		
-		#Generate T random sequences
-		#According to the number of nodes in the network, set t = 1, 2, . . . ,T appropriately. Group the nodes into T different ordered random sequences. More specifically, in each sequence, nodes which will be chosen as a seed or center of a box are randomly arrayed
-		RandomSequences = numpy.empty([T,numNodes])
-		
-		for i in range(0,T):
-			RandomSequences[i] = numpy.random.permutation(numNodes)
-			
-		
-		ZqAverage = []
-		#For q = 1
-		Z1eAverage = []
-		#Generate boxes with random centers
-		for randomCenters in RandomSequences:
-			Ub = []			
-			
-			#Count nodes in each box
-			for radius in range(1,d+1):
-			#Select a node in randomlist		
-				#Initially, all the nodes in the network are marked as uncovered and no node has been chosen as a seed or center of a box
-				#0 is not marked, other value marked		
-				boxes = numpy.array([])
-				nodesMark = numpy.zeros(numNodes)				
+		for radius in range(1,d+1):		
+			nodesMark = numpy.zeros([numNodes])	
+			RBoxes = numpy.array([],dtype=float)
+			#Iterate each center in permutatio
+			radiusCovered = numpy.zeros([radius])
+			for i in range(0, numNodes):	
 				
-				for center in randomCenters:				
-					countNodes = 1.0
-					#Mark center
-					nodesMark[int(center)]=1
-					#Count number of nodes per box
+				currentNode = randomSequence[i]
+				box = numpy.array([currentNode], dtype=int)				
+				countNodes = 0.
+				
+				if nodesMark[int(currentNode)]==0:
 					for ni in range(0, numNodes):
-						if nodesMark[ni]==0:
-							distance = Bnxn[int(center)][ni]
-							if  distance <= radius:
-								countNodes+=1						
-								nodesMark[ni]=1
-					
-						#Add non-empty boxes
-					if countNodes > 0:	
-						boxes = numpy.append(boxes,countNodes/numNodes)
-					#If all nodes are marked visited, we stop the search of boxes				
-				Ub.append(boxes)
-				
-
-			#Calculate partition sum
-			Zq = []
-			Z1e = []
-			for q in range(minq,maxq+1,1):
-				#For each r in (0, d)
-				Zrq = []
-				for ubr in Ub:
-					ubQ = numpy.power(ubr,q)
-					ubQ = numpy.sum(ubQ)
-					Zrq.append(ubQ)
-				Zq.append(Zrq)
-
-			ZqAverage.append(Zq)
-
-			#Z1e
-			for ubr in Ub:
-				ubQ = ubr*numpy.log(ubr)
-				ubQ = numpy.sum(ubQ)
-				Z1e.append(ubQ)
-			Z1eAverage.append(Z1e)
-
-		ZqAverage = numpy.mean(ZqAverage,axis=0)
-
-		lnZqA = numpy.log(ZqAverage)
-		lnZATotal+=numpy.log(ZqAverage)
-
-		Z1eAverage = numpy.mean(Z1eAverage,axis=0)
-		##I take average of T
+						
+						distance = Bnxn[int(currentNode)][ni]
+						
+						if  distance <= radius and distance > 0:
+							countNodes+=1
+							radiusCovered[int(distance)-1]=1
+							box=numpy.append(box,ni)
+						
+					if numpy.prod(radiusCovered)==1:
+						RBoxes = numpy.append(RBoxes,countNodes)
+						nodesMark[box] = 1	
+			BoxesRadio.append(RBoxes)
+		totalBoxes.append(BoxesRadio)
 		
-		count = 0
-		for q in range(minq,maxq+1,1):
-			m,b = utils.linealRegresssion(logR,lnZqA[count])
-			
-			###Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
-			###Find the mass exponents
-			if q == 0: 
-				countDim = count;		
+	Boxes = []
+	for q in range(minq,maxq+1,1):
+		Zrq = []
+		for TBoxes in totalBoxes:
+			BoxesQ = numpy.array([])
+			for RBoxes in TBoxes:
+				#Q-1 is equivalente to divide to M(0)
+				BoxesQ= numpy.append(BoxesQ,(numpy.average(numpy.power(RBoxes,q-1)))/numNodes)
+			Zrq.append(BoxesQ)
+		
+		Zrq=numpy.array(Zrq)
+		Boxes.append(Zrq)
+		
+	Boxes = numpy.array(Boxes)
+	#Index of q
+	Zre = []
+	for TBoxes in totalBoxes:
+		BoxesLN = numpy.array([])
+		for RBoxes in TBoxes:			
+			BoxesLN= numpy.append(BoxesLN,(numpy.average(numpy.log(RBoxes))))
+		Zre.append(BoxesLN)
+	count = 0
+	Indexzero  = 0 
+		
+	for q in range(minq,maxq+1,1):
+		i = 0
+		box = numpy.average(Boxes[count],axis=0)
+		lnMrq[count]= numpy.log(box)
+	
+		
+		m,b = utils.linealRegresssion(logR,lnMrq[count])
+		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
+		#Find the mass exponents
+		if q == 0: 
+			countDim = count;		
 
-			Tq[r][count] = m
-		 
-			###Find the Generalizated Fractal dimensions
-			if q != 1:
-				m,b = utils.linealRegresssion(logR,lnZqA[count]/(q-1))
-			else:
-				m,b = utils.linealRegresssion(logR,Z1eAverage)	
-			
-			Dq[r][count] = m
+		Tq[count] = m
+		
+		#Find the Generalizated Fractal dimensions
+		if q != 1:
+			m,b = utils.linealRegresssion((q-1)*logR,lnMrq[count])
+		else:	
+			Ze = numpy.average(Zre, axis=0)
+			m,b = utils.linealRegresssion(logR,Ze)	
+		Dq[count] = m
+		if q == 0:
+			Indexzero = count
 
-			if q == 0:
-				Indexzero = count
-				
-			count+=1
-	lnZATotal = lnZATotal/repetitions
-	TqA = numpy.mean(Tq,axis=0)
-	DqA = numpy.mean(Dq,axis=0)
-	return logR, Indexzero,TqA, DqA,lnZATotal
+		count+=1
+
+	return logR, Indexzero,Tq, Dq,lnMrq
+

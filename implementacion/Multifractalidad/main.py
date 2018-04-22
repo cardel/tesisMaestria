@@ -12,8 +12,8 @@ import SBAlgorithm.SBAlgorithm as SBAlgorithm
 import Genetic.SBGenetic as SBGenetic
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
 import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
-import robustness.robustness as robustness
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
+import robustness.robustness as robustness
 import utils.utils as utils
 import matplotlib as mpl
 mpl.use('Agg')
@@ -60,17 +60,17 @@ def main(argv):
 										
 	Rnd = snap.TRnd(1,0)
 	if typeNet == "Edge":
-		graph = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
+		graph = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1)
 	elif typeNet == "ConnList":
 		graph = snap.LoadConnList(snap.PUNGraph, fileInput)
 	elif typeNet == "Pajek":
 		graph = snap.LoadPajek(snap.PUNGraph, fileInput)
 	elif typeNet == "SmallWorld":		
-		graph = snap.GenSmallWorld(nodes, desiredGrade, 0, Rnd)
+		graph = snap.GenSmallWorld(nodes, desiredGrade, 0.03, Rnd)
 	elif typeNet == "ScaleFreePowerLaw":
 		graph = snap.GenRndPowerLaw(500, 2.5)
 	elif typeNet == "ScaleFreePrefAttach":
-		graph = snap.GenPrefAttach(1000, 300,Rnd)
+		graph = snap.GenPrefAttach(nodes, desiredGrade,Rnd)
 	elif typeNet == "Random":
 		graph = snap.GenRndGnm(snap.PUNGraph, nodes, desiredGrade)
 	elif typeNet == "Flower":
@@ -85,16 +85,16 @@ def main(argv):
 	#SandBox
 	percentOfSandBoxes = 0.4
 	#Genetic
-	iterations = 200
-	iterationsDeterminics = 100
-	sizePopulation = 100 
+	iterations = 300
+	iterationsDeterminics = 200
+	sizePopulation = 500 
 	percentCrossOver = 0.3
 	percentMutation = 0.05	
 	typeMeasure = 'GC'
 	
 	#Box counting
-	percentNodesT = 0.8
-	repetitionsBC = 100
+	percentNodesT = 1
+	repetitionsBC = 5
 	
 	#Simulated annealing
 	Kmax = 3000
@@ -116,21 +116,28 @@ def main(argv):
 	executionTime[1] = time.time() -  executionTime[1]
 	executionTime[2] = time.time()
 	
-	logRC, IndexzeroC,TqC, DqC, lnMrqC = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax)
 	
+	logRC, IndexzeroC,TqC, DqC, lnMrqC,iterations,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation)
 	executionTime[2] = time.time() - executionTime[2]
 	executionTime[3] = time.time()
 	
-	logRD, IndexzeroD,TqD, DqD, lnMrqD = SBGenetic.SBGenetic(graph,minq,maxq,percentOfSandBoxes,sizePopulation,iterations, percentCrossOver, percentMutation)
+	logRD, IndexzeroD,TqD, DqD, lnMrqD = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax)
+	
 	executionTime[3] = time.time() - executionTime[3]
 	
-	##Robustness measure Genetic Algorithm	#RTq,measure,robustnessmeasure=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure)
+	
+	##Robustness measure Genetic Algorithm	
+	RTq,measure,robustnessmeasure=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure)
+	
+	print measure
 	
 	##Robusness messure  Simulated Annealing
-	#RTqB,measureB,robustnessmeasureB=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsSandBox,typeMeasure)
+	RTqB,measureB,robustnessmeasureB=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsSandBox,typeMeasure)
+	
+	print measureB
 	
 	##Matplotlib
-	#symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
+	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 	#fig0 = plt.figure()
 	#r = numpy.arange(0.0, 1.0, 0.1)
 	#for i in range(0,7):
@@ -171,33 +178,77 @@ def main(argv):
 	#fig1 = plt.figure()
 	#i = 0
 	#for q in range(minq,maxq+1):
-		#plt.plot(logR,lnMrq[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
+		#if q!=1 and q%2==0:
+			#plt.plot(logRA,lnMrqA[i]/(q-1),symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
 		#i+=1
-	
-	#plt.xlabel('ln(r/d)')
-	#plt.ylabel('ln(<M(r)>)^q')
-	#plt.title("Mass exponents")
-	#ymin, ymax = plt.ylim()
-	#plt.ylim((ymin, ymax+20)) 
-	#plt.legend(loc=9, bbox_to_anchor=(0.1, 1))
-	#plt.show()
+	#plt.title("Ln BC Fixed")
+	#plt.xlabel('ln(r/d)')	
+	#plt.ylabel('ln(<Zr(q)>/(q-1)')	
+	#fontP = FontProperties()
+	#fontP.set_size('small')
+	#plt.legend(prop=fontP)
+	#plt.savefig('Results/'+timestr+'_'+'TqLnrBC'+fileOutput+'.png')
+	##plt.show()
 	
 	#fig2 = plt.figure()
+	#i = 0
+	#for q in range(minq,maxq+1):
+		#if q%2==0:
+			#plt.plot(logRB,lnMrqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
+		#i+=1
+	#plt.ylabel('ln(<M(r)>)^q')
+	#plt.title("Ln SB")
+	#plt.xlabel('ln(r/d)')
+	#fontP = FontProperties()
+	#fontP.set_size('small')
+	#plt.legend(prop=fontP)
+	#plt.savefig('Results/'+timestr+'_'+'TqLnrSB'+fileOutput+'.png')
+	##plt.show()
+	
+	#fig3 = plt.figure()
+	#i = 0
+	#for q in range(minq,maxq+1):
+		#if q%2==0:
+			#plt.plot(logRC,lnMrqC[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
+		#i+=1
+	#plt.ylabel('ln(<M(r)>)^q')
+	#plt.title("Mass exponents BC")
+	#plt.xlabel('ln(r/d)')
+	#fontP = FontProperties()
+	#fontP.set_size('small')
+	#plt.legend(prop=fontP)
+	#plt.savefig('Results/'+timestr+'_'+'TqLnrSB'+fileOutput+'.png')
+	##plt.show()	
+	##plt.title("Mass exponents")
+	##ymin, ymax = plt.ylim()
+	##plt.ylim((ymin, ymax+20)) 
+	##plt.legend(loc=9, bbox_to_anchor=(0.1, 1))
+	##plt.show()
+	
+	#fig4 = plt.figure()
 	#plt.xlabel('q')
 	#plt.ylabel('t(q)')	
-	#plt.title("Mass exponents")
-	#plt.plot(range(minq,maxq+1), Tq,'bo-')
+	#plt.title("Mass exponents Box Counting Fixed")
+	#plt.plot(range(minq,maxq+1), TqA,'bo-', label='Box Counting Fixed')
+	#plt.plot(range(minq,maxq+1), TqB,'mo-', label='SBAlgorithm')
+	#plt.plot(range(minq,maxq+1), TqC,'ko-', label='Box Counting')
+	#fontP = FontProperties()
+	#fontP.set_size('small')
+	#plt.legend(prop=fontP)
+	#plt.savefig('Results/'+timestr+'_'+'massTq'+fileOutput+'.png')
 	#plt.show()
+
+
 	
-	fig3 = plt.figure()
+	fig5 = plt.figure()
 	plt.xlabel('q')
 	plt.ylabel('D(q)')	
 	plt.title("Generalizated Fractal dimensions")
 
-	plt.plot(range(minq,maxq+1), DqA,'ro-', label='Box Counting')
-	plt.plot(range(minq,maxq+1), DqB,'bo-', label='SBAlgorithm')
-	plt.plot(range(minq,maxq+1), DqC,'mo-', label='Simulated Annealing')
-	plt.plot(range(minq,maxq+1), DqD,'ko-', label='Evolutive')
+	plt.plot(range(minq,maxq+1), DqA,'ro-', label='Box Counting Fixed')
+	plt.plot(range(minq,maxq+1), DqB,'bo-', label='Sand Box Algorithm')
+	plt.plot(range(minq,maxq+1), DqC,'mo-', label='Evolutive')
+	plt.plot(range(minq,maxq+1), DqD,'ko-', label='Simulated')
 	ymin, ymax = plt.ylim()
 	xmin, xmax = plt.xlim()
 	plt.ylim((ymin, 1.1*ymax))
@@ -208,14 +259,32 @@ def main(argv):
 	plt.savefig('Results/'+timestr+'_'+'fractality'+fileOutput+'.png')
 	#plt.show()
 	
-	fig4 = plt.figure()
+	fig6 = plt.figure()
 	plt.xlabel('Strategy')
 	plt.ylabel('Time(s)')
 	x=numpy.arange(4)
 	plt.bar(x, executionTime)
-	plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Simulated', 'Evolutive'))
+	plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Evolutive', 'Simulated'))
 	plt.savefig('Results/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
+	plt.show()
+	
+	fig7 = plt.figure()
+	plt.xlabel('iterations')
+	plt.ylabel('Fitness')	
+	plt.title("Behaviour genetic algorithm")
+	 
+	plt.plot(range(0,iterations), fitNessAverage,'ro-', label='Average')
+	plt.plot(range(0,iterations), fitNessMax,'bo-', label='Max')
+	plt.plot(range(0,iterations), fitNessMin,'mo-', label='min')
+	ymin, ymax = plt.ylim()
+	xmin, xmax = plt.xlim()
+	plt.ylim((ymin, 1.1*ymax))
+	fontP = FontProperties()
+	fontP.set_size('small')
+	plt.legend(prop=fontP)
+	plt.savefig('Results/'+timestr+'_'+'evolutiveBehaviour'+fileOutput+'.png')
 	#plt.show()
+	
 					
 if __name__ == "__main__":
    main(sys.argv[1:])

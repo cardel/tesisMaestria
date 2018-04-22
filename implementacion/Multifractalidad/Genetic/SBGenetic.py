@@ -11,13 +11,11 @@ import random as rnd
 from sets import Set
 import lib.snap as snap
 import utils.utils as utils
-import multiprocessing
-from functools import partial
-
+import multiprocessing as mp
 import time
 
 #Search profile about the algortihm
-def calculateFitness(graph, chromosome,radius, distances,listID,listDegree):
+def calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree,output):
 	
 
 	numNodes = graph.GetNodes()	
@@ -28,40 +26,60 @@ def calculateFitness(graph, chromosome,radius, distances,listID,listDegree):
 		
 	averageDistance = 0.0
 	averageDegree = 0.0
+	punishment = 1.0
 	
 	for node in chromosome:
 		distanceOtherNode = 0.0
 		countNodesPerNode=0.0
 		
 		for ni in chromosome:
-			distanceOtherNode+=distances[int(node)][int(ni)]
+			distanceOtherNode+=distances[int(node)][int(ni)]/radius
+			if distanceOtherNode == 0:
+				punishment+=1.0
 		
 		averageDistance += distanceOtherNode/chromosome.size
-		averageDegree += listDegree[int(node)]/chromosome.size
+		averageDegree += listDegree[int(node)]/(chromosome.size*maxDegree)
 
-	fitness = averageDegree/max(listDegree) + averageDistance/radius
+	fitness = (averageDegree + averageDistance)/punishment
 	
-	return fitness
+	return output.put((index, fitness))
 
-def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listID,listDegree):
-
-	sizeChromosome = int(percentSandBox*numNodes);
-	population = numpy.zeros([sizePopulation,sizeChromosome])
-
+def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree):
+	
+	population = []
+	fitNessAverage = numpy.zeros([iterations])
+	fitNessMax = numpy.zeros([iterations])
+	fitNessMin = numpy.zeros([iterations])
+	bestFiness = 0.0
+	#Random Size
+	random = numpy.arange(numNodes)
 	for i in range(0,sizePopulation):
-		random = numpy.random.permutation(numNodes)[0:sizeChromosome]
-		population[i] = random
-		
-	totalStartTime = time.time()
+		sizeRandom = rnd.randint(1,numNodes)
+		#random = numpy.random.permutation(numNodes)[0:centerNodes]
+		numpy.random.shuffle(random)
+		population.append(random[0:sizeRandom])
 
-	for i in range(0,iterations):
+	for it in range(0,iterations):
 		#Calculate fitness
 		fitness = numpy.zeros([sizePopulation])
 		
-		for j in range(0, sizePopulation):
-			fitness[j] = calculateFitness(graph, population[j],radius, distances,listID,listDegree)
+		#Multiprocessing
+		output = mp.Queue()
+		#Process
+		processes = [mp.Process(target=calculateFitness, args=(index, graph, population[index],radius, distances,listDegree,maxDegree,output)) for index in range(0, sizePopulation)]
+		#Start process
+		for p in processes:
+			p.start()
 
-		##Select nodes Fitness proportionate selection
+		# Exit the completed processes
+		for p in processes:
+			p.join()
+			
+		results = [output.get() for p in processes]
+		
+		for r in results:
+			fitness[int(r[0])]=r[1]
+			 
 		sumFitness = numpy.sum(fitness)
 		
 		accFiness = fitness/sumFitness
@@ -70,8 +88,8 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 			accFiness[i]+=accFiness[i-1]
 		
 		#Crossover, we select percent of new individuals
-		numberOfNewIndividuals = int(percentCrossOver*sizePopulation)
-		newPopulation = numpy.array([[],[]])
+		numberOfNewIndividuals = int(percentCrossOver*float(sizePopulation))
+		newPopulation = []
 		for i in range(0, numberOfNewIndividuals):
 			#Select parents
 			r1 = rnd.random() 
@@ -84,55 +102,71 @@ def calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,
 					parent1 = population[i]
 				if accFiness[i-1]<=r2 and accFiness[i]>=r2:
 					parent2 = population[i]	
+					
+			#Cross	
+			size1 = numpy.size(parent1)
+			size2 = numpy.size(parent2)	
+			union = numpy.append(parent1,parent2)
+			numpy.random.shuffle(union)
 			
-		
-			#Cross		
-			individual = numpy.random.permutation(numpy.unique(numpy.append(parent1,parent2)))[0:sizeChromosome]
+			totalSize = (size1 + size2)/2
+			children = numpy.zeros([totalSize])
+	
+			#Generate children
+			for g in range(0,totalSize):
+				children[g] = union[g]
 			
 			#Mutation
 			r3 = rnd.random() 
 			
-			#Cambiar el nodo por uno cualquiera
+			#Add or remove a center
 			if r3 <= percentMutation:
-				#Select node to change
-				r4 = rnd.randint(0,sizeChromosome-1)
-				#Select random node				
-				newElement = rnd.randint(0, numNodes-1) 
-				
-				if numpy.size(numpy.where(individual==newElement))==0:
-					individual[r4] = newElement
-						
-			if numpy.size(newPopulation)==0:
-				newPopulation = individual
-			else:
-				newPopulation = numpy.vstack((newPopulation,individual))
-				
+				#Select action
+				r4 = rnd.randint(0,1)
+				#Remove if it is possible
+				if r4==1 and numpy.size(children)>1:
+					r5 = rnd.randint(0,numpy.size(children)-1)
+					children = numpy.delete(children,r5)
+				else:
+					#Or add an element
+					r5 = rnd.randint(0,numpy.size(union)-1)
+					element = union[r5]
+					children = numpy.append(children,element)	
+							
+			newPopulation.append(children)
 			
-		#Add new individuals to pull, and delete randomly old individuals
+		#Add new individuals to pull, and delete worst individos
+		
 		for individual in newPopulation:
 			#Replace a random old individual
 			index = rnd.randint(0, sizePopulation-1) 
-			population[i] = individual
+			del population[index] 
+			population.append(individual)
 		
-			
+		fitNessAverage[it] = numpy.average(fitness)
+		fitNessMax[it]=numpy.max(fitness)
+		fitNessMin[it]=numpy.min(fitness)
 		index =  numpy.argmax(fitness)
-		best = population[index]
-		
-	return best
+		if bestFiness < fitness[index]:
+			best = population[index]
+
+	return best,fitNessAverage,fitNessMax,fitNessMin
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
-def SBGenetic(graph,minq,maxq,percentSandBox,sizePopulation, iterations, percentCrossOver, percentMutation):
+def SBGenetic(graph,minq,maxq,sizePopulation, iterations, percentCrossOver, percentMutation):
 	
 	d = snap.GetBfsFullDiam(graph,10,False)
 	numNodes = graph.GetNodes()
 	
 	listID = snap.TIntV(numNodes)
 	listDegree =  snap.TIntV(numNodes)
-	
+	maxDegree = 0.
 	index = 0
 	for ni in graph.Nodes():
 		listID[index] = ni.GetId()
 		listDegree[index] = ni.GetOutDeg()
+		if listDegree[index] > maxDegree:
+			maxDegree=listDegree[index]
 		index+=1
 
 	rangeQ = maxq-minq+1
@@ -149,9 +183,10 @@ def SBGenetic(graph,minq,maxq,percentSandBox,sizePopulation, iterations, percent
 	##I generated a matriz with distancies between nodes
 	distances = utils.getDistancesMatrix(graph,numNodes, listID)	
 	#Create a random population of nodes	
-	centerNodes = calculateCenters(graph, numNodes,percentSandBox, iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listID,listDegree)
+	centerNodes,fitNessAverage,fitNessMax,fitNessMin = calculateCenters(graph, numNodes,iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listDegree,maxDegree)
 
-	numberOfBoxes = int(percentSandBox*numNodes);
+	
+	numberOfBoxes = numpy.size(centerNodes)
 	sandBoxes = numpy.zeros([d,numberOfBoxes])
 	logR = numpy.array([])
 		
@@ -206,4 +241,4 @@ def SBGenetic(graph,minq,maxq,percentSandBox,sizePopulation, iterations, percent
 
 		count+=1
 	
-	return logR, Indexzero,Tq, Dq, lnMrq
+	return logR, Indexzero,Tq, Dq, lnMrq,iterations,fitNessAverage,fitNessMax,fitNessMin
