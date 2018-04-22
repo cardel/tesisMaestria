@@ -1,0 +1,5 @@
+name: lamfria
+dependencies:
+  - numpy >=1.7
+  - snap >= 4.0
+  
