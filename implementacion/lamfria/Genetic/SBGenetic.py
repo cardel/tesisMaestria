@@ -182,9 +182,8 @@ def SBGenetic(graph,minq,maxq,sizePopulation, iterations, percentCrossOver, perc
 		if listDegree[index] > maxDegree:
 			maxDegree=listDegree[index]
 		index+=1
-	rs = rnd.randint(0,numNodes)
 	
-	d = snap.GetBfsFullDiam(graph,int(listID[rs]),False)
+	d = snap.GetBfsFullDiam(graph,1,False)
 	
 	rangeQ = maxq-minq+1
 	#Total q
