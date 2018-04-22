@@ -122,7 +122,7 @@ def main(argv):
 	
 	if typeMeasure=='GC':
 		fig0 = plt.figure()
-		r = numpy.arange(0.0, 1.0, 0.1)
+		r = numpy.arange(0.0, 0.9, 0.1)
 		for i in range(0,7):
 			plt.plot(range(minq,maxq+1),RTqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 		ymin, ymax = plt.ylim()
@@ -138,7 +138,7 @@ def main(argv):
 	
 	if typeMeasure=='APL':
 		fig1 = plt.figure()
-		r = numpy.arange(0.0, 1.0, 0.1)
+		r = numpy.arange(0.0, 0.9, 0.1)
 		for i in range(0,7):
 			plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 		ymin, ymax = plt.ylim()
@@ -153,7 +153,7 @@ def main(argv):
 		plt.savefig('Results/Robustness/'+timestr+'_'+'lenghtPath'+fileOutput+'.png')	
 
 	fig2 = plt.figure()
-	r = numpy.arange(0.0, 1.0, 0.1)
+	r = numpy.arange(0.0, 0.9, 0.1)
 	for i in range(0,7):
 		plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 	ymin, ymax = plt.ylim()
@@ -168,7 +168,7 @@ def main(argv):
 	plt.savefig('Results/Robustness/'+timestr+'_'+'attackGenetic'+fileOutput+'.png')	
 	
 	fig3 = plt.figure()
-	r = numpy.arange(0.0, 1.0, 0.1)
+	r = numpy.arange(0.0, 0.9, 0.1)
 	for i in range(0,7):
 		plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 	ymin, ymax = plt.ylim()

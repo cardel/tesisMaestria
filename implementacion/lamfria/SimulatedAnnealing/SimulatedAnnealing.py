@@ -114,7 +114,7 @@ def SBSA(graph,minq,maxq,percentSandBox,sizePopulation, Kmax):
 		listDegree[index] = ni.GetOutDeg()
 		index+=1
 		
-	rs = rnd.randint(0,numNodes)
+	rs = rnd.randint(0,numNodes-1)
 	
 	d = snap.GetBfsFullDiam(graph,int(listID[rs]),False)
 	rangeQ = maxq-minq+1

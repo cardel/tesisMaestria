@@ -42,6 +42,12 @@ def robustness_analysis_GC(graph,typeRemoval,minq,maxq,percentOfSandBoxes,iterat
 	
 	RTq = Dq
 	for p in r:
+		Ng = g.GetNodes()	
+		listID = snap.TIntV(Ng)
+		index = 0
+		for ni in g.Nodes():
+			listID[index] = ni.GetId()
+			index+=1	
 		me=utils.removeNodes(g,typeRemoval,percent,p,N,ClosenessCentrality,'GC',listID)
 		#There are errors if p > 0.7
 		if p <= 0.7:
@@ -59,13 +65,13 @@ def robustness_analysis_GC(graph,typeRemoval,minq,maxq,percentOfSandBoxes,iterat
 def robustness_analysis_APL(graph,typeRemoval,minq,maxq,percentOfSandBoxes,iterationsSandBox):
 	#Remove per percent of nodes 0.1 to 1.0
 	percent = 0.1
-	r = numpy.arange(0.1, 1.0,percent)
+	r = numpy.arange(0.1, 0.9,percent)
 	g = utils.copyGraph(graph)	
 	N = g.GetNodes()
 	
 	measure = numpy.array([1],dtype=float)
 	
-	initial = utils.getFullDiameter(g)
+	initial = snap.GetBfsFullDiam(g,10,False)
 	
 	ClosenessCentrality = numpy.empty([N,2], dtype=float)
 	index=0
@@ -79,6 +85,12 @@ def robustness_analysis_APL(graph,typeRemoval,minq,maxq,percentOfSandBoxes,itera
 	logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
 	RTq = Dq
 	for p in r:
+		Ng = g.GetNodes()	
+		listID = snap.TIntV(Ng)
+		index = 0
+		for ni in g.Nodes():
+			listID[index] = ni.GetId()
+			index+=1
 		me=utils.removeNodes(g,typeRemoval,percent,p,N,ClosenessCentrality,'APL',listID)
 		#There are errors if p > 0.7
 		if p <= 0.7:
@@ -93,7 +105,7 @@ def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,si
 	
 	radius = snap.GetBfsFullDiam(graph,10,False)
 	percent = 0.1
-	r = numpy.arange(0.1, 1.0,percent)
+	r = numpy.arange(0.1, 0.9,percent)
 	g = utils.copyGraph(graph)	
 	N = g.GetNodes()	
 	
@@ -120,7 +132,7 @@ def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,si
 		nodesToRemove,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.calculateCenters(g, Ng,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree)
 		#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
 		nodesToRemove = numpy.unique(nodesToRemove)
-		me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure,listID)
+		me = utils.removeNodesGenetic(g,nodesToRemove, N,listID, typeMeasure)
 
 		logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentOfSandBoxes,iterationsSandBox)
 		RTq = numpy.vstack((RTq,Dq))
@@ -134,7 +146,7 @@ def robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterat
 	
 	radius = snap.GetBfsFullDiam(graph,10,False)
 	percent = 0.1
-	r = numpy.arange(0.1, 1.0,percent)
+	r = numpy.arange(0.1, 0.9,percent)
 	g = utils.copyGraph(graph)	
 	N = g.GetNodes()	
 	

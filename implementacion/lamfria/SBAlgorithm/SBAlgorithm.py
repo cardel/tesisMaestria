@@ -38,9 +38,8 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 		index+=1
 		
 	#select random node
-	rs = random.randint(0,numNodes)
 	
-	d = snap.GetBfsFullDiam(graph,int(listID[rs]),False)
+	d = snap.GetBfsFullDiam(graph,1,False)
 
 	rangeQ = maxq-minq+1
 

@@ -6,7 +6,7 @@
 #Last edition date 07th April 2018
 #Description: This file contains some utilities for multifractality app
 import numpy
-import random
+import random as rnd
 import os.path
 import lib.snap as snap
 
@@ -126,9 +126,8 @@ def getSizeOfGiantComponent(graph):
 	return Component.GetNodes()
 
 # Get average path lenght in the giant component
-def getFullDiameter(graph):
-	component = snap.GetMxScc(graph)
-	return snap.GetBfsFullDiam(component,1,False)
+def getFullDiameter(graph,N,listID):
+	return snap.GetBfsFullDiam(graph,1,False)
 
 #Copy a graph
 
@@ -169,7 +168,7 @@ def removeNodes(graph,typeRemoval, percent, p, N,ClosenessCentrality, typeMeasur
 	if typeMeasure=='GC':
 		measure = float(getSizeOfGiantComponent(graph))/N
 	elif typeMeasure=='APL':
-		measure = float(getFullDiameter(graph))
+		measure = float(getFullDiameter(graph,N,listID))
 		
 	return measure
 
@@ -182,5 +181,5 @@ def removeNodesGenetic(graph,nodesToRemove, N,listID, typeMeasure):
 	if typeMeasure=='GC':
 		measure = float(getSizeOfGiantComponent(graph))/N
 	elif typeMeasure=='APL':
-		measure=float(getFullDiameter(graph))		
+		measure=float(getFullDiameter(graph,N,listID))		
 	return measure

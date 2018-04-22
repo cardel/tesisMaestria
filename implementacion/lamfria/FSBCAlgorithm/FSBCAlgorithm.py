@@ -9,6 +9,7 @@ import numpy
 import math
 import lib.snap as snap
 import utils.utils as utils
+
 #Proceed
 def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 	
@@ -31,7 +32,7 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitions):
 	T = int(float(numNodes)*percentNodesT)
 	
 	#Set the size of the box in the range r ∈ [1, d ],where d is the diameter of the network.
-	d = snap.GetBfsFullDiam(graph,10,False)
+	d = snap.GetBfsFullDiam(graph,1,False)
 	
 	rangeQ = maxq-minq+1
 	
