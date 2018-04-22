@@ -121,11 +121,11 @@ def main(argv):
 	RTqD,measureD,robustnessmeasureD=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsDeterminics,typeMeasure)
 	
 	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
+	r = numpy.arange(0.0, 1.0, 0.1)
 
 	timestr = time.strftime("%Y%m%d_%H%M%S")
 	if typeMeasure=='GC':
 		fig0 = plt.figure()
-		r = numpy.arange(0.0, 0.9, 0.1)
 		for i in range(0,9):
 			if i < RTqA.shape[0]:
 				plt.plot(range(minq,maxq+1),RTqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
@@ -136,13 +136,12 @@ def main(argv):
 		plt.legend(prop=fontP)
 		plt.xlabel('q')
 		plt.ylabel('D(q)')
-		plt.title('Multifractality componente Gigaint '+attack)
+		plt.title('Multifractality componente Giant '+attack)
 		#plt.show()
 		plt.savefig('Results/Robustness/'+timestr+'_'+'sizeComponent'+fileOutput+'.png')
 	
 	if typeMeasure=='APL':
 		fig1 = plt.figure()
-		r = numpy.arange(0.0, 0.9, 0.1)
 		for i in range(0,9):
 			if i < RTqB.shape[0]:
 				plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
@@ -158,7 +157,6 @@ def main(argv):
 		plt.savefig('Results/Robustness/'+timestr+'_'+'lenghtPath'+fileOutput+'.png')	
 
 	fig2 = plt.figure()
-	r = numpy.arange(0.0, 0.9, 0.1)
 	for i in range(0,7):
 		if i < RTqC.shape[0]:
 			plt.plot(range(minq,maxq+1),RTqC[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
@@ -174,7 +172,6 @@ def main(argv):
 	plt.savefig('Results/Robustness/'+timestr+'_'+'attackGenetic'+fileOutput+'.png')	
 	
 	fig3 = plt.figure()
-	r = numpy.arange(0.0, 0.9, 0.1)
 	for i in range(0,9):
 		if i < RTqD.shape[0]:
 			plt.plot(range(minq,maxq+1),RTqD[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
@@ -190,7 +187,6 @@ def main(argv):
 	plt.savefig('Results/Robustness/'+timestr+'_'+'attackSimulated'+fileOutput+'.png')	
 						
 	fig4 = plt.figure()	
-	r = numpy.arange(0.0, 0.9, 0.1)
 	if typeMeasure=='GC':
 		plt.plot(r[0:numpy.size(measureA)],measureA,'.-r', label="Size gigaint component")	
 		

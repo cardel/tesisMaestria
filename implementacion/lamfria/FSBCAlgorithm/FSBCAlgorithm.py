@@ -91,7 +91,7 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT):
 							radiusCovered[int(distance)-1]=1
 							box=numpy.append(box,ni)
 						
-					if numpy.prod(radiusCovered)==1:
+					if numpy.prod(radiusCovered)==1 and countNodes>0:
 						RBoxes = numpy.append(RBoxes,countNodes)
 						nodesMark[box] = 1	
 			BoxesRadio.append(RBoxes)

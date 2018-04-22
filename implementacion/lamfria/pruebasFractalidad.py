@@ -87,9 +87,9 @@ def main(argv):
 	#SandBox
 	percentOfSandBoxes = 0.5
 	#Genetic
-	iterations = 100
+	iterations = 150
 	iterationsDeterminics = 200
-	sizePopulation = 50 
+	sizePopulation = 100 
 	percentCrossOver = 0.3
 	percentMutation = 0.05	
 	

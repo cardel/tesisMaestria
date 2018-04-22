@@ -1,21 +1,21 @@
 #!/bin/sh 
  
- python pruebasRobustez.py  --file ../datos/karate.net --type Pajek --output Randomkarate --measure APL --attack random
- 
- python pruebasRobustez.py  --file ../datos/football.net --type Pajek --output Randomfootball --measure APL --attack random
+python pruebasRobustez.py  --file ../datos/karate.net --type Pajek --output Randomkarate --measure APL --attack random
+
+python pruebasRobustez.py  --file ../datos/football.net --type Pajek --output Randomfootball --measure APL --attack random
 
 python pruebasFractalidad.py --file ../datos/cellular.dat --type Edge --output Randomcellular --measure APL --attack random
 
 
- python pruebasRobustez.py  --file ../datos/karate.net --type Pajek --output degreekarate --measure APL --attack degree
- 
- python pruebasRobustez.py  --file ../datos/football.net --type Pajek --output degreefootball --measure APL --attack degree
+python pruebasRobustez.py  --file ../datos/karate.net --type Pajek --output degreekarate --measure APL --attack degree
+
+python pruebasRobustez.py  --file ../datos/football.net --type Pajek --output degreefootball --measure APL --attack degree
 
 python pruebasRobustez.py --file ../datos/cellular.dat --type Edge --output degreecellular --measure APL --attack degree
 
- python pruebasRobustez.py  --file ../datos/karate.net --type Pajek --output centralitykarate --measure APL --attack centrality
- 
- python pruebasRobustez.py  --file ../datos/football.net --type Pajek --output centralityfootball --measure APL --attack centrality
+python pruebasRobustez.py  --file ../datos/karate.net --type Pajek --output centralitykarate --measure APL --attack centrality
+
+python pruebasRobustez.py  --file ../datos/football.net --type Pajek --output centralityfootball --measure APL --attack centrality
 
 python pruebasRobustez.py --file ../datos/cellular.dat --type Edge --output centralitycellular --measure APL --attack centrality
 
