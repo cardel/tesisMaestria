@@ -113,10 +113,8 @@ def linealRegresssion(x, y):
 	sumXplusX = numpy.sum(x*x)
 	sumX = numpy.sum(x)
 	sumY = numpy.sum(y)
-	#print (n*sumXplusY - sumX*sumY),(n*sumXplusX-sumX*sumX)
 	m = (n*sumXplusY - sumX*sumY)/(n*sumXplusX-sumX*sumX)
 	b = (sumY - m*sumX)/n
-	
 	
 	return m,b
 	
@@ -130,13 +128,17 @@ def getAveragePathLength(graph):
 	g = snap.GetMxScc(graph)
 	NumNodes = g.GetNodes()	
 	average = 0.
+	maxDistance = 0.
 	for ni in g.Nodes():
 		for nj in g.Nodes():
-			average+=snap.GetShortPath(g,ni.GetId(),nj.GetId())
-		
+			dist = snap.GetShortPath(g,ni.GetId(),nj.GetId())
+			average+=dist
+			if dist > maxDistance:
+				maxDistance = dist
+			
 	average=average/(2.*NumNodes)		
 			
-	return average
+	return float(average)/maxDistance
 #Copy a graph
 
 def copyGraph(graph):

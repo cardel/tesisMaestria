@@ -188,10 +188,10 @@ def main(argv):
 						
 	fig4 = plt.figure()	
 	if typeMeasure=='GC':
-		plt.plot(r[0:numpy.size(measureA)],measureA,'.-r', label="Size gigaint component")	
+		plt.plot(r[0:numpy.size(measureA)],measureA,'.-r', label="Size GC attack "+attack)	
 		
 	if typeMeasure=='APL':
-		plt.plot(r[0:numpy.size(measureB)],measureB,'.-b', label="Average path lenght")	
+		plt.plot(r[0:numpy.size(measureB)],measureB,'.-b', label="APL "+attack)	
 		
 	plt.plot(r[0:numpy.size(measureC)],measureC,'.-k', label="Genetic "+typeMeasure)	
 	plt.plot(r[0:numpy.size(measureD)],measureD,'.-m', label="Simulated annealing "+typeMeasure)		
@@ -200,8 +200,8 @@ def main(argv):
 	fontP = FontProperties()
 	fontP.set_size('small')
 	plt.legend(prop=fontP)
-	plt.xlabel('q')
-	plt.ylabel('D(q)')
+	plt.xlabel('percent')
+	plt.ylabel('Value')
 	plt.title('Robustness measure ')
 	#plt.show()
 	plt.savefig('Results/Robustness/'+timestr+'_'+'measure'+fileOutput+'.png')	

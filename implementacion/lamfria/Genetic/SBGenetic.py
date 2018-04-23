@@ -46,8 +46,8 @@ def calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDeg
 		averageDistance += distanceOtherNode
 		averageDegree += listDegree[int(node)]
 	
-	averageDistance= averageDistance/(numNodes*sizeChr*radius)
-	averageDegree = averageDegree/(sizeChr*maxDegree)
+	averageDistance= averageDistance/(numNodes*sizeChr*radius+1.)
+	averageDegree = averageDegree/(sizeChr*maxDegree+1.)
 	percentCovered = 100*numpy.average(nodesCovered)
 	
 	fitness = percentCovered*(averageDegree + averageDistance)
