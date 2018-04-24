@@ -11,7 +11,6 @@ from sets import Set
 import lib.snap as snap
 import utils.utils as utils
 import random
-from scipy import stats	
 
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
