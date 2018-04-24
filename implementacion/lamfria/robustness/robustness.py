@@ -110,7 +110,7 @@ def robustness_analysis_APL(graph,typeRemoval,minq,maxq,percentOfSandBoxes,itera
 		finally:
 			measure = numpy.append(measure,me/initial)
 			
-		robustnessmeasure = numpy.sum(measure)/N
+		robustnessmeasure = numpy.average(measure)
 	return RTq, measure,robustnessmeasure
 	
 def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure):
@@ -155,7 +155,7 @@ def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,si
 			print "Error try to delete ",p," percent of nodes in Genetic"
 		finally:
 			measure = numpy.append(measure,me)
-	robustnessmeasure = numpy.sum(measure)/N
+	robustnessmeasure = numpy.average(measure)
 	return RTq, measure,robustnessmeasure
 	
 	
@@ -198,5 +198,5 @@ def robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterat
 			print "Error try to delete ",p," percent of nodes in Simulated Annealing"
 		finally:
 			measure = numpy.append(measure,me)
-	robustnessmeasure = numpy.sum(measure)/N
+	robustnessmeasure = numpy.average(measure)
 	return RTq, measure,robustnessmeasure

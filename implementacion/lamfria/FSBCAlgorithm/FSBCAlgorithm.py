@@ -72,20 +72,18 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT):
 		
 		for radius in range(1,d+1):		
 			nodesMark = numpy.zeros([numNodes])	
-			RBoxes = numpy.array([],dtype=float)
-			#Iterate each center in permutatio
-			radiusCovered = numpy.zeros([radius])
+			RBoxes = numpy.array([],dtype=float)		
+			
 			for i in range(0, numNodes):	
 				
 				currentNode = randomSequence[i]
 				box = numpy.array([currentNode], dtype=int)				
 				countNodes = 0.
+				radiusCovered = numpy.zeros([radius])
 				
 				if nodesMark[int(currentNode)]==0:
-					for ni in range(0, numNodes):
-						
-						distance = Bnxn[int(currentNode)][ni]
-						
+					for ni in range(0, numNodes):						
+						distance = Bnxn[int(currentNode)][ni]						
 						if  distance <= radius and distance > 0:
 							countNodes+=1
 							radiusCovered[int(distance)-1]=1
@@ -93,7 +91,8 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT):
 						
 					if numpy.prod(radiusCovered)==1 and countNodes>0:
 						RBoxes = numpy.append(RBoxes,countNodes)
-						nodesMark[box] = 1	
+						nodesMark[box] = 1
+						
 			BoxesRadio.append(RBoxes)
 		totalBoxes.append(BoxesRadio)
 	Boxes = []
@@ -103,7 +102,7 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT):
 			BoxesQ = numpy.array([])
 			for RBoxes in TBoxes:
 				#Q-1 is equivalente to divide to M(0)
-				BoxesQ= numpy.append(BoxesQ,(numpy.average(numpy.power(RBoxes,q-1)/numNodes)))
+				BoxesQ= numpy.append(BoxesQ,(numpy.average(numpy.power(RBoxes,q-1))))
 			Zrq.append(BoxesQ)
 		
 		Zrq=numpy.array(Zrq)
@@ -121,7 +120,7 @@ def FSBCAlgorithm(graph,minq,maxq,percentNodesT):
 	Indexzero  = 0 
 	for q in range(minq,maxq+1,1):
 		i = 0
-		box = numpy.average(Boxes[count],axis=0)
+		box = numpy.average(Boxes[count],axis=0)/numNodes
 		lnMrq[count]= numpy.log(box)
 		
 		m,b = utils.linealRegresssion(logR,lnMrq[count])

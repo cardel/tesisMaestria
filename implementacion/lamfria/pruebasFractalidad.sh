@@ -3,12 +3,15 @@ python pruebasFractalidad.py --type SmallWorld --output SmallWorld50d100 --messa
 python pruebasFractalidad.py --type ScaleFreePrefAttach --output ScaleFreePrefAttach50d100 --message ScaleFreePrefAttach50d100 --node 100 --desired 1000 
 python pruebasFractalidad.py --type Random --output Random50d100 --message Random50d100 --node 100 --desired 1000 
 
+python pruebasFractalidad.py --file ../datos/lesmis.net --type Pajek --output lesMiss --message "lesMiss"  
 
 python pruebasFractalidad.py --file ../datos/karate.net --type Pajek --output karateDegree --message "karate"  
 
 python pruebasFractalidad.py --file ../datos/football.net --type Pajek --output footballDegree --message "football"  
 
 python pruebasFractalidad.py --file ../datos/cellular.dat --type Edge --output cellularDegree --message "cellular"  
+
+
 
 #(2,2)-flower 7th generation
 

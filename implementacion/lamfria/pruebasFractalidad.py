@@ -85,9 +85,9 @@ def main(argv):
 	maxq = 10
 	
 	#SandBox
-	percentOfSandBoxes = 0.5
+	percentOfSandBoxes = 0.8
 	#Genetic
-	iterations = 150
+	iterations = 200
 	iterationsDeterminics = 200
 	sizePopulation = 100 
 	percentCrossOver = 0.3
@@ -95,7 +95,7 @@ def main(argv):
 	
 	
 	#Box counting
-	percentNodesT = 0.7
+	percentNodesT = 0.8
 	
 	#Simulated annealing
 	Kmax = 3000
@@ -214,8 +214,7 @@ def main(argv):
 	fig7 = plt.figure()
 	plt.xlabel('iterations')
 	plt.ylabel('Fitness')	
-	plt.title("Behaviour genetic algorithm")
-	 
+	plt.title("Behaviour genetic algorithm")	 
 	plt.plot(range(0,iterations), fitNessAverage,'r.-', label='Average')
 	plt.plot(range(0,iterations), fitNessMax,'b.-', label='Max')
 	plt.plot(range(0,iterations), fitNessMin,'m.-', label='min')
@@ -226,7 +225,7 @@ def main(argv):
 	fontP.set_size('small')
 	plt.legend(prop=fontP)
 	plt.savefig('Results/Fractality/'+timestr+'_'+'evolutiveBehaviour'+fileOutput+'.png')
-	#plt.show()
+	plt.show()
 	
 	#Files with open('multisave.npy','wb') as f:
 	#https://stackoverflow.com/questions/42204368/how-to-append-many-numpy-files-into-one-numpy-file-in-python?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa

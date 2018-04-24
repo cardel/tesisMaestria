@@ -11,48 +11,20 @@ import random as rnd
 from sets import Set
 import lib.snap as snap
 import utils.utils as utils
-import multiprocessing as mp
-import time
 
 
 #Search profile about the algortihm
-def calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree,output):
+def calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree):
 	
-	numNodes = graph.GetNodes()	
-	sqrDistance = int(math.sqrt(radius))
-	sizeChr = chromosome.size
-	averageDistance = 0.0
-	averageDegree = 0.0
-	percentCovered = 0.
-	nodesCovered = numpy.zeros([numNodes])
+	totalDegree = 0.0
+	totalDistanceOtherNodes = 0.0
 	
 	for node in chromosome:		
-		#Box of size sqr(N)
-		distanceOtherNode = 0.0
-					
+		totalDegree+=listDegree[int(node)]
 		for ni in chromosome:
-			distanceNodeNI = distances[int(node)][int(ni)]
-			distanceOtherNode+=float(distanceNodeNI)
-			
-		#Percent covered at radius sqr(n)	
-		if(nodesCovered[int(node)]==0):
-			nodesCovered[int(node)]=1		
-			for i in range(0,numNodes):
-				if nodesCovered[i]==0:
-					distanceNodeNI = distances[int(node)][int(ni)]
-					if distanceNodeNI < sqrDistance:
-						nodesCovered[i]=1
-					
-		averageDistance += distanceOtherNode
-		averageDegree += listDegree[int(node)]
+			totalDistanceOtherNodes += distances[int(node)][int(ni)]
 	
-	averageDistance= averageDistance/(numNodes*sizeChr*radius+1.)
-	averageDegree = averageDegree/(sizeChr*maxDegree+1.)
-	percentCovered = 100*numpy.average(nodesCovered)
-	
-	fitness = percentCovered*(averageDegree + averageDistance)
-	return output.put((index, fitness))
-	
+	return totalDistanceOtherNodes+totalDegree
 
 def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome):
 	
@@ -67,22 +39,10 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 		#Calculate fitness
 		fitness = numpy.zeros([sizePopulation])	
 		
-		#Multiprocessing
-		output = mp.Queue()
-		#Process
-		processes = [mp.Process(target=calculateFitness, args=(index, graph, population[index],radius, distances,listDegree,maxDegree,output)) for index in range(0, sizePopulation)]
-		#Start process
-		for p in processes:
-			p.start()
 
-		# Exit the completed processes
-		for p in processes:
-			p.join()
-			
-		results = [output.get() for p in processes]
-		
-		for r in results:
-			fitness[int(r[0])]=r[1]
+		for index in range(0, sizePopulation):
+			chromosome = population[i]
+			fitness[index] = calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree)
 			 
 
 		##Select nodes Fitness proportionate selection
@@ -102,11 +62,11 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 			parent1 = population[0]
 			parent2 = population[0]
 			#Search individuals
-			for i in range(1,sizePopulation):
-				if accFiness[i-1]<=r1 and accFiness[i]>=r1:
-					parent1 = population[i]
-				if accFiness[i-1]<=r2 and accFiness[i]>=r2:
-					parent2 = population[i]	
+			for j in range(1,sizePopulation):
+				if accFiness[j-1]<=r1 and accFiness[j]>=r1:
+					parent1 = population[j]
+				if accFiness[j-1]<=r2 and accFiness[j]>=r2:
+					parent2 = population[j]
 			
 		
 			#Cross		
@@ -131,12 +91,14 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 				newPopulation = numpy.vstack((newPopulation,individual))
 				
 			
-		#Add new individuals to pull, and delete randomly old individuals
+		#Add new individuals to pull,delete worst individuals
+		orderFitness = numpy.argsort(-fitness)
+		index = 0
 		for individual in newPopulation:
 			#Replace a random old individual
 			index = rnd.randint(0, sizePopulation-1) 
-			population[i] = individual
-		
+			population[orderFitness[index]] = individual
+			index+=1
 			
 		index =  numpy.argmax(fitness)
 		best = population[index]
@@ -154,29 +116,17 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 	random = numpy.arange(numNodes)
 	for i in range(0,sizePopulation):
 		sizeRandom = rnd.randint(int(0.4*numNodes),int(0.9*numNodes))
-		#random = numpy.random.permutation(numNodes)[0:centerNodes]
 		numpy.random.shuffle(random)
 		population.append(random[0:sizeRandom])
+		
+		
 	for it in range(0,iterations):
 		#Calculate fitness
 		fitness = numpy.zeros([sizePopulation])
 		
-		#Multiprocessing
-		output = mp.Queue()
-		#Process
-		processes = [mp.Process(target=calculateFitness, args=(index, graph, population[index],radius, distances,listDegree,maxDegree,output)) for index in range(0, sizePopulation)]
-		#Start process
-		for p in processes:
-			p.start()
-
-		# Exit the completed processes
-		for p in processes:
-			p.join()
-			
-		results = [output.get() for p in processes]
-		
-		for r in results:
-			fitness[int(r[0])]=r[1]
+		for index in range(0, sizePopulation):
+			chromosome = population[index]
+			fitness[index] = calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree)
 		
 		sumFitness = numpy.sum(fitness)
 		
@@ -199,9 +149,10 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 			for i in range(1,sizePopulation):
 				if accFiness[i-1]<=r1 and accFiness[i]>=r1:
 					parent1 = population[i]
+					break
 				if accFiness[i-1]<=r2 and accFiness[i]>=r2:
 					parent2 = population[i]	
-					
+					break
 			#Cross	
 			size1 = numpy.size(parent1)
 			size2 = numpy.size(parent2)	
@@ -235,17 +186,23 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 							
 			newPopulation.append(children)
 			
-		#Add new individuals to pull, and delete random individues
+		#Add new individuals to pull,delete worst individuals
+		orderFitness = numpy.argsort(-fitness)
+		index = 0
 		for individual in newPopulation:
+			#Replace a random old individual
 			index = rnd.randint(0, sizePopulation-1) 
-			population[index] = individual
+			population[orderFitness[index]] = individual
+			index+=1
 		
 		fitNessAverage[it] = numpy.mean(fitness)
 		fitNessMax[it]=numpy.max(fitness)
 		fitNessMin[it]=numpy.min(fitness)
 		index =  numpy.argmax(fitness)
+		
 		if bestFiness < fitness[index]:
 			best = population[index]
+			
 	return best,fitNessAverage,fitNessMax,fitNessMin
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network

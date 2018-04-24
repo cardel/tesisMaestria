@@ -11,7 +11,8 @@ from sets import Set
 import lib.snap as snap
 import utils.utils as utils
 import random
-		
+from scipy import stats	
+
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
 def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
@@ -105,7 +106,7 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 				lnMrqTotal[count][i]+=Mr
 				i+=1				
 			
-			m,b = utils.linealRegresssion(logR,lnMrq[count])
+			m, b, r_value, p_value, std_err = stats.linregress(logR,lnMrq[count])
 			#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
 			#Find the mass exponents
 			if q == 0: 
@@ -115,14 +116,14 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 			
 			#Find the Generalizated Fractal dimensions
 			if q != 1:
-				m,b = utils.linealRegresssion((q-1)*logR,lnMrq[count])
+				m, b, r_value, p_value, std_err = stats.linregress((q-1)*logR,lnMrq[count])
 			else:
 				Z1e = numpy.array([])
 				for sand in sandBoxes:					
 					Ze = numpy.log(sand)
 					Ze = numpy.average(Ze)
 					Z1e = numpy.append(Z1e,Ze)
-				m,b = utils.linealRegresssion(logR,Z1e)	
+				m, b, r_value, p_value, std_err = stats.linregress(logR,Z1e)	
 			Dq[r][count] = m
 			if q == 0:
 				Indexzero = count
