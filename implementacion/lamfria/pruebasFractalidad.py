@@ -110,28 +110,23 @@ def main(argv):
 	executionTime[0] = time.time() - executionTime[0]
 	
 	executionTime[1] = time.time()
-	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,repetitionsDeterminics)
-	
+	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,repetitionsDeterminics)	
 	executionTime[1] = time.time() -  executionTime[1]
 	
 	executionTime[2] = time.time()	
-	logRC, IndexzeroC,TqC, DqC, lnMrqC,iterations,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'SB')
-	
+	logRC, IndexzeroC,TqC, DqC, lnMrqC,iterations,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'SB')	
 	executionTime[2] = time.time() - executionTime[2]
+	
 	executionTime[3] = time.time()
-
 	logRD, IndexzeroD,TqD, DqD, lnMrqD = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'SB')
-
 	executionTime[3] = time.time() - executionTime[3]
 
 	executionTime[4] = time.time()	
-	logRE, IndexzeroE,TqE, DqE, lnMrqE,iterationsE,fitNessAverageE,fitNessMaxE,fitNessMinE = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')
-	
+	logRE, IndexzeroE,TqE, DqE, lnMrqE,iterationsE,fitNessAverageE,fitNessMaxE,fitNessMinE = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')	
 	executionTime[4] = time.time() - executionTime[4]
+	
 	executionTime[5] = time.time()
-
 	logRF, IndexzeroF,TqF, DqF, lnMrqF = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BC')
-
 	executionTime[5] = time.time() - executionTime[5]
 	
 	##Matplotlib

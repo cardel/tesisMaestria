@@ -309,11 +309,10 @@ def SBGenetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentM
 		for i in range(0,100):	
 			otherNodes = numpy.setdiff1d(nodes, centerNodes)
 			
-			centerNodes = numpy.append(centerNodes,otherNodes)
+			newNodes = numpy.append(centerNodes,otherNodes)
 			numpy.random.shuffle(nodes)
-			
-			groupCenters.append(centerNodes)
-			
+			numpy.random.shuffle(centerNodes)
+			groupCenters.append(newNodes)
 		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
 
 	else:

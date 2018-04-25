@@ -133,10 +133,13 @@ def SBSA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
 		logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,1,1, centerNodes)	
 	elif typeAlgorithm=='BC':
 		groupCenters = []
+		nodes = numpy.arange(numNodes)	
 		for i in range(0,100):
-			otherNodes = numpy.setdiff1d(numpy.arange(numNodes), centerNodes)
-			centerNodes = numpy.append(centerNodes,otherNodes)			
-			groupCenters.append(centerNodes)
+			otherNodes = numpy.setdiff1d(nodes, centerNodes)			
+			newNodes = numpy.append(centerNodes,otherNodes)
+			numpy.random.shuffle(nodes)
+			numpy.random.shuffle(centerNodes)
+			groupCenters.append(newNodes)
 		
 		groupCenters = numpy.array(groupCenters)
 		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
