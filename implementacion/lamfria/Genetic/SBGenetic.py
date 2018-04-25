@@ -55,7 +55,7 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 		
 
 		for index in range(0, sizePopulation):
-			chromosome = population[i]
+			chromosome = population[index]
 			fitness[index] = calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree)
 			 
 		#Stop condition
@@ -76,7 +76,6 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 				return best
 		##Select nodes Fitness proportionate selection
 		sumFitness = numpy.sum(fitness)
-		
 		accFiness = fitness/sumFitness
 		
 		for i in range(1,sizePopulation):
@@ -297,9 +296,8 @@ def SBGenetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentM
 	
 	if typeAlgorithm=='SB':
 		groupCenters = []
-		centerNodes,afitNessAverage,fitNessMax,fitNessMin = calculateCenters(graph, numNodes,iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listDegree,maxDegree,degreeOfBoring)
 		groupCenters.append(centerNodes)
-		
+		print 		centerNodes
 		logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,1,1, centerNodes)	
 	elif typeAlgorithm=='BC':
 		#Complete nodes
