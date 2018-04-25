@@ -7,7 +7,7 @@ python pruebasFractalidad.py --file ../datos/cellular.dat --type Edge --output c
 
 #(2,2)-flower 7th generation
 
-python pruebasFractalidad.py --type Flower --output FlowerDegree --message "flower" &
+python pruebasFractalidad.py --file ../datos/flower.txt --type Edge --output flower --message "flower"  &
 
 #Scalefree 3000 nodos, 100 grado de salida
 

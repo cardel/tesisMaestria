@@ -11,8 +11,13 @@ import random as rnd
 from sets import Set
 import lib.snap as snap
 import utils.utils as utils
+import SBAlgorithm.SBAlgorithm as SBAlgorithm
+import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
+
 	
-def calculateFitness(graph, element, radius, distances, listID,listDegree):
+def calculateFitness(g, element, radius, distances, listID,listDegree):
+	graph = snap.GetMxScc(g)
+	
 	numNodes = graph.GetNodes()	
 	sqrDistance = int(math.sqrt(radius))
 	#First position ID node, second position Fitness
@@ -89,8 +94,8 @@ def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,l
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
 #Algorithm Simulated Annealing
-def SBSA(graph,minq,maxq,percentSandBox,sizePopulation, Kmax):
-	
+def SBSA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
+	graph = snap.GetMxScc(g)
 	numNodes = graph.GetNodes()
 	
 	listID = snap.TIntV(numNodes)
@@ -121,58 +126,23 @@ def SBSA(graph,minq,maxq,percentSandBox,sizePopulation, Kmax):
 	#Create a random population of nodes	
 	centerNodes = calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,listDegree)
 
-	numberOfBoxes = int(percentSandBox*numNodes);
-	sandBoxes = numpy.zeros([d,numberOfBoxes])
-	logR = numpy.array([])
+
+	if typeAlgorithm=='SB':
+		groupCenters =[]
+		groupCenters.append(centerNodes)
+		logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,1,1, centerNodes)	
+	elif typeAlgorithm=='BC':
+		groupCenters = []
+		for i in range(0,100):
+			otherNodes = numpy.setdiff1d(numpy.arange(numNodes), centerNodes)
+			centerNodes = numpy.append(centerNodes,otherNodes)			
+			groupCenters.append(centerNodes)
 		
-	for radius in range(1,d+1):
-		
-		logR = numpy.append(logR,math.log(float(radius)/d))
-		i = 0
-		for currentNode in centerNodes:
-			countNodes = 1
-			#print i, radius
-			for ni in range(0, numNodes):
-				distance = distances[int(currentNode)][ni]
-				if  distance <= radius and distance > 0:
-					countNodes+=1
-			sandBoxes[radius-1][i] = countNodes
-			i+=1
-	
-	count = 0
-	Indexzero  = 0 
-	
-	for q in range(minq,maxq+1,1):
-		i = 0
-		for sand in sandBoxes:
-			Mr = numpy.power(sand,q-1)
-			Mr = numpy.log(numpy.average(Mr))
-			lnMrq[count][i]=Mr
-			i+=1
+		groupCenters = numpy.array(groupCenters)
+		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
+
+	else:
+		print "SimulatedAnnealing: Invalid option of Algorithm"
+		sys.exit(0)
 			
-	
-		m,b = utils.linealRegresssion(logR,lnMrq)
-		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
-		#Find the mass exponents
-		if q == 0: 
-			countDim = count;
-	
-
-		Tq[count] = m
-		
-		#Find the Generalizated Fractal dimensions
-		if q != 1:
-			m,b = utils.linealRegresssion((q-1)*logR,lnMrq[count])
-		else:
-			Z1e = numpy.array([])
-			for sand in sandBoxes:
-				Ze = numpy.log(sand)
-				Ze = numpy.average(Ze)
-				Z1e = numpy.append(Z1e,Ze)
-			m,b = utils.linealRegresssion(logR,Z1e)	
-		Dq[count] = m
-		if q == 0:
-			Indexzero = count
-
-		count+=1
 	return logR, Indexzero,Tq, Dq, lnMrq

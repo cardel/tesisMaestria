@@ -1,0 +1,21 @@
+		i = 0
+		box = numpy.nanmean(Boxes[count],axis=0)
+		lnMrq[count]= numpy.log(box)		
+		m,b = utils.linealRegresssion(logR,lnMrq[count])
+		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
+		#Find the mass exponents
+		if q == 0: 
+			countDim = count;		
+
+		Tq[count] = m
+		
+		#Find the Generalizated Fractal dimensions
+		if q != 1:
+			m,b = utils.linealRegresssion(logR,lnMrq[count]/(q-1))
+		else:	
+			Ze = numpy.median(Zre, axis=0)
+			m,b = utils.linealRegresssion(logR,Ze)	
+		Dq[count] = m
+		if q == 0:
+			Indexzero = count
+		count+=1

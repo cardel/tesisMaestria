@@ -7,33 +7,47 @@
 #Description: This algorithm calculates the multifractal dimension with SB method
 import numpy
 import math
+import sys
 import random as rnd
 from sets import Set
 import lib.snap as snap
 import utils.utils as utils
-
+import SBAlgorithm.SBAlgorithm as SBAlgorithm
+import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
 
 #Search profile about the algortihm
 def calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree):
 	
-	totalDegree = 0.0
-	totalDistanceOtherNodes = 0.0
+	totalDegree = numpy.array([], dtype=float)
+	totalDistanceOtherNodes = numpy.array([], dtype=float)
+	sizeC = numpy.size(chromosome)
 	
 	for node in chromosome:		
-		totalDegree+=listDegree[int(node)]
+		totalDegree=numpy.append(totalDegree,listDegree[int(node)])
+		totalDistIn = 0.
 		for ni in chromosome:
-			totalDistanceOtherNodes += distances[int(node)][int(ni)]
+			totalDistIn += distances[int(node)][int(ni)]
+			
+		totalDistanceOtherNodes=numpy.append(totalDistanceOtherNodes,totalDistIn/sizeC)
 	
-	return totalDistanceOtherNodes+totalDegree
+	totalDista = numpy.average(totalDistanceOtherNodes)/radius
+	totalDeg =  numpy.average(totalDegree)/maxDegree
+	return 100*(totalDista*totalDeg)
 
-def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome):
+def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome,degreeOfBoring):
 	
 	population = numpy.zeros([sizePopulation,sizeChromosome])
-
+	fitNessAverage = numpy.array([])
+	fitNessMax =  numpy.array([])
+	fitNessMin =  numpy.array([])	
+	boring = 0
+	
 	for i in range(0,sizePopulation):
 		random = numpy.random.permutation(numNodes)[0:sizeChromosome]
 		population[i] = random
 		
+	best=population[0]
+	bestFiness = 0.0
 	
 	for it in range(0,iterations):
 		#Calculate fitness
@@ -44,7 +58,22 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 			chromosome = population[i]
 			fitness[index] = calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree)
 			 
+		#Stop condition
+		fitNessAverage=numpy.append(fitNessAverage,numpy.mean(fitness))
+		fitNessMax=numpy.append(fitNessMax,numpy.max(fitness))
+		fitNessMin=numpy.append(fitNessMin,numpy.min(fitness))
+		indexB =  numpy.argmax(fitness)
+		currentBestFitness=fitness[indexB]
 
+		if bestFiness < fitness[indexB]:
+			best = population[indexB]
+			bestFiness = currentBestFitness
+			boring=0
+		else:
+			boring+=1
+			
+		if(boring>degreeOfBoring):
+				return best
 		##Select nodes Fitness proportionate selection
 		sumFitness = numpy.sum(fitness)
 		
@@ -68,7 +97,7 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 				if accFiness[j-1]<=r2 and accFiness[j]>=r2:
 					parent2 = population[j]
 			
-		
+
 			#Cross		
 			individual = numpy.random.permutation(numpy.unique(numpy.append(parent1,parent2)))[0:sizeChromosome]
 			
@@ -98,36 +127,51 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 			#Replace a random old individual
 			index = rnd.randint(0, sizePopulation-1) 
 			population[orderFitness[index]] = individual
-			index+=1
-			
-		index =  numpy.argmax(fitness)
-		best = population[index]
+			index+=1			
 
 	return best
 
-def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree):
+def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree,degreeOfBoring):
 	
 	population = []
-	fitNessAverage = numpy.zeros([iterations])
-	fitNessMax = numpy.zeros([iterations])
-	fitNessMin = numpy.zeros([iterations])
+	fitNessAverage = numpy.array([])
+	fitNessMax =  numpy.array([])
+	fitNessMin =  numpy.array([])
 	bestFiness = 0.0
+	boring = 0
 	#Random Size
-	random = numpy.arange(numNodes)
+	rand = numpy.arange(numNodes)
 	for i in range(0,sizePopulation):
 		sizeRandom = rnd.randint(int(0.4*numNodes),int(0.9*numNodes))
-		numpy.random.shuffle(random)
-		population.append(random[0:sizeRandom])
-		
-		
-	for it in range(0,iterations):
-		#Calculate fitness
-		fitness = numpy.zeros([sizePopulation])
+		numpy.random.shuffle(rand)
+		population.append(rand[0:sizeRandom])
+	
+	best=population[0]
+	fitness = numpy.zeros([sizePopulation])
+	for it in range(0,iterations):	#Calculate fitness	
 		
 		for index in range(0, sizePopulation):
 			chromosome = population[index]
 			fitness[index] = calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree)
 		
+		#Stop condition
+		fitNessAverage=numpy.append(fitNessAverage,numpy.mean(fitness))
+		fitNessMax=numpy.append(fitNessMax,numpy.max(fitness))
+		fitNessMin=numpy.append(fitNessMin,numpy.min(fitness))
+		indexB =  numpy.argmax(fitness)
+		currentBestFitness=fitness[indexB]
+		
+		if bestFiness < fitness[indexB]:
+			best = population[indexB]
+			bestFiness = currentBestFitness
+			boring=0
+		else:
+			boring+=1
+			
+		if(boring>degreeOfBoring):
+			return best,fitNessAverage,fitNessMax,fitNessMin
+
+
 		sumFitness = numpy.sum(fitness)
 		
 		accFiness = fitness/sumFitness
@@ -152,7 +196,7 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 					break
 				if accFiness[i-1]<=r2 and accFiness[i]>=r2:
 					parent2 = population[i]	
-					break
+					break			
 			#Cross	
 			size1 = numpy.size(parent1)
 			size2 = numpy.size(parent2)	
@@ -193,20 +237,11 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 			#Replace a random old individual
 			index = rnd.randint(0, sizePopulation-1) 
 			population[orderFitness[index]] = individual
-			index+=1
-		
-		fitNessAverage[it] = numpy.mean(fitness)
-		fitNessMax[it]=numpy.max(fitness)
-		fitNessMin[it]=numpy.min(fitness)
-		index =  numpy.argmax(fitness)
-		
-		if bestFiness < fitness[index]:
-			best = population[index]
-			
-	return best,fitNessAverage,fitNessMax,fitNessMin
+			index+=1			
+	return best, fitNessAverage,fitNessMax,fitNessMin
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
-def SBGenetic(graph,minq,maxq,sizePopulation, iterations, percentCrossOver, percentMutation):
+def SBGenetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentMutation, degreeOfBoring, typeAlgorithm):
 	"""Insert a function and its arguments in process pool.
   
 	Input is inserted in queues using a round-robin fashion. Every job is
@@ -220,11 +255,13 @@ def SBGenetic(graph,minq,maxq,sizePopulation, iterations, percentCrossOver, perc
 	:returns: Assigned job id.
 	:rtype: Int.
         """		
+	graph = snap.GetMxScc(g)
 	numNodes = graph.GetNodes()
 	
 	listID = snap.TIntV(numNodes)
 	listDegree =  snap.TIntV(numNodes)
 	maxDegree = 0.
+	totalIterations = 0.
 	index = 0
 	for ni in graph.Nodes():
 		listID[index] = ni.GetId()
@@ -249,62 +286,38 @@ def SBGenetic(graph,minq,maxq,sizePopulation, iterations, percentCrossOver, perc
 	##I generated a matriz with distancies between nodes
 	distances = utils.getDistancesMatrix(graph,numNodes, listID)	
 	#Create a random population of nodes	
-	centerNodes,fitNessAverage,fitNessMax,fitNessMin = calculateCenters(graph, numNodes,iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listDegree,maxDegree)
+	centerNodes,fitNessAverage,fitNessMax,fitNessMin = calculateCenters(graph, numNodes,iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listDegree,maxDegree,degreeOfBoring)
+
+	logR = []
+	Indexzero = 0
+	Tq = []
+	Dq = []
+	lnMrq = []
 
 	
-	numberOfBoxes = numpy.size(centerNodes)
-	sandBoxes = numpy.zeros([d,numberOfBoxes])
-	logR = numpy.array([])
+	if typeAlgorithm=='SB':
+		groupCenters = []
+		centerNodes,afitNessAverage,fitNessMax,fitNessMin = calculateCenters(graph, numNodes,iterations, sizePopulation,d,distances, percentCrossOver, percentMutation,listDegree,maxDegree,degreeOfBoring)
+		groupCenters.append(centerNodes)
 		
-	for radius in range(1,d+1):
-		
-		logR = numpy.append(logR,math.log(float(radius)/d))
-		i = 0
-		for currentNode in centerNodes:
-			countNodes = 1
-			#print i, radius
-			for ni in range(0, numNodes):
-				distance = distances[int(currentNode)][ni]
-				if  distance <= radius and distance > 0:
-					countNodes+=1
-			sandBoxes[radius-1][i] = countNodes
-			i+=1
-	
-	count = 0
-	Indexzero  = 0 
-	
-	for q in range(minq,maxq+1,1):
-		i = 0
-		for sand in sandBoxes:
-			Mr = numpy.power(sand,q-1)
-			Mr = numpy.log(numpy.average(Mr))
-			lnMrq[count][i]=Mr
-			i+=1
+		logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,1,1, centerNodes)	
+	elif typeAlgorithm=='BC':
+		#Complete nodes
+		#This methos is too exactly, then I repeat 100 tiemes this process
+		groupCenters = []
+		nodes = numpy.arange(numNodes)		
+		for i in range(0,100):	
+			otherNodes = numpy.setdiff1d(nodes, centerNodes)
 			
-	
-		m,b = utils.linealRegresssion(logR,lnMrq)
-		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
-		#Find the mass exponents
-		if q == 0: 
-			countDim = count;
-	
+			centerNodes = numpy.append(centerNodes,otherNodes)
+			numpy.random.shuffle(nodes)
+			
+			groupCenters.append(centerNodes)
+			
+		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
 
-		Tq[count] = m
-		
-		#Find the Generalizated Fractal dimensions
-		if q != 1:
-			m,b = utils.linealRegresssion((q-1)*logR,lnMrq[count])
-		else:
-			Z1e = numpy.array([])
-			for sand in sandBoxes:
-				Ze = numpy.log(sand)
-				Ze = numpy.average(Ze)
-				Z1e = numpy.append(Z1e,Ze)
-			m,b = utils.linealRegresssion(logR,Z1e)	
-		Dq[count] = m
-		if q == 0:
-			Indexzero = count
+	else:
+		print "SBGenetic: Invalid option of Algorithm"
+		sys.exit(0)
 
-		count+=1
-	
 	return logR, Indexzero,Tq, Dq, lnMrq,iterations,fitNessAverage,fitNessMax,fitNessMin

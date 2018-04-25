@@ -1,3 +1,3 @@
 #!/bin/sh
 cd ..
-python pruebasFractalidad.py --type Random --output Random50d100 --message Random50d100 --node 1000 --desired 20000 
+python pruebasFractalidad.py --type Random --output Random2000-20000 --message Random2000-20000 --node 2000 --desired 20000 

@@ -14,7 +14,7 @@ import random
 
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
-def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
+def SBAlgorithm(g,minq,maxq,percentSandBox,repetitions, centerNodes = numpy.array([])):
 	"""Insert a function and its arguments in process pool.
   
 	Input is inserted in queues using a round-robin fashion. Every job is
@@ -28,6 +28,10 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 	:returns: Assigned job id.
 	:rtype: Int.
         """	
+	graph = g
+
+	if(numpy.size(centerNodes)==0):
+		graph = snap.GetMxScc(g)	
 	numNodes = graph.GetNodes()
 	
 	listID = snap.TIntV(numNodes)
@@ -39,11 +43,9 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 		
 	#select random node
 	
-	d = snap.GetBfsFullDiam(graph,1,False)
+	d = snap.GetBfsFullDiam(graph,1,False)+1
 
-	rangeQ = maxq-minq+1
-
-	
+	rangeQ = maxq-minq+1	
 	#Mass Exponents
 	Tq = numpy.zeros([repetitions,rangeQ])
 	
@@ -69,26 +71,24 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 	for r in range(0,repetitions):
 		#Total q
 		lnMrq = numpy.zeros([rangeQ,d],dtype=float)
-
-		randomNodes = numpy.random.permutation(numNodes)	
-		#I select 40 percent of nodes
-		numberOfBoxes = int(percentSandBox*numpy.size(randomNodes));
 		
-		#sandBoxes = numpy.zeros([d,numberOfBoxes])	
+		numberOfBoxes = int(percentSandBox*numNodes);
+		randomNodes = centerNodes
+		#I select a percent of nodes
+		if(numpy.size(centerNodes)==0):
+			randomNodes = numpy.random.permutation(numNodes)[0:numberOfBoxes]		
 		sandBoxes = []
 		
 		for radius in range(1,d+1):		
 			sand = []
-			for i in range(0, numberOfBoxes):
-				currentNode = randomNodes[i]
+			for i in range(0, numpy.size(randomNodes)):
+				currentNode = int(randomNodes[i])
 				countNodes = 0.
 				for ni in range(0, numNodes):
 					distance = distances[currentNode][ni];
 					if  distance <= radius:
-						countNodes+=1
-				
-				sand.append(countNodes)
-			
+						countNodes+=1				
+				sand.append(countNodes)			
 			sandBoxes.append(sand)
 		
 
@@ -105,7 +105,8 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 				lnMrqTotal[count][i]+=Mr
 				i+=1				
 			
-			m, b, r_value, p_value, std_err = stats.linregress(logR,lnMrq[count])
+			m,b = utils.linealRegresssion(logR,lnMrq[count])
+
 			#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
 			#Find the mass exponents
 			if q == 0: 
@@ -115,21 +116,23 @@ def SBAlgorithm(graph,minq,maxq,percentSandBox,repetitions):
 			
 			#Find the Generalizated Fractal dimensions
 			if q != 1:
-				m, b, r_value, p_value, std_err = stats.linregress((q-1)*logR,lnMrq[count])
+				m,b = utils.linealRegresssion((q-1)*logR,lnMrq[count])
 			else:
 				Z1e = numpy.array([])
 				for sand in sandBoxes:					
 					Ze = numpy.log(sand)
 					Ze = numpy.average(Ze)
 					Z1e = numpy.append(Z1e,Ze)
-				m, b, r_value, p_value, std_err = stats.linregress(logR,Z1e)	
+				m,b = utils.linealRegresssion(logR,Z1e)	
 			Dq[r][count] = m
+
 			if q == 0:
 				Indexzero = count
-
+			
 			count+=1
 	
 	lnMrqTotalA = lnMrqTotal/repetitions
-	TqA = numpy.mean(Tq,axis=0)
-	DqA = numpy.mean(Dq,axis=0)
+	TqA = numpy.nanmean(Tq,axis=0)
+	DqA = numpy.nanmean(Dq,axis=0)
+
 	return logR, Indexzero,TqA, DqA,lnMrqTotalA

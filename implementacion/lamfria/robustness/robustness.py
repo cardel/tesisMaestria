@@ -113,7 +113,7 @@ def robustness_analysis_APL(graph,typeRemoval,minq,maxq,percentOfSandBoxes,itera
 		robustnessmeasure = numpy.average(measure)
 	return RTq, measure,robustnessmeasure
 	
-def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure):
+def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsSandBox,typeMeasure,degreeOfBoring):
 	
 	radius = snap.GetBfsFullDiam(graph,10,False)
 	percent = 0.1
@@ -142,7 +142,7 @@ def robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,si
 				index+=1
 			distances = utils.getDistancesMatrix(g,Ng, listID)
 			sizeChromosome = int(float(Ng)*percent)
-			nodesToRemove = SBGenetic.calculateCentersFixedSize(g, Ng,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree,sizeChromosome)
+			nodesToRemove = SBGenetic.calculateCentersFixedSize(g, Ng,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree,sizeChromosome,degreeOfBoring)
 	
 			#nodesGRemove = snap.TIntV(numpy.size(nodesToRemove))
 			

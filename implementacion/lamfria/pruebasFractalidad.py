@@ -70,7 +70,7 @@ def main(argv):
 	elif typeNet == "SmallWorld":		
 		graph = snap.GenSmallWorld(nodes, desiredGrade, 0.03, Rnd)
 	elif typeNet == "ScaleFreePowerLaw":
-		graph = snap.GenRndPowerLaw(500, 2.5)
+		graph = snap.GenRndPowerLaw(1000, 1.8)
 	elif typeNet == "ScaleFreePrefAttach":
 		graph = snap.GenPrefAttach(nodes, desiredGrade,Rnd)
 	elif typeNet == "Random":
@@ -85,13 +85,15 @@ def main(argv):
 	maxq = 10
 	
 	#SandBox
-	percentOfSandBoxes = 0.8
+	percentOfSandBoxes = 0.6
+	repetitionsDeterminics = 100
+
 	#Genetic
 	iterations = 200
-	iterationsDeterminics = 200
 	sizePopulation = 100 
-	percentCrossOver = 0.3
+	percentCrossOver = 0.4
 	percentMutation = 0.05	
+	degreeOfBoring = 20
 	
 	
 	#Box counting
@@ -101,38 +103,56 @@ def main(argv):
 	Kmax = 3000
 	#
 
-	executionTime = numpy.zeros(4,dtype=float)
+	executionTime = numpy.zeros(6,dtype=float)
 	executionTime[0] = time.time()
 
-	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT)
-	
+	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
 	executionTime[0] = time.time() - executionTime[0]
+	
 	executionTime[1] = time.time()
-	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,iterationsDeterminics)
+	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,repetitionsDeterminics)
 	
 	executionTime[1] = time.time() -  executionTime[1]
-	executionTime[2] = time.time()
 	
-	logRC, IndexzeroC,TqC, DqC, lnMrqC,iterations,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation)
+	executionTime[2] = time.time()	
+	logRC, IndexzeroC,TqC, DqC, lnMrqC,iterations,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'SB')
+	
 	executionTime[2] = time.time() - executionTime[2]
 	executionTime[3] = time.time()
 
-	logRD, IndexzeroD,TqD, DqD, lnMrqD = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax)
+	logRD, IndexzeroD,TqD, DqD, lnMrqD = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'SB')
 
 	executionTime[3] = time.time() - executionTime[3]
+
+	executionTime[4] = time.time()	
+	logRE, IndexzeroE,TqE, DqE, lnMrqE,iterationsE,fitNessAverageE,fitNessMaxE,fitNessMinE = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')
+	
+	executionTime[4] = time.time() - executionTime[4]
+	executionTime[5] = time.time()
+
+	logRF, IndexzeroF,TqF, DqF, lnMrqF = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BC')
+
+	executionTime[5] = time.time() - executionTime[5]
 	
 	##Matplotlib
 	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 	timestr = time.strftime("%Y%m%d_%H%M%S")
-	#plt.title("Ln BC Fixed")
-	#plt.xlabel('ln(r/d)')	
-	#plt.ylabel('ln(<Zr(q)>/(q-1)')	
+	
+
+	#fig1 = plt.figure()
+	#i = 0
+	#for q in range(minq,maxq+1):
+		#if q%2==0:
+			#plt.plot(logRA,lnMrqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
+		#i+=1
+	#plt.ylabel('ln(<Z(r)>)^q')
+	#plt.title("Mass exponents BC")
+	#plt.xlabel('ln(r/d)')
 	#fontP = FontProperties()
 	#fontP.set_size('small')
 	#plt.legend(prop=fontP)
-	#plt.savefig('Results/'+timestr+'_'+'TqLnrBC'+fileOutput+'.png')
-	##plt.show()
-	
+	#plt.savefig('Results/Fractality/'+timestr+'_'+'TqLnrBC'+fileOutput+'.png')
+
 	#fig2 = plt.figure()
 	#i = 0
 	#for q in range(minq,maxq+1):
@@ -140,14 +160,13 @@ def main(argv):
 			#plt.plot(logRB,lnMrqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
 		#i+=1
 	#plt.ylabel('ln(<M(r)>)^q')
-	#plt.title("Ln SB")
+	#plt.title("Mass exponents SB")
 	#plt.xlabel('ln(r/d)')
 	#fontP = FontProperties()
 	#fontP.set_size('small')
 	#plt.legend(prop=fontP)
-	#plt.savefig('Results/'+timestr+'_'+'TqLnrSB'+fileOutput+'.png')
-	##plt.show()
-	
+	#plt.savefig('Results/Fractality/'+timestr+'_'+'TqLnrSB'+fileOutput+'.png')	
+
 	#fig3 = plt.figure()
 	#i = 0
 	#for q in range(minq,maxq+1):
@@ -155,77 +174,57 @@ def main(argv):
 			#plt.plot(logRC,lnMrqC[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
 		#i+=1
 	#plt.ylabel('ln(<M(r)>)^q')
-	#plt.title("Mass exponents BC")
+	#plt.title("Mass exponents Genetic")
 	#plt.xlabel('ln(r/d)')
 	#fontP = FontProperties()
 	#fontP.set_size('small')
 	#plt.legend(prop=fontP)
-	#plt.savefig('Results/'+timestr+'_'+'TqLnrSB'+fileOutput+'.png')
-	##plt.show()	
-	##plt.title("Mass exponents")
-	##ymin, ymax = plt.ylim()
-	##plt.ylim((ymin, ymax+20)) 
-	##plt.legend(loc=9, bbox_to_anchor=(0.1, 1))
-	##plt.show()
-	
-	#fig4 = plt.figure()
-	#plt.xlabel('q')
-	#plt.ylabel('t(q)')	
-	#plt.title("Mass exponents Box Counting Fixed")
-	#plt.plot(range(minq,maxq+1), TqA,'bo-', label='Box Counting Fixed')
-	#plt.plot(range(minq,maxq+1), TqB,'mo-', label='SBAlgorithm')
-	#plt.plot(range(minq,maxq+1), TqC,'ko-', label='Box Counting')
-	#fontP = FontProperties()
-	#fontP.set_size('small')
-	#plt.legend(prop=fontP)
-	#plt.savefig('Results/'+timestr+'_'+'massTq'+fileOutput+'.png')
-	#plt.show()
-
-
+	#plt.savefig('Results/Fractality/'+timestr+'_'+'TqLnrGenetic'+fileOutput+'.png')	
 	
 	fig5 = plt.figure()
 	plt.xlabel('q')
 	plt.ylabel('D(q)')	
 	plt.title("Generalizated Fractal dimensions")
 
-	plt.plot(range(minq,maxq+1), DqA,'ro-', label='Box Counting Fixed')
-	plt.plot(range(minq,maxq+1), DqB,'bo-', label='Sand Box Algorithm')
-	plt.plot(range(minq,maxq+1), DqC,'mo-', label='Evolutive')
-	plt.plot(range(minq,maxq+1), DqD,'ko-', label='Simulated')
+	plt.plot(range(minq,maxq+1), DqA,'r<-', label='Box Counting Fixed')
+	plt.plot(range(minq,maxq+1), DqB,'b<-', label='Sand Box Algorithm')
+	plt.plot(range(minq,maxq+1), DqC,'m>-', label='Evolutive SB')
+	plt.plot(range(minq,maxq+1), DqD,'k>-', label='Simulated SB')
+	plt.plot(range(minq,maxq+1), DqE,'go-', label='Evolutive BC')
+	plt.plot(range(minq,maxq+1), DqF,'co-', label='Simulated BC')
 	ymin, ymax = plt.ylim()
 	xmin, xmax = plt.xlim()
 	plt.ylim((ymin, 1.1*ymax))
-	#plt.text(xmin/2,ymax,'Fractal Dim '+str(Dq[Indexzero])+'Dim inf '+str(Dq[Indexzero+1])+'Corr '+str(Dq[Indexzero+2]))
 	fontP = FontProperties()
 	fontP.set_size('small')
 	plt.legend(prop=fontP)
 	plt.savefig('Results/Fractality/'+timestr+'_'+'fractality'+fileOutput+'.png')
-	#plt.show()
+	##plt.show()
 	
-	fig6 = plt.figure()
-	plt.xlabel('Strategy')
-	plt.ylabel('Time(s)')
-	x=numpy.arange(4)
-	plt.bar(x, executionTime)
-	plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Evolutive', 'Simulated'))
-	plt.savefig('Results/Fractality/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
-	plt.show()
+	#fig6 = plt.figure()
+	#plt.xlabel('Strategy')
+	#plt.ylabel('Time(s)')
+	#x=numpy.arange(6)
+	#plt.bar(x, executionTime)
+	#plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Evolutive SB', 'Simulated SB', 'Evolutive BC', 'Simulated BC'))
+	#plt.savefig('Results/Fractality/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
 	
-	fig7 = plt.figure()
-	plt.xlabel('iterations')
-	plt.ylabel('Fitness')	
-	plt.title("Behaviour genetic algorithm")	 
-	plt.plot(range(0,iterations), fitNessAverage,'r.-', label='Average')
-	plt.plot(range(0,iterations), fitNessMax,'b.-', label='Max')
-	plt.plot(range(0,iterations), fitNessMin,'m.-', label='min')
-	ymin, ymax = plt.ylim()
-	xmin, xmax = plt.xlim()
-	plt.ylim((ymin, 1.1*ymax))
-	fontP = FontProperties()
-	fontP.set_size('small')
-	plt.legend(prop=fontP)
-	plt.savefig('Results/Fractality/'+timestr+'_'+'evolutiveBehaviour'+fileOutput+'.png')
-	plt.show()
+	
+	
+	#fig7 = plt.figure()
+	#plt.xlabel('iterations')
+	#plt.ylabel('Fitness')	
+	#plt.title("Behaviour genetic algorithm")	 
+	#plt.plot(range(0,numpy.size(fitNessAverage)), fitNessAverage,'r.-', label='Average')
+	#plt.plot(range(0,numpy.size(fitNessMax)), fitNessMax,'b.-', label='Max')
+	#plt.plot(range(0,numpy.size(fitNessMin)), fitNessMin,'m.-', label='min')
+	#ymin, ymax = plt.ylim()
+	#xmin, xmax = plt.xlim()
+	#plt.ylim((ymin, 1.1*ymax))
+	#fontP = FontProperties()
+	#fontP.set_size('small')
+	#plt.legend(prop=fontP)
+	#plt.savefig('Results/Fractality/'+timestr+'_'+'evolutiveBehaviour'+fileOutput+'.png')
 	
 	#Files with open('multisave.npy','wb') as f:
 	#https://stackoverflow.com/questions/42204368/how-to-append-many-numpy-files-into-one-numpy-file-in-python?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa

@@ -115,7 +115,7 @@ def main(argv):
 	if typeMeasure=='APL' :
 		RTqB,measureB,robustnessmeasureB=robustness.robustness_analysis_APL(graph,attack,minq,maxq,percentOfSandBoxes,iterations)
 	#Analysis with evolutive strategy
-	RTqC,measureC,robustnessmeasureC=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsDeterminics,typeMeasure)
+	RTqC,measureC,robustnessmeasureC=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsDeterminics,typeMeasure,degreeOfBoring)
 
 	#Analysis with Simulated Annealing
 	RTqD,measureD,robustnessmeasureD=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsDeterminics,typeMeasure)
