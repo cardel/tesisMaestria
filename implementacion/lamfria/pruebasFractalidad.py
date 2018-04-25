@@ -200,14 +200,15 @@ def main(argv):
 	plt.legend(prop=fontP)
 	plt.savefig('Results/Fractality/'+timestr+'_'+'fractality'+fileOutput+'.png')
 	##plt.show()
+	#np.savez(message+timestr+"file.txt", genetico=arr1, name2=arr2)
 	
-	#fig6 = plt.figure()
-	#plt.xlabel('Strategy')
-	#plt.ylabel('Time(s)')
-	#x=numpy.arange(6)
-	#plt.bar(x, executionTime)
-	#plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Evolutive SB', 'Simulated SB', 'Evolutive BC', 'Simulated BC'))
-	#plt.savefig('Results/Fractality/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
+	fig6 = plt.figure()
+	plt.xlabel('Strategy')
+	plt.ylabel('Time(s)')
+	x=numpy.arange(6)
+	plt.bar(x, executionTime)
+	plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Evolutive SB', 'Simulated SB', 'Evolutive BC', 'Simulated BC'))
+	plt.savefig('Results/Fractality/'+timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
 	
 	
 	
