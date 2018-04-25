@@ -297,7 +297,6 @@ def SBGenetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentM
 	if typeAlgorithm=='SB':
 		groupCenters = []
 		groupCenters.append(centerNodes)
-		print 		centerNodes
 		logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,1,1, centerNodes)	
 	elif typeAlgorithm=='BC':
 		#Complete nodes

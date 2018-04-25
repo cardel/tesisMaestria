@@ -51,9 +51,9 @@ def main(argv):
 		elif opt in ('-a','--attack'):
 			attack = arg
 		elif opt in ('-d','--desired'):
-			nodes = int(arg)
+			desiredGrade = int(arg)			
 		elif opt in ('-n','--node'):
-			desiredGrade = int(arg)
+			nodes = int(arg)
 		elif opt in ('-y','--measure'):
 			typeMeasure=arg
 		else:
