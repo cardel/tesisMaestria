@@ -16,7 +16,7 @@ import SBAlgorithm.SBAlgorithm as SBAlgorithm
 import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
 
 #Search profile about the algortihm
-def calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree):
+def calculateFitness(graph, chromosome,radius, distances,listDegree,maxDegree):
 	
 	totalDegree = numpy.array([], dtype=float)
 	totalDistanceOtherNodes = numpy.array([], dtype=float)
@@ -56,7 +56,7 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 
 		for index in range(0, sizePopulation):
 			chromosome = population[index]
-			fitness[index] = calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree)
+			fitness[index] = calculateFitness(graph, chromosome,radius, distances,listDegree,maxDegree)
 			 
 		#Stop condition
 		fitNessAverage=numpy.append(fitNessAverage,numpy.mean(fitness))
@@ -93,9 +93,10 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 			for j in range(1,sizePopulation):
 				if accFiness[j-1]<=r1 and accFiness[j]>=r1:
 					parent1 = population[j]
+					break
 				if accFiness[j-1]<=r2 and accFiness[j]>=r2:
 					parent2 = population[j]
-			
+					break
 
 			#Cross		
 			individual = numpy.random.permutation(numpy.unique(numpy.append(parent1,parent2)))[0:sizeChromosome]
@@ -151,7 +152,7 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 		
 		for index in range(0, sizePopulation):
 			chromosome = population[index]
-			fitness[index] = calculateFitness(index,graph, chromosome,radius, distances,listDegree,maxDegree)
+			fitness[index] = calculateFitness(graph, chromosome,radius, distances,listDegree,maxDegree)
 		
 		#Stop condition
 		fitNessAverage=numpy.append(fitNessAverage,numpy.mean(fitness))
@@ -236,7 +237,9 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 			#Replace a random old individual
 			index = rnd.randint(0, sizePopulation-1) 
 			population[orderFitness[index]] = individual
-			index+=1			
+			index+=1	
+			
+					
 	return best, fitNessAverage,fitNessMax,fitNessMin
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
@@ -302,9 +305,9 @@ def SBGenetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentM
 		#Complete nodes
 		#This methos is too exactly, then I repeat 100 tiemes this process
 		groupCenters = []
-		nodes = numpy.arange(numNodes)		
-		for i in range(0,100):	
-			otherNodes = numpy.setdiff1d(nodes, centerNodes)
+		nodes = numpy.arange(numNodes)	
+		otherNodes = numpy.setdiff1d(nodes, centerNodes)	
+		for i in range(0,100):		
 			
 			newNodes = numpy.append(centerNodes,otherNodes)
 			numpy.random.shuffle(nodes)
