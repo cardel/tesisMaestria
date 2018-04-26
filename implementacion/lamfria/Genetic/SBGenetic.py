@@ -319,4 +319,4 @@ def SBGenetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentM
 		print "SBGenetic: Invalid option of Algorithm"
 		sys.exit(0)
 
-	return logR, Indexzero,Tq, Dq, lnMrq,iterations,fitNessAverage,fitNessMax,fitNessMin
+	return logR, Indexzero,Tq, Dq, lnMrq,fitNessAverage,fitNessMax,fitNessMin

@@ -6,16 +6,18 @@ python pruebasFractalidadSencillas.py --file ../datos/Generadas/scaleFree500-20.
 python pruebasFractalidadSencillas.py --file ../datos/Generadas/smallWorld500-20.txt --type Edge --output SmallWorld --message "SmallWorld"  
 
 
-python pruebasFractalidadSencillas.py --file ../datos/Generadas/smallWorld5500-2515.txt --type Edge --output smallWorld5500-2515.txt --message "smallWorld5500"   &
-python pruebasFractalidadSencillas.py --file ../datos/Generadas/paperScaleFree500-499.txt --type Edge --output paperScaleFree500-499.txt --message "paperScaleFree500-499.txt"   &
+python pruebasFractalidadSencillas.py --file ../datos/Generadas/smallWorld5500-2515.txt --type Edge --output smallWorld5500-2515.txt --message "smallWorld5500"   
+python pruebasFractalidadSencillas.py --file ../datos/Generadas/paperScaleFree500-499.txt --type Edge --output paperScaleFree500-499.txt --message "paperScaleFree500-499.txt"  
 
-python pruebasFractalidadSencillas.py --file ../datos/Generadas/paperRandom449-610.txt --type Edge --output paperRandom449-610.txt --message "paperRandom449-610.txt"  &
+python pruebasFractalidadSencillas.py --file ../datos/Generadas/paperRandom449-610.txt --type Edge --output paperRandom449-610.txt --message "paperRandom449-610.txt"  
 
 
 
 #Othwers
 
-python pruebasFractalidad.py --file ../datos/football.net --type Pajek --output footballDegree --message "football"  &
+python pruebasFractalidadSencillas.py --file ../datos/football.net --type Pajek --output footballDegree --message "football"  &
+python pruebasFractalidadSencillas.py --file ../datos/lesmis.net --type Pajek --output lesmis --message "lesmis"  &
+
 
 python pruebasFractalidad.py --file ../datos/karate.net --type Pajek --output karateDegree --message "karate"  &
 

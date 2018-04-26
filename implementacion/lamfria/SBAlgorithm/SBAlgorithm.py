@@ -43,7 +43,7 @@ def SBAlgorithm(g,minq,maxq,percentSandBox,repetitions, centerNodes = numpy.arra
 		
 	#select random node
 	
-	d = snap.GetBfsFullDiam(graph,1,False)+1
+	d = snap.GetBfsFullDiam(graph,1,False)
 
 	rangeQ = maxq-minq+1	
 	#Mass Exponents

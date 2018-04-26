@@ -33,7 +33,7 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 	T = int(float(numNodes)*percentNodesT)
 	
 	#Set the size of the box in the range r ∈ [1, d ],where d is the diameter of the network.
-	d = snap.GetBfsFullDiam(graph,1,False)+1
+	d = snap.GetBfsFullDiam(graph,1,False)
 	rangeQ = maxq-minq+1
 	
 	DqTotal = []
@@ -101,40 +101,45 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 				BoxesRadio.append(RBoxes)
 			totalBoxes.append(BoxesRadio)	
 		
-		Boxes =[]
-		boxA = 0
-		for q in range(minq,maxq+1,1):
-			Zrq = []
-			for TBoxes in totalBoxes:
-				BoxesQ = numpy.array([])
-				for RBoxes in TBoxes:
-					BoxesQ = numpy.append(BoxesQ,(numpy.sum(numpy.power(RBoxes,q))))
-				Zrq.append(BoxesQ)
-			Zrq = numpy.sum(Zrq, axis=0)/T
-			Boxes.append(Zrq)
+		#Sequence for a random order of centers, I find the box coverting with miminal number of boxes
 		
-		Boxes = numpy.array(Boxes)	
-		#Index of q
-		boxC = 0
-		Zre = []
-		for TBoxes in totalBoxes:
-			boxC += 1
-			BoxesLN = numpy.array([])
-			for RBoxes in TBoxes:	
-				BoxesLN= numpy.append(BoxesLN,(numpy.sum(RBoxes*numpy.log(RBoxes))))
-			Zre.append(BoxesLN)
+		#Find minimal number of boxes
+		minimalCovering = [None]*d
+		for boxesSequence in totalBoxes:
+			r = 0
+			for boxesByRadio in boxesSequence:
+				if minimalCovering[r] is None:
+					minimalCovering[r] = boxesByRadio
+				else:
+					if len(boxesByRadio) <  len(minimalCovering[r]):
+						minimalCovering[r]= boxesByRadio
+				r+=1
 				
-		Zre = numpy.array(Zre)
-		Zre = numpy.average(Zre, axis=0)
+	
+		#Bidimensional array q rows, r columns
+		Zrq = numpy.zeros([rangeQ,r])
+		
+		countQ = 0
+		for q in range(minq,maxq+1):
+			countR = 0
+			for mini in minimalCovering:
+				Zrq[countQ][countR] = numpy.sum(numpy.power(mini,q))
+				countR+=1
+			countQ+=1
+		
+		Zre = numpy.zeros([r])
+		countR = 0
+		for mini in minimalCovering:
+			Zre[countR] = numpy.sum(mini*numpy.log(mini))
+			countR+=1
 
 
 		count = 0
-		Indexzero  = 0 
-		
+		Indexzero  = 0 		
 
 		for q in range(minq,maxq+1,1):
 			i = 0
-			box = Boxes[count]
+			box = Zrq[count]
 			lnMrq[count]= numpy.log(box)	
 				
 			m,b = utils.linealRegresssion(logR,lnMrq[count])
@@ -147,7 +152,8 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 			
 			#Find the Generalizated Fractal dimensions
 			if q != 1:
-				m,b = utils.linealRegresssion(logR,lnMrq[count]/(q-1))
+				#m,b = utils.linealRegresssion(logR,lnMrq[count]/(q-1))
+				m = Tq[count]/(q-1)
 			else:	
 				m,b = utils.linealRegresssion(logR,Zre)	
 			Dq[count] = m
