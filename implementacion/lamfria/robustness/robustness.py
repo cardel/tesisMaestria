@@ -11,7 +11,7 @@ import numpy
 import sys
 import utils.utils as utils
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
-import Genetic.SBGenetic as SBGenetic
+import Genetic.Genetic as SBGenetic
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import lib.snap as snap
 
