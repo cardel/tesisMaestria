@@ -5,7 +5,7 @@
 #Creation date 14th March 2018
 #Last edition date 14th March 2018
 #Description: This algorithm calculates the fractal dimension with CBB method
-import lib.snap
+import lib.snap as snap
 import sys
 import getopt
 import numpy
@@ -37,38 +37,13 @@ def calculateLb(boxes):
 
 
 
-def main(argv):
-	random.seed(datetime.now())
-	fileInput = "";
-	typeNet = "";
-	try:
-		opts, args = getopt.getopt(argv,'f:t:',['file=','type='])
-	except getopt.GetoptError as err:
-		print(err)
-		print("You must execute: python GreedyAlgorithm.py --file <file> --type <type>")
-		sys.exit(2)
-	
-	for opt, arg in opts:
-		if opt in ('-f', '--file'):
-			fileInput = arg
-		elif opt in ('-t','--type'):
-			typeNet = arg
+def CBBFractality(graph):
 
 	
-	
-	if typeNet == "Edge":
-		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
-	elif typeNet == "ConnList":
-		grafo = snap.LoadConnList(snap.PUNGraph, fileInput)
-	elif typeNet == "Pajek":
-		grafo = snap.LoadPajek(snap.PUNGraph, fileInput)
-	else:
-		grafo = snap.LoadEdgeList(snap.PUNGraph, fileInput, 0, 1, ' ')
-	
 	#Get lbmax (max distance in the network)
-	lbMax = snap.GetBfsFullDiam(grafo,10,False)
+	lbMax = snap.GetBfsFullDiam(graph,10,False)
 	lbMax+=1
-	numNodes = grafo.GetNodes()
+	numNodes = graph.GetNodes()
 	uncoveredNodes = []
 	setBoxes = []
 	
@@ -76,7 +51,7 @@ def main(argv):
 		
 		setBoxes.append([])
 		
-		for ni in grafo.Nodes():
+		for ni in graph.Nodes():
 			uncoveredNodes.append(ni.GetId())
 			
 			
@@ -89,7 +64,7 @@ def main(argv):
 			#Candidate set
 			candidateSet = [node]
 			for nd in uncoveredNodes:
-				distance=snap.GetShortPath(grafo,node,nd)
+				distance=snap.GetShortPath(graph,node,nd)
 				
 				if distance < lb:
 					candidateSet.append(nd)
@@ -104,14 +79,7 @@ def main(argv):
 	for lb in range(0,lbMax-1):
 		boxes.Add(len(setBoxes[lb]))
 	
-	boxes.Add(1)
-	print("Lb","Boxes")
-	
-	for i in range(0,boxes.Len()):
-		print(i+1,boxes[i])
-		
-	lb,b = calculateLb(boxes)
-	print("The dimension fractal is: ",lb)
-	
-if __name__ == "__main__":
-   main(sys.argv[1:])
+	boxes.Add(1)	
+	lb = calculateLb(boxes)
+	return lb
+

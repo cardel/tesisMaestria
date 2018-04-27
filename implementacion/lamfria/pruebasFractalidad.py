@@ -15,6 +15,7 @@ import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
 import BCAlgorithm.BCAlgorithm as BCAlgorithm
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import robustness.robustness as robustness
+import CBBAlgorithm.CBBAlgorithm as CBBAlgorithm
 import utils.utils as utils
 import matplotlib as mpl
 mpl.use('Agg')
@@ -141,6 +142,8 @@ def main(argv):
 	logRH, IndexzeroH,TqH, DqH, lnMrqH = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BCFS')
 	executionTime[8] = time.time() - executionTime[8]
 	
+	dmFractal = CBBAlgorithm.CBBFractality(graph)
+	
 	timestr = time.strftime("%Y%m%d_%H%M%S")
 	file_object = open("Results/Fractality/"+timestr+fileOutput, 'w') 
 	##Matplotlib
@@ -253,6 +256,9 @@ def main(argv):
 	file_object.write("\nExecution time\n")
 	file_object.write("\nBox Counting\tBox Counting Fixed\tSandBox\tGenetic SandBox\tSimulated SandBox\tGenetic BCFS\tSimulated BCFS\n")
 	file_object.write(numpy.array2string(executionTime, precision=8, separator=','))
+	
+	file_object.write("\nFractal dimension\n")
+	file_object.write(str(dmFractal))	
 	
 	file_object.close() 
 
