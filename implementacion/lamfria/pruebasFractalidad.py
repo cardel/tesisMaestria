@@ -9,9 +9,10 @@ import sys
 import getopt
 import lib.snap as snap
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
-import Genetic.SBGenetic as SBGenetic
+import Genetic.Genetic as Genetic
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
 import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
+import BCAlgorithm.BCAlgorithm as BCAlgorithm
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import robustness.robustness as robustness
 import utils.utils as utils
@@ -20,6 +21,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 import math
 import numpy
+numpy.set_printoptions(threshold=numpy.nan)
 import time
 from matplotlib.font_manager import FontProperties
 
@@ -101,42 +103,66 @@ def main(argv):
 	Kmax = 3000
 	
 
-	executionTime = numpy.zeros(6,dtype=float)
+	executionTime = numpy.zeros(9,dtype=float)
+	
 	executionTime[0] = time.time()
-
-	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
+	logR, Indexzero,Tq, Dq, lnMrq = BCAlgorithm.BCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
 	executionTime[0] = time.time() - executionTime[0]
 	
 	executionTime[1] = time.time()
+	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
+	executionTime[1] = time.time() - executionTime[1]
+	
+	executionTime[2] = time.time()
 	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,repetitionsDeterminics)	
-	executionTime[1] = time.time() -  executionTime[1]
+	executionTime[2] = time.time() -  executionTime[2]
 	
-	executionTime[2] = time.time()	
-	logRC, IndexzeroC,TqC, DqC, lnMrqC,fitNessAverage,fitNessMax,fitNessMin = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'SB')	
-	executionTime[2] = time.time() - executionTime[2]
-	
-	executionTime[3] = time.time()
-	logRD, IndexzeroD,TqD, DqD, lnMrqD = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'SB')
+	executionTime[3] = time.time()	
+	logRC, IndexzeroC,TqC, DqC, lnMrqC,fitNessAverage,fitNessMax,fitNessMin = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'SB')	
 	executionTime[3] = time.time() - executionTime[3]
-
-	executionTime[4] = time.time()	
-	logRE, IndexzeroE,TqE, DqE, lnMrqE,fitNessAverageE,fitNessMaxE,fitNessMinE = SBGenetic.SBGenetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')	
-	executionTime[4] = time.time() - executionTime[4]
 	
-	executionTime[5] = time.time()
-	logRF, IndexzeroF,TqF, DqF, lnMrqF = SimulatedAnnealing.SBSA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BC')
+	executionTime[4] = time.time()
+	logRD, IndexzeroD,TqD, DqD, lnMrqD = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'SB')
+	executionTime[4] = time.time() - executionTime[4]
+
+	executionTime[5] = time.time()	
+	logRE, IndexzeroE,TqE, DqE, lnMrqE,fitNessAverageE,fitNessMaxE,fitNessMinE = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')	
 	executionTime[5] = time.time() - executionTime[5]
+	
+	executionTime[6] = time.time()
+	logRF, IndexzeroF,TqF, DqF, lnMrqF = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BC')
+	executionTime[6] = time.time() - executionTime[6]
+
+	executionTime[7] = time.time()	
+	logRG, IndexzeroG,TqG, DqG, lnMrqG,fitNessAverageG,fitNessMaxG,fitNessMinG = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BCFS')	
+	executionTime[7] = time.time() - executionTime[7]
+	
+	executionTime[8] = time.time()
+	logRH, IndexzeroH,TqH, DqH, lnMrqH = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BCFS')
+	executionTime[8] = time.time() - executionTime[8]
 	
 	timestr = time.strftime("%Y%m%d_%H%M%S")
 	file_object = open("Results/Fractality/"+timestr+fileOutput, 'w') 
 	##Matplotlib
 	#symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 	#timestr = time.strftime("%Y%m%d_%H%M%S")
+	file_object.write("BCAlgorithm\n")
+	file_object.write("logR\n")
+	file_object.write(numpy.array2string(logR, precision=8, separator=','))
+	file_object.write("\nIndexZero\n")
+	file_object.write(str(IndexzeroA))
+	file_object.write("\nTq\n")
+	file_object.write(numpy.array2string(Tq, precision=8, separator=','))
+	file_object.write("\nDq\n")
+	file_object.write(numpy.array2string(Dq, precision=8, separator=','))
+	file_object.write("\nlnMrq\n")
+	file_object.write(numpy.array2string(lnMrq, precision=8, separator=','))
 	
+		
 	file_object.write("FSBCAlgorithm\n")
 	file_object.write("logR\n")
 	file_object.write(numpy.array2string(logRA, precision=8, separator=','))
-	file_object.write("IndexZero\n")
+	file_object.write("\nIndexZero\n")
 	file_object.write(str(IndexzeroA))
 	file_object.write("\nTq\n")
 	file_object.write(numpy.array2string(TqA, precision=8, separator=','))
@@ -150,7 +176,7 @@ def main(argv):
 	file_object.write("\SBAlgorithm\n")
 	file_object.write("logR\n")
 	file_object.write(numpy.array2string(logRB, precision=8, separator=','))
-	file_object.write("IndexZero\n")
+	file_object.write("\nIndexZero\n")
 	file_object.write(str(IndexzeroB))
 	file_object.write("\nTq\n")
 	file_object.write(numpy.array2string(TqB, precision=8, separator=','))
@@ -163,7 +189,7 @@ def main(argv):
 	file_object.write("\n SandBox Genetic\n")	
 	file_object.write("logR\n")
 	file_object.write(numpy.array2string(logRC, precision=8, separator=','))
-	file_object.write("IndexZero\n")
+	file_object.write("\nIndexZero\n")
 	file_object.write(str(IndexzeroC))
 	file_object.write("\nTq\n")
 	file_object.write(numpy.array2string(TqC, precision=8, separator=','))
@@ -182,7 +208,7 @@ def main(argv):
 	file_object.write("\n SandBox Simulated Annealing\n")
 	file_object.write("logR\n")
 	file_object.write(numpy.array2string(logRD, precision=8, separator=','))
-	file_object.write("IndexZero\n")
+	file_object.write("\nIndexZero\n")
 	file_object.write(str(IndexzeroD))
 	file_object.write("\nTq\n")
 	file_object.write(numpy.array2string(TqD, precision=8, separator=','))
@@ -195,7 +221,7 @@ def main(argv):
 	file_object.write("\n BoxCounting Genetic\n")	
 	file_object.write("logR\n")
 	file_object.write(numpy.array2string(logRE, precision=8, separator=','))
-	file_object.write("IndexZero\n")
+	file_object.write("\nIndexZero\n")
 	file_object.write(str(IndexzeroE))
 	file_object.write("\nTq\n")
 	file_object.write(numpy.array2string(TqE, precision=8, separator=','))
@@ -214,7 +240,7 @@ def main(argv):
 	file_object.write("\n BoxCounting Simulated Annealing\n")
 	file_object.write("logR\n")
 	file_object.write(numpy.array2string(logRE, precision=8, separator=','))
-	file_object.write("IndexZero\n")
+	file_object.write("\nIndexZero\n")
 	file_object.write(str(IndexzeroE))
 	file_object.write("\nTq\n")
 	file_object.write(numpy.array2string(TqE, precision=8, separator=','))
@@ -225,7 +251,7 @@ def main(argv):
 	file_object.write("\n")
 	file_object.write("\n")	
 	file_object.write("\nExecution time\n")
-	file_object.write("\nBox Counting\tSandBox\tGenetic SandBox\tSimulated SandBox\tGenetic BoxCounting\tSimulated Box Counting\n")
+	file_object.write("\nBox Counting\tBox Counting Fixed\tSandBox\tGenetic SandBox\tSimulated SandBox\tGenetic BCFS\tSimulated BCFS\n")
 	file_object.write(numpy.array2string(executionTime, precision=8, separator=','))
 	
 	file_object.close() 

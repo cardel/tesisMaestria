@@ -12,6 +12,7 @@ from sets import Set
 import lib.snap as snap
 import utils.utils as utils
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
+import BCAlgorithm.BCAlgorithm as BCAlgorithm
 import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
 
 	
@@ -94,7 +95,7 @@ def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,l
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
 #Algorithm Simulated Annealing
-def SBSA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
+def SA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
 	graph = snap.GetMxScc(g)
 	numNodes = graph.GetNodes()
 	
@@ -131,7 +132,7 @@ def SBSA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
 		groupCenters =[]
 		groupCenters.append(centerNodes)
 		logR, Indexzero,Tq, Dq, lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,1,1, centerNodes)	
-	elif typeAlgorithm=='BC':
+	elif typeAlgorithm=='BCFS':
 		groupCenters = []
 		nodes = numpy.arange(numNodes)	
 		for i in range(0,100):
@@ -143,7 +144,19 @@ def SBSA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
 		
 		groupCenters = numpy.array(groupCenters)
 		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
-
+		
+	elif typeAlgorithm=='BC':
+		groupCenters = []
+		nodes = numpy.arange(numNodes)	
+		for i in range(0,100):
+			otherNodes = numpy.setdiff1d(nodes, centerNodes)			
+			newNodes = numpy.append(centerNodes,otherNodes)
+			numpy.random.shuffle(nodes)
+			numpy.random.shuffle(centerNodes)
+			groupCenters.append(newNodes)
+		
+		groupCenters = numpy.array(groupCenters)
+		logR, Indexzero,Tq, Dq, lnMrq = BCAlgorithm.BCAlgorithm(g,minq,maxq,1,1, groupCenters)
 	else:
 		print "SimulatedAnnealing: Invalid option of Algorithm"
 		sys.exit(0)

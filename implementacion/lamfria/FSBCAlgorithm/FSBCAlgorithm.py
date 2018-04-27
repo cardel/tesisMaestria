@@ -33,12 +33,12 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 	T = int(float(numNodes)*percentNodesT)
 	
 	#Set the size of the box in the range r ∈ [1, d ],where d is the diameter of the network.
-	d = snap.GetBfsFullDiam(graph,1,False)
+	d = snap.GetBfsFullDiam(graph,1,False)+1
 	rangeQ = maxq-minq+1
 	
-	DqTotal = []
-	TqTotal = []
-	lnMrqTottal = []
+	DqTotal = numpy.zeros([rangeQ])	
+	TqTotal = numpy.zeros([rangeQ])	
+	lnMrqTottal = numpy.zeros([rangeQ,d],dtype=float)
 	#Calculate loge = logR/d
 	logR = numpy.array([])
 	for radius in range(1,d+1):
@@ -80,10 +80,11 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 			for radius in range(1,d+1):		
 				nodesMark = numpy.zeros([numNodes])	
 				RBoxes = numpy.array([],dtype=float)	
+				#All nodes in gigaint component have to covered	
 				radiusCovered = numpy.zeros([radius])
 				for i in range(0, numNodes):				
 					currentNode = randomSequence[i]
-					box = numpy.array([], dtype=int)					
+					box = numpy.array([currentNode], dtype=int)					
 					
 					if nodesMark[int(currentNode)]==0:
 						countNodes = 0.
@@ -94,54 +95,49 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 									countNodes+=1
 									radiusCovered[int(distance)-1]=1
 									box=numpy.append(box,ni)
+							
 						if numpy.prod(radiusCovered)==1 and countNodes>0:
 							RBoxes = numpy.append(RBoxes,countNodes/numNodes)
-							nodesMark[box] = 1	
-		
+							nodesMark[box] = 1			
 				BoxesRadio.append(RBoxes)
 			totalBoxes.append(BoxesRadio)	
 		
-		#Sequence for a random order of centers, I find the box coverting with miminal number of boxes
+		Boxes =[]
+		boxA = 0
+		for q in range(minq,maxq+1,1):
+			Zrq = []
+			for TBoxes in totalBoxes:
+				BoxesQ = numpy.array([])
+				for RBoxes in TBoxes:
+					BoxesQ= numpy.append(BoxesQ,(numpy.sum(numpy.power(RBoxes,q))))
+				Zrq.append(BoxesQ)
+			Zrq = numpy.average(Zrq, axis=0)
+			Boxes.append(Zrq)
 		
-		#Find minimal number of boxes
-		minimalCovering = [None]*d
-		for boxesSequence in totalBoxes:
-			r = 0
-			for boxesByRadio in boxesSequence:
-				if minimalCovering[r] is None:
-					minimalCovering[r] = boxesByRadio
-				else:
-					if len(boxesByRadio) <  len(minimalCovering[r]):
-						minimalCovering[r]= boxesByRadio
-				r+=1
+		Boxes = numpy.array(Boxes)	
+		#Index of q
+		boxC = 0
+		Zre = []
+		for TBoxes in totalBoxes:
+			boxC += 1
+			BoxesLN = numpy.array([])
+			for RBoxes in TBoxes:	
+				BoxesLN= numpy.append(BoxesLN,(numpy.sum(RBoxes*numpy.log(RBoxes))))
+			Zre.append(BoxesLN)
 				
-	
-		#Bidimensional array q rows, r columns
-		Zrq = numpy.zeros([rangeQ,r])
-		
-		countQ = 0
-		for q in range(minq,maxq+1):
-			countR = 0
-			for mini in minimalCovering:
-				Zrq[countQ][countR] = numpy.sum(numpy.power(mini,q))
-				countR+=1
-			countQ+=1
-		
-		Zre = numpy.zeros([r])
-		countR = 0
-		for mini in minimalCovering:
-			Zre[countR] = numpy.sum(mini*numpy.log(mini))
-			countR+=1
+		Zre = numpy.array(Zre)
+		Zre = numpy.average(Zre, axis=0)
 
 
 		count = 0
-		Indexzero  = 0 		
+		Indexzero  = 0 
+		
 
 		for q in range(minq,maxq+1,1):
 			i = 0
-			box = Zrq[count]
+			box = Boxes[count]
 			lnMrq[count]= numpy.log(box)	
-				
+			lnMrqTottal[count]+= numpy.log(box)		
 			m,b = utils.linealRegresssion(logR,lnMrq[count])
 			#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
 			#Find the mass exponents
@@ -149,25 +145,17 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 				countDim = count;		
 
 			Tq[count] = m
-			
+			TqTotal[count] +=m
 			#Find the Generalizated Fractal dimensions
 			if q != 1:
-				#m,b = utils.linealRegresssion(logR,lnMrq[count]/(q-1))
-				m = Tq[count]/(q-1)
+				m,b = utils.linealRegresssion(logR,lnMrq[count]/(q-1))
 			else:	
 				m,b = utils.linealRegresssion(logR,Zre)	
 			Dq[count] = m
-			
+			DqTotal[count]+=m
 			if q == 0:
 				Indexzero = count
 			count+=1
-	
-		DqTotal.append(Dq)
-		TqTotal.append(Tq)
-		lnMrqTottal.append(lnMrq)
-	#print TqTotal, DqTotal,lnMrqTottal
-	DqTotal = numpy.average(DqTotal, axis=0)
-	TqTotal = numpy.average(TqTotal, axis=0)
-	lnMrqTottal = numpy.average(lnMrqTottal, axis=0)
-	return logR, Indexzero,TqTotal, DqTotal,lnMrqTottal
+		
+	return logR, Indexzero,TqTotal/repetitions, DqTotal/repetitions,lnMrqTottal/repetitions
 

@@ -5,7 +5,7 @@
 #Creation date 14th March 2018
 #Last edition date 14th March 2018
 #Description: This algorithm calculates the fractal dimension with CBB method
-import snap
+import lib.snap
 import sys
 import getopt
 import numpy
@@ -110,7 +110,7 @@ def main(argv):
 	for i in range(0,boxes.Len()):
 		print(i+1,boxes[i])
 		
-	lb = calculateLb(boxes)
+	lb,b = calculateLb(boxes)
 	print("The dimension fractal is: ",lb)
 	
 if __name__ == "__main__":
