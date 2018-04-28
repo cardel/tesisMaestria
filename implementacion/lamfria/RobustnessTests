@@ -2,12 +2,12 @@ python pruebasRobustez.py --file ../datos/Generadas/ScaleFree2000Nodes.txt --typ
 python pruebasRobustez.py --file ../datos/Generadas/ScaleFree4000Nodes.txt --type Edge  --output ScaleFree4000Nodes  Ejedutando
 python pruebasRobustez.py --file ../datos/Generadas/ScaleFree8000Nodes.txt --type Edge  --output ScaleFree8000Nodes
 
-python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire005.txt --type Edge  --output SmallWorld5000NodesRewire005
-python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire01.txt --type Edge  --output SmallWorld5000NodesRewire01
+python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire005.txt --type Edge  --output SmallWorld5000NodesRewire005 Ejecutando
+python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire01.txt --type Edge  --output SmallWorld5000NodesRewire01 Ejedutando
 python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire02.txt --type Edge  --output SmallWorld5000NodesRewire02
 
-python pruebasRobustez.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939
-python pruebasRobustez.py --file ../datos/Generadas/Random3373Nodes5978.txt --type Edge  --output Random3373Nodes5978
+python pruebasRobustez.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939 Ejecutando
+python pruebasRobustez.py --file ../datos/Generadas/Random3373Nodes5978.txt --type Edge  --output Random3373Nodes5978 Ejecutando
 python pruebasRobustez.py --file ../datos/Generadas/Random5620Nodes8804.txt --type Edge  --output Random5620Nodes8804
 
 
