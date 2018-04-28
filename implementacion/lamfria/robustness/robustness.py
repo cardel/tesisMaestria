@@ -46,48 +46,46 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentNodesT,repetitionsDet
 	
 	sizeChromosome = int(0.1*N)
 	
+	
 	for p in r:
 		measureGC = 0.
 		measureAPL = 0.
 		#try:
 		Ng = g.GetNodes()	
-		print(Ng)
 		diameterG = snap.GetBfsFullDiam(g,10,False)	
-		listID = snap.TIntV(Ng)
-		index = 0
-		#Calculate clossness centrality
-		ClosenessCentrality = utils.getOrderedClosenessCentrality(g,Ng)
-		nodesToRemove = numpy.array([])
-			
-		listID = snap.TIntV(Ng)
-		listDegree =  snap.TIntV(Ng)
-		
 		maxDegree = 0.
 		index = 0
+		listID = snap.TIntV(Ng)
+		listDegree =  snap.TIntV(Ng)
 		for ni in g.Nodes():
 			listID[index] = ni.GetId()
 			listDegree[index] = int(ni.GetOutDeg())
 			
 			if listDegree[index] > maxDegree:
 				maxDegree=listDegree[index]
+				
 			index+=1
-					
+		
+
 		distances = utils.getDistancesMatrix(g,Ng, listID)	
-			
+				
+		
+		#Calculate clossness centrality
+		ClosenessCentrality = utils.getOrderedClosenessCentrality(g,Ng)
+		nodesToRemove = numpy.array([])			
 			
 		if(	typeRemoval=='Genetic'):
 			nodesToRemove = Genetic.calculateCentersFixedSize(g, Ng, iterationsGenetic, sizePopulation, diameterG, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome,degreeOfBoring)
 		elif typeRemoval=='Simulated':
 			nodesToRemove = SimulatedAnnealing.calculateCenters(g, Ng,percentNodesT, temperature, diameterG,distances, listID, listDegree)			
-				
+		
 		measureGC,measureAPL=utils.removeNodes(g,typeRemoval, p, numberNodesToRemove, ClosenessCentrality,listID,nodesToRemove)
-		#There are errors if p > 0.7
-		logR, Indexzero,Tq, Dq,lnMrq = BCAlgorithm.BCAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)
-		RTq = numpy.vstack((RTq,Dq))
-		#except:
-			#print "Error try to delete ",p," percent of nodes ",typeRemoval	
-			#print("Error inesperado:", sys.exc_info()[0])
-		#finally:
+		try:
+			logR, Indexzero,Tq, Dq,lnMrq = BCAlgorithm.BCAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)
+			RTq = numpy.vstack((RTq,Dq))
+		except:
+			print "It is not possible to calculate fractal dimensiones ",typeRemoval, " remove percent= ",p 
+
 		robustnessGC = numpy.append(robustnessGC,measureGC)
 		robustnessAPL = numpy.append(robustnessAPL,measureAPL)
 

@@ -80,7 +80,6 @@ def BCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.arra
 			for radius in range(1,d+1):		
 				nodesMark = numpy.zeros([numNodes])	
 				RBoxes = numpy.array([],dtype=float)	
-				radiusCovered = numpy.zeros([radius])
 				for i in range(0, numNodes):				
 					currentNode = randomSequence[i]
 					box = numpy.array([], dtype=int)					
@@ -92,9 +91,8 @@ def BCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.arra
 								distance = Bnxn[int(currentNode)][ni]						
 								if  distance <= radius:
 									countNodes+=1
-									radiusCovered[int(distance)-1]=1
 									box=numpy.append(box,ni)
-						if numpy.prod(radiusCovered)==1 and countNodes>0:
+						if countNodes>0:
 							RBoxes = numpy.append(RBoxes,countNodes/numNodes)
 							nodesMark[box] = 1	
 		
@@ -117,19 +115,23 @@ def BCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.arra
 				
 	
 		#Bidimensional array q rows, r columns
-		Zrq = numpy.zeros([rangeQ,r])
+		Zrq = numpy.zeros([rangeQ,d])
 		
 		countQ = 0
 		for q in range(minq,maxq+1):
 			countR = 0
 			for mini in minimalCovering:
+				if mini is None:
+					mini = numpy.array([1.])
 				Zrq[countQ][countR] = numpy.sum(numpy.power(mini,q))
 				countR+=1
 			countQ+=1
 		
-		Zre = numpy.zeros([r])
+		Zre = numpy.zeros([d])
 		countR = 0
 		for mini in minimalCovering:
+			if mini is None:
+				mini = numpy.array([1.])
 			Zre[countR] = numpy.sum(mini*numpy.log(mini))
 			countR+=1
 

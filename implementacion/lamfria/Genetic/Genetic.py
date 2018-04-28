@@ -74,7 +74,7 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 			boring+=1
 			
 		if(boring>degreeOfBoring):
-				return best
+			return best
 		##Select nodes Fitness proportionate selection
 		sumFitness = numpy.sum(fitness)
 		accFiness = fitness/sumFitness

@@ -35,6 +35,13 @@ def calculateFitness(g, element, radius, distances, listID,listDegree):
 		
 		averageDistance += distanceOtherNode/element.size
 		averageDegree += listDegree[int(node)]/element.size
+	
+	maxDegree = max(listDegree)
+	if maxDegree == 0:
+		maxDegree = 1
+	
+	if radius == 0:
+		radius = 1
 		
 	fitness = averageDegree/max(listDegree) + averageDistance/radius
 	return fitness

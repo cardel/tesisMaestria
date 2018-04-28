@@ -81,7 +81,6 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 				nodesMark = numpy.zeros([numNodes])	
 				RBoxes = numpy.array([],dtype=float)	
 				#All nodes in gigaint component have to covered	
-				radiusCovered = numpy.zeros([radius])
 				for i in range(0, numNodes):				
 					currentNode = randomSequence[i]
 					box = numpy.array([currentNode], dtype=int)					
@@ -93,10 +92,9 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.ar
 								distance = Bnxn[int(currentNode)][ni]						
 								if  distance <= radius:
 									countNodes+=1
-									radiusCovered[int(distance)-1]=1
 									box=numpy.append(box,ni)
 							
-						if numpy.prod(radiusCovered)==1 and countNodes>0:
+						if countNodes>0:
 							RBoxes = numpy.append(RBoxes,countNodes/numNodes)
 							nodesMark[box] = 1			
 				BoxesRadio.append(RBoxes)

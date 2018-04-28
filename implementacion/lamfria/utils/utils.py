@@ -79,7 +79,7 @@ def getAveragePathLength(graph):
 			
 	average=average/(2.*NumNodes)		
 			
-	return float(average)/maxDistance
+	return float(average)
 #Copy a graph
 
 def copyGraph(graph):
@@ -111,6 +111,7 @@ def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, 
 	TotalRemoved = numberNodesToRemove
 	measureGC = 0.
 	measureAPL = 0.
+	numNodes = graph.GetNodes()
 	
 	if typeRemoval == 'Degree':		
 		for i in range(0, TotalRemoved):
@@ -118,22 +119,23 @@ def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, 
 			graph.DelNode(node)	
 						
 	elif typeRemoval == 'Centrality':
-		startNode = 0
-		endNode = TotalRemoved
-		for i in range(startNode, endNode):
-			graph.DelNode(listID[int(ClosenessCentrality[i][0])])				
-				
-	elif typeRemoval == 'Random':
+		nodesToErase = snap.TIntV()
+		for i in range(0, TotalRemoved):
+			nodesToErase.Add(ClosenessCentrality[i][0])				
+			
+		snap.DelNodes(graph,nodesToErase)	
+			
+	elif typeRemoval == 'Random':		
 		
+		nodesToRemoveRandom=numpy.array([listID[rnd.randint(0, numNodes-1)]],dtype=int)
 		
-		nodesToRemoveRandom=numpy.array([],dtype=int)
 		while(numpy.size(nodesToRemoveRandom)<TotalRemoved):
-			Rnd = rnd.randint(0, TotalRemoved - 1)
-			nodesToRemoveRandom = numpy.unique(numpy.append(listID[int(Rnd)],nodesToRemoveRandom))
+			Rnd = rnd.randint(0, numNodes-1)
+			nodesToRemoveRandom = numpy.unique(numpy.append(nodesToRemoveRandom, listID[int(Rnd)]))
 		
 		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
-			nodesToErase.Add(listID[nodesToRemoveRandom[i]])
+			nodesToErase.Add(nodesToRemoveRandom[i])
 		
 		snap.DelNodes(graph,nodesToErase)	
 			
@@ -141,7 +143,7 @@ def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, 
 		
 		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
-			nodesToErase.Add(listID[nodesToRemove[i]])
+			nodesToErase.Add(listID[int(nodesToRemove[i])])
 						
 		snap.DelNodes(graph,nodesToErase)	
 		
