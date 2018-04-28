@@ -43,7 +43,7 @@ def calculateFitness(g, element, radius, distances, listID,listDegree):
 	if radius == 0:
 		radius = 1
 		
-	fitness = averageDegree/max(listDegree) + averageDistance/radius
+	fitness = averageDegree/maxDegree + averageDistance/radius
 	return fitness
 	
 #Return neighbors of a specific node
@@ -56,9 +56,13 @@ def createNeighbors(node,numNodes, distances):
 			
 	return neighbors
 
-def calculateCenters(graph, numNodes,percentNodes, Kmax, d,distances, listID,listDegree):
+def calculateCenters(graph, numNodes,percentNodes, Kmax, d,distances, listID,listDegree, totalRemoved=0):
 	
 	numberNodosState = int(percentNodes*numNodes);
+	
+	if totalRemoved > 0:
+		numberNodosState = totalRemoved
+	
 	currentState = numpy.random.permutation(numNodes)[0:numberNodosState]
 	
 	#In graah problems To is a sqrt(nodes)

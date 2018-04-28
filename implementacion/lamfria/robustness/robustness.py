@@ -10,7 +10,7 @@ import random
 import numpy
 import sys
 import utils.utils as utils
-import BCAlgorithm.BCAlgorithm as BCAlgorithm
+import SBAlgorithm.SBAlgorithm as SBAlgorithm
 import Genetic.Genetic as Genetic
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import lib.snap as snap
@@ -41,11 +41,10 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentNodesT,repetitionsDet
 	robustnessGC = numpy.array([N],dtype=float)
 	robustnessAPL = numpy.array([d],dtype=float)	
 		
-	logR, Indexzero,Tq, Dq,lnMrq = BCAlgorithm.BCAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)	
+	logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)
 	RTq = Dq
 	
 	sizeChromosome = int(0.1*N)
-	
 	
 	for p in r:
 		measureGC = 0.
@@ -77,11 +76,11 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentNodesT,repetitionsDet
 		if(	typeRemoval=='Genetic'):
 			nodesToRemove = Genetic.calculateCentersFixedSize(g, Ng, iterationsGenetic, sizePopulation, diameterG, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome,degreeOfBoring)
 		elif typeRemoval=='Simulated':
-			nodesToRemove = SimulatedAnnealing.calculateCenters(g, Ng,percentNodesT, temperature, diameterG,distances, listID, listDegree)			
+			nodesToRemove = SimulatedAnnealing.calculateCenters(g, Ng,0, temperature, diameterG,distances, listID, listDegree, sizeChromosome)	
 		
 		measureGC,measureAPL=utils.removeNodes(g,typeRemoval, p, numberNodesToRemove, ClosenessCentrality,listID,nodesToRemove)
 		try:
-			logR, Indexzero,Tq, Dq,lnMrq = BCAlgorithm.BCAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)
+			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)
 			RTq = numpy.vstack((RTq,Dq))
 		except:
 			print "It is not possible to calculate fractal dimensiones ",typeRemoval, " remove percent= ",p 
