@@ -27,14 +27,11 @@ def main(argv):
 	fileInput = ""
 	typeNet = ""
 	fileOutput = ""
-	message=""
-	nodes=0
-	desiredGrade=0
 	try:
-		opts, args = getopt.getopt(argv,'f:t:o:m:a:h:n:d:y',['file=','type=','output=', 'message=','help=','node=','desired='])
+		opts, args = getopt.getopt(argv,'f:t:o:h',['file=','type=','output=', 'help='])
 	except getopt.GetoptError as err:
 		print(err)
-		print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> --attack centrality|degree|random )
+		print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> ")
 		sys.exit(2)
 	
 	for opt, arg in opts:
@@ -44,14 +41,10 @@ def main(argv):
 			typeNet = arg
 		elif opt in ('-o','--output'):
 			fileOutput = arg
-		elif opt in ('-m','--message'):
-			message = arg
-		elif opt in ('-d','--desired'):
-			desiredGrade = int(arg)
 		elif opt in ('-n','--node'):
 			nodes = int(arg)
 		else:
-			print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> --attack centrality|degree|random")
+			print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> ")
 			sys.exit(0)
 										
 	Rnd = snap.TRnd(1,0)
@@ -79,31 +72,26 @@ def main(argv):
 	maxq = 10
 	
 	#SandBox
-	percentOfSandBoxes = 0.4
-	
+	percentOfBoxes = 0.4
+	iterations = 250
 	#Genetic
-	iterations = 150
-	iterationsDeterminics = 200
+	
 	sizePopulation = 100 
 	percentCrossOver = 0.3
 	percentMutation = 0.05	
 	degreeOfBoring = 20	
-	
-	#Box counting
-	percentNodesT = 0.7
-	repetitionsBC = 300
-	
+	iterationsGenetic = 200
+
 	#Simulated annealing
-	Kmax = 3000
+	temperature = 3000
 		
 	#Analysis with component gigaint
-	RTqA,measureGCA,measureAPLA=robustness.robustness_analysis(graph,'Random',minq,maxq,percentOfSandBoxes,iterations)
-	RTqB,measureGCB,measureAPLB=robustness.robustness_analysis(graph,'Degree',minq,maxq,percentOfSandBoxes,iterations)
-	RTqC,measureGCC,measureAPLC=robustness.robustness_analysis(graph,'Centrality',minq,maxq,percentOfSandBoxes,iterations)
-	RTqD,measureGCD,measureAPLD=robustness.robustness_analysis(graph,'Genetic',minq,maxq,percentOfSandBoxes,iterations)
-	RTqE,measureGCE,measureAPLE=robustness.robustness_analysis(graph,'Simulated',minq,maxq,percentOfSandBoxes,iterations)
+	RTqA,measureGCA,measureAPLA=robustness.robustness_analysis(graph,'Random',minq,maxq,percentOfBoxes,iterations)
+	RTqB,measureGCB,measureAPLB=robustness.robustness_analysis(graph,'Degree',minq,maxq,percentOfBoxes,iterations)
+	RTqC,measureGCC,measureAPLC=robustness.robustness_analysis(graph,'Centrality',minq,maxq,percentOfBoxes,iterations)
+	RTqD,measureGCD,measureAPLD=robustness.robustness_analysis(graph,'Genetic',minq,maxq,percentOfBoxes,iterations,0,sizePopulation,iterationsGenetic,percentCrossOver,percentMutation,degreeOfBoring)
+	RTqE,measureGCE,measureAPLE=robustness.robustness_analysis(graph,'Simulated',minq,maxq,percentOfBoxes,iterations,temperature)
 
-	
 	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 	r = numpy.arange(0.0, 1.0, 0.1)
 
@@ -213,7 +201,7 @@ def main(argv):
 	plt.ylabel('Value')
 	plt.title('Robustness measure Average Path Lenght ')
 	plt.show()
-}	#plt.savefig('Results/Robustness/'+timestr+'_'+'measure'+fileOutput+'.png')	
+	#plt.savefig('Results/Robustness/'+timestr+'_'+'measure'+fileOutput+'.png')	
 							
 if __name__ == "__main__":
    main(sys.argv[1:])

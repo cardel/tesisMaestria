@@ -49,9 +49,9 @@ def createNeighbors(node,numNodes, distances):
 			
 	return neighbors
 
-def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,listDegree):
+def calculateCenters(graph, numNodes,percentNodes, Kmax, d,distances, listID,listDegree):
 	
-	numberNodosState = int(percentSandBox*numNodes);
+	numberNodosState = int(percentNodes*numNodes);
 	currentState = numpy.random.permutation(numNodes)[0:numberNodosState]
 	
 	#In graah problems To is a sqrt(nodes)
@@ -95,7 +95,7 @@ def calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,l
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
 #Algorithm Simulated Annealing
-def SA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
+def SA(g,minq,maxq,percentNodes,sizePopulation, Kmax, typeAlgorithm):
 	graph = snap.GetMxScc(g)
 	numNodes = graph.GetNodes()
 	
@@ -125,7 +125,7 @@ def SA(g,minq,maxq,percentSandBox,sizePopulation, Kmax, typeAlgorithm):
 	##I generated a matriz with distancies between nodes
 	distances = utils.getDistancesMatrix(graph,numNodes, listID)	
 	#Create a random population of nodes	
-	centerNodes = calculateCenters(graph, numNodes,percentSandBox, Kmax, d,distances, listID,listDegree)
+	centerNodes = calculateCenters(graph, numNodes,percentNodes, Kmax, d,distances, listID,listDegree)
 
 
 	if typeAlgorithm=='SB':

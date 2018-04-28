@@ -95,6 +95,7 @@ def copyGraph(graph):
 #Get ordered closeness Centrality with node ID
 
 def getOrderedClosenessCentrality(graph,N):
+	g = snap.GetMxScc(graph)
 	ClosenessCentrality = numpy.empty([N,2], dtype=float)
 	index=0
 	for NI in g.Nodes():
@@ -106,8 +107,8 @@ def getOrderedClosenessCentrality(graph,N):
 	return ClosenessCentrality
 	
 #Remove nodes
-def removeNodes(graph,typeRemoval, percent, p, ClosenessCentrality, listID, nodesToRemove = numpy.array([])):
-	TotalRemoved = int(N*percent)
+def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, listID, nodesToRemove = numpy.array([])):
+	TotalRemoved = numberNodesToRemove
 	measureGC = 0.
 	measureAPL = 0.
 	
@@ -117,32 +118,32 @@ def removeNodes(graph,typeRemoval, percent, p, ClosenessCentrality, listID, node
 			graph.DelNode(node)	
 						
 	elif typeRemoval == 'Centrality':
-		startNode = int((p-0.1)*N)
-		endNode = int(p*N)
+		startNode = 0
+		endNode = TotalRemoved
 		for i in range(startNode, endNode):
 			graph.DelNode(listID[int(ClosenessCentrality[i][0])])				
 				
 	elif typeRemoval == 'Random':
 		
-		Rnd = snap.TRnd(int(N))
 		
+		nodesToRemoveRandom=numpy.array([],dtype=int)
 		while(numpy.size(nodesToRemoveRandom)<TotalRemoved):
-			Rnd.Randomize()
-			nodesToRemoveRandom = numpy.unique(numpy.append(listID[int(Rnd)],nodesToRemoveRandom)
+			Rnd = rnd.randint(0, TotalRemoved - 1)
+			nodesToRemoveRandom = numpy.unique(numpy.append(listID[int(Rnd)],nodesToRemoveRandom))
 		
 		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
-			nodesToErase.add(listID[nodesToRemoveRandom[i]])
+			nodesToErase.Add(listID[nodesToRemoveRandom[i]])
 		
-		graph.DelNodes(nodesToErase)	
+		snap.DelNodes(graph,nodesToErase)	
 			
-	elif typeRemove ==  'Genetic' || typeRemove == 'Simulated':
+	elif typeRemoval ==  'Genetic' or typeRemoval == 'Simulated':
 		
 		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
-			nodesToErase.add(listID[nodesToRemove[i]])
+			nodesToErase.Add(listID[nodesToRemove[i]])
 						
-		graph.DelNodes(nodesToErase)	
+		snap.DelNodes(graph,nodesToErase)	
 		
 	else:
 		print 'Error: Invalid option of robustness attack'
