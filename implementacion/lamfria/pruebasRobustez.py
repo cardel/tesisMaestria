@@ -9,7 +9,6 @@ import sys
 import getopt
 import lib.snap as snap
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
-import Genetic.SBGenetic as SBGenetic
 import SBAlgorithm.SBAlgorithm as SBAlgorithm
 import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
