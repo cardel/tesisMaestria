@@ -1,5 +1,5 @@
 import numpy
-import lib.snap
+import lib.snap as snap
 
 
 #Generatio of fractal networks According methods in
@@ -66,8 +66,11 @@ def generateFlowerUV2_2(generations, output):
 def generateFlowerUV1_3(generations, output):	
 	#First generation
 	a = numpy.array([[0,1],[1,0]])
-	currentIndex = rows
+
 	for generation in range(2,generations+1):
+		rows = a.shape[0]
+		cols = a.shape[1]
+		currentIndex = rows
 		for i in range(0, rows):
 			for j in range(i, cols):
 				#Per each edge we add two vertices connected between them. We connect vertex in the current edge with new vertez
