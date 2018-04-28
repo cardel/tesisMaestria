@@ -9,6 +9,7 @@ import numpy
 import random as rnd
 import os.path
 import lib.snap as snap
+import sys
 
 #Get distances matrix
 #Reduce high computational cost operation
@@ -91,45 +92,64 @@ def copyGraph(graph):
 		
 	return g
 	
+#Get ordered closeness Centrality with node ID
+
+def getOrderedClosenessCentrality(graph,N):
+	ClosenessCentrality = numpy.empty([N,2], dtype=float)
+	index=0
+	for NI in g.Nodes():
+		ClosenessCentrality[index][0]=NI.GetId()
+		ClosenessCentrality[index][1]=snap.GetClosenessCentr(graph,NI.GetId())
+		index+=1
+		
+	ClosenessCentrality = ClosenessCentrality[ClosenessCentrality[:,1].argsort()]
+	return ClosenessCentrality
+	
 #Remove nodes
-def removeNodes(graph,typeRemoval, percent, p, N,ClosenessCentrality, typeMeasure,listID):
+def removeNodes(graph,typeRemoval, percent, p, ClosenessCentrality, listID, nodesToRemove = numpy.array([])):
 	TotalRemoved = int(N*percent)
-	measure = 0.
-	if typeRemoval == 'degree':		
+	measureGC = 0.
+	measureAPL = 0.
+	
+	if typeRemoval == 'Degree':		
 		for i in range(0, TotalRemoved):
 			node = snap.GetMxDegNId(graph)
-			graph.DelNode(node)				
-	elif typeRemoval == 'centrality':
+			graph.DelNode(node)	
+						
+	elif typeRemoval == 'Centrality':
 		startNode = int((p-0.1)*N)
 		endNode = int(p*N)
 		for i in range(startNode, endNode):
-			graph.DelNode(int(ClosenessCentrality[i][0]))				
+			graph.DelNode(listID[int(ClosenessCentrality[i][0])])				
 				
-	elif typeRemoval == 'random':
+	elif typeRemoval == 'Random':
+		
 		Rnd = snap.TRnd(int(N))
 		
-		for i in range(0, TotalRemoved):
+		while(numpy.size(nodesToRemoveRandom)<TotalRemoved):
 			Rnd.Randomize()
-			node = graph.GetRndNId(Rnd)
-			graph.DelNode(node)	
+			nodesToRemoveRandom = numpy.unique(numpy.append(listID[int(Rnd)],nodesToRemoveRandom)
+		
+		nodesToErase = snap.TIntV()
+		for i in range(0, TotalRemoved):
+			nodesToErase.add(listID[nodesToRemoveRandom[i]])
+		
+		graph.DelNodes(nodesToErase)	
+			
+	elif typeRemove ==  'Genetic' || typeRemove == 'Simulated':
+		
+		nodesToErase = snap.TIntV()
+		for i in range(0, TotalRemoved):
+			nodesToErase.add(listID[nodesToRemove[i]])
+						
+		graph.DelNodes(nodesToErase)	
+		
 	else:
-		print 'Error: Invalid option'
+		print 'Error: Invalid option of robustness attack'
+		sys.exit(0)
 		
-	if typeMeasure=='GC':
-		measure = float(getSizeOfGiantComponent(graph))/N
-	elif typeMeasure=='APL':
-		measure = float(getAveragePathLength(graph))
+	measureGC = float(getSizeOfGiantComponent(graph))
+	measureAPL = float(getAveragePathLength(graph))
 		
-	return measure
+	return measureGC,measureAPL
 
-def removeNodesGenetic(graph,nodesToRemove, N,listID, typeMeasure):
-	measure = 0.
-
-	for node in nodesToRemove:
-		ni = listID[int(node)]
-		graph.DelNode(ni)
-	if typeMeasure=='GC':
-		measure = float(getSizeOfGiantComponent(graph))/N
-	elif typeMeasure=='APL':
-		measure=float(getAveragePathLength(graph))		
-	return measure

@@ -16,7 +16,7 @@ import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import robustness.robustness as robustness
 import utils.utils as utils
 import matplotlib as mpl
-mpl.use('Agg')
+#mpl.use('Agg')
 import matplotlib.pyplot as plt
 import math
 import numpy
@@ -28,15 +28,13 @@ def main(argv):
 	typeNet = ""
 	fileOutput = ""
 	message=""
-	attack=""
 	nodes=0
 	desiredGrade=0
-	typeMeasure = ""
 	try:
-		opts, args = getopt.getopt(argv,'f:t:o:m:a:h:n:d:y',['file=','type=','output=', 'message=','attack=','help=','node=','desired=','measure='])
+		opts, args = getopt.getopt(argv,'f:t:o:m:a:h:n:d:y',['file=','type=','output=', 'message=','help=','node=','desired='])
 	except getopt.GetoptError as err:
 		print(err)
-		print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> --attack centrality|degree|random --typeMeasure GC|APL")
+		print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> --attack centrality|degree|random )
 		sys.exit(2)
 	
 	for opt, arg in opts:
@@ -48,14 +46,10 @@ def main(argv):
 			fileOutput = arg
 		elif opt in ('-m','--message'):
 			message = arg
-		elif opt in ('-a','--attack'):
-			attack = arg
 		elif opt in ('-d','--desired'):
 			desiredGrade = int(arg)
 		elif opt in ('-n','--node'):
 			nodes = int(arg)
-		elif opt in ('-y','--measure'):
-			typeMeasure=arg
 		else:
 			print("You must execute: python GreedyAlgorithm.py --file <file> --type <type> --output <file> --attack centrality|degree|random")
 			sys.exit(0)
@@ -101,63 +95,51 @@ def main(argv):
 	
 	#Simulated annealing
 	Kmax = 3000
-	#	
-	RTqA=0
-	measureA=0
-	robustnessmeasureA=0
-	TqB=0
-	measureB=0
-	robustnessmeasureB=0
+		
 	#Analysis with component gigaint
-	if typeMeasure=='GC':
-		RTqA,measureA,robustnessmeasureA=robustness.robustness_analysis_GC(graph,attack,minq,maxq,percentOfSandBoxes,iterations)
-	#Analysis with average path lenght
-	if typeMeasure=='APL' :
-		RTqB,measureB,robustnessmeasureB=robustness.robustness_analysis_APL(graph,attack,minq,maxq,percentOfSandBoxes,iterations)
-	#Analysis with evolutive strategy
-	RTqC,measureC,robustnessmeasureC=robustness.robustness_analysis_Genetic(graph,minq,maxq,percentOfSandBoxes,iterations,sizePopulation,percentCrossOver,percentMutation,iterationsDeterminics,typeMeasure,degreeOfBoring)
+	RTqA,measureGCA,measureAPLA=robustness.robustness_analysis(graph,'Random',minq,maxq,percentOfSandBoxes,iterations)
+	RTqB,measureGCB,measureAPLB=robustness.robustness_analysis(graph,'Degree',minq,maxq,percentOfSandBoxes,iterations)
+	RTqC,measureGCC,measureAPLC=robustness.robustness_analysis(graph,'Centrality',minq,maxq,percentOfSandBoxes,iterations)
+	RTqD,measureGCD,measureAPLD=robustness.robustness_analysis(graph,'Genetic',minq,maxq,percentOfSandBoxes,iterations)
+	RTqE,measureGCE,measureAPLE=robustness.robustness_analysis(graph,'Simulated',minq,maxq,percentOfSandBoxes,iterations)
 
-	#Analysis with Simulated Annealing
-	RTqD,measureD,robustnessmeasureD=robustness.robustness_analysis_Simulated(graph,minq,maxq,percentOfSandBoxes,Kmax,iterationsDeterminics,typeMeasure)
 	
 	symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 	r = numpy.arange(0.0, 1.0, 0.1)
 
 	timestr = time.strftime("%Y%m%d_%H%M%S")
-	if typeMeasure=='GC':
-		fig0 = plt.figure()
-		for i in range(0,9):
-			if i < RTqA.shape[0]:
-				plt.plot(range(minq,maxq+1),RTqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
-		ymin, ymax = plt.ylim()
-		plt.ylim((ymin, ymax*1.2))
-		fontP = FontProperties()
-		fontP.set_size('small')
-		plt.legend(prop=fontP)
-		plt.xlabel('q')
-		plt.ylabel('D(q)')
-		plt.title('Multifractality componente Giant '+attack)
-		#plt.show()
-		plt.savefig('Results/Robustness/'+timestr+'_'+'sizeComponent'+fileOutput+'.png')
-	
-	if typeMeasure=='APL':
-		fig1 = plt.figure()
-		for i in range(0,9):
-			if i < RTqB.shape[0]:
-				plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
-		ymin, ymax = plt.ylim()
-		plt.ylim((ymin, ymax*1.2))
-		fontP = FontProperties()
-		fontP.set_size('small')
-		plt.legend(prop=fontP)
-		plt.xlabel('q')
-		plt.ylabel('D(q)')
-		plt.title('Multifractality Attack Path Lenght '+attack)
-		#plt.show()
-		plt.savefig('Results/Robustness/'+timestr+'_'+'lenghtPath'+fileOutput+'.png')	
+	fig0 = plt.figure()
+	for i in range(0,9):
+		if i < RTqA.shape[0]:
+			plt.plot(range(minq,maxq+1),RTqA[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
+	ymin, ymax = plt.ylim()
+	plt.ylim((ymin, ymax*1.2))
+	fontP = FontProperties()
+	fontP.set_size('small')
+	plt.legend(prop=fontP)
+	plt.xlabel('q')
+	plt.ylabel('D(q)')
+	plt.title('Multifractality attack Random')
+	plt.show()
+	#plt.savefig('Results/Robustness/'+timestr+'_'+'sizeComponent'+fileOutput+'.png')
 
-	fig2 = plt.figure()
-	for i in range(0,7):
+	fig1 = plt.figure()
+	for i in range(0,9):
+		if i < RTqB.shape[0]:
+			plt.plot(range(minq,maxq+1),RTqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
+	ymin, ymax = plt.ylim()
+	plt.ylim((ymin, ymax*1.2))
+	fontP = FontProperties()
+	fontP.set_size('small')
+	plt.legend(prop=fontP)
+	plt.xlabel('q')
+	plt.ylabel('D(q)')
+	plt.title('Multifractality attack Degree')
+	plt.show()
+	#plt.savefig('Results/Robustness/'+timestr+'_'+'lenghtPath'+fileOutput+'.png')	
+
+	fig1 = plt.figure()
+	for i in range(0,9):
 		if i < RTqC.shape[0]:
 			plt.plot(range(minq,maxq+1),RTqC[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 	ymin, ymax = plt.ylim()
@@ -167,12 +149,12 @@ def main(argv):
 	plt.legend(prop=fontP)
 	plt.xlabel('q')
 	plt.ylabel('D(q)')
-	plt.title('Multifractality Attack Genetic ')
-	#plt.show()
-	plt.savefig('Results/Robustness/'+timestr+'_'+'attackGenetic'+fileOutput+'.png')	
-	
-	fig3 = plt.figure()
-	for i in range(0,9):
+	plt.title('Multifractality attack Centrality')
+	plt.show()
+	#plt.savefig('Results/Robustness/'+timestr+'_'+'attackGenetic'+fileOutput+'.png')	
+
+	fig2 = plt.figure()
+	for i in range(0,7):
 		if i < RTqD.shape[0]:
 			plt.plot(range(minq,maxq+1),RTqD[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
 	ymin, ymax = plt.ylim()
@@ -182,19 +164,30 @@ def main(argv):
 	plt.legend(prop=fontP)
 	plt.xlabel('q')
 	plt.ylabel('D(q)')
-	plt.title('Multifractality Attack Simulated Allieaning')
-	#plt.show()
-	plt.savefig('Results/Robustness/'+timestr+'_'+'attackSimulated'+fileOutput+'.png')	
+	plt.title('Multifractality attack Genetic')
+	plt.show()
+	#plt.savefig('Results/Robustness/'+timestr+'_'+'attackGenetic'+fileOutput+'.png')		
+	
+	fig3 = plt.figure()
+	for i in range(0,9):
+		if i < RTqE.shape[0]:
+			plt.plot(range(minq,maxq+1),RTqE[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="% nodes="+str(int(100*r[i]))+"%")	
+	ymin, ymax = plt.ylim()
+	plt.ylim((ymin, ymax*1.2))
+	fontP = FontProperties()
+	fontP.set_size('small')
+	plt.legend(prop=fontP)
+	plt.xlabel('q')
+	plt.ylabel('D(q)')
+	plt.title('Multifractality attack Simulated')
+	plt.show()
 						
 	fig4 = plt.figure()	
-	if typeMeasure=='GC':
-		plt.plot(r[0:numpy.size(measureA)],measureA,'.-r', label="Size GC attack "+attack)	
-		
-	if typeMeasure=='APL':
-		plt.plot(r[0:numpy.size(measureB)],measureB,'.-b', label="APL "+attack)	
-		
-	plt.plot(r[0:numpy.size(measureC)],measureC,'.-k', label="Genetic "+typeMeasure)	
-	plt.plot(r[0:numpy.size(measureD)],measureD,'.-m', label="Simulated annealing "+typeMeasure)		
+	plt.plot(r[0:numpy.size(measureGCA)],measureGCA,'.-r', label="Random ")		
+	plt.plot(r[0:numpy.size(measureGCB)],measureGCB,'.-b', label="Degree")			
+	plt.plot(r[0:numpy.size(measureGCC)],measureGCC,'.-k', label="Centrailiy")	
+	plt.plot(r[0:numpy.size(measureGCD)],measureGCD,'.-w', label="Genetic ")	
+	plt.plot(r[0:numpy.size(measureGCE)],measureGCE,'.-m', label="Simulated annealing ")	
 	ymin, ymax = plt.ylim()
 	plt.ylim((ymin, ymax*1.2))
 	fontP = FontProperties()
@@ -202,9 +195,25 @@ def main(argv):
 	plt.legend(prop=fontP)
 	plt.xlabel('percent')
 	plt.ylabel('Value')
-	plt.title('Robustness measure ')
-	#plt.show()
-	plt.savefig('Results/Robustness/'+timestr+'_'+'measure'+fileOutput+'.png')	
+	plt.title('Robustness measure Size of Giant component ')
+	plt.show()
+	
+	fig5 = plt.figure()	
+	plt.plot(r[0:numpy.size(measureAPLA)],measureAPLA,'.-r', label="Random ")		
+	plt.plot(r[0:numpy.size(measureAPLB)],measureAPLB,'.-b', label="Degree")			
+	plt.plot(r[0:numpy.size(measureAPLC)],measureAPLC,'.-k', label="Centrailiy")	
+	plt.plot(r[0:numpy.size(measureAPLD)],measureAPLD,'.-w', label="Genetic ")	
+	plt.plot(r[0:numpy.size(measureAPLE)],measureAPLE,'.-m', label="Simulated annealing ")	
+	ymin, ymax = plt.ylim()
+	plt.ylim((ymin, ymax*1.2))
+	fontP = FontProperties()
+	fontP.set_size('small')
+	plt.legend(prop=fontP)
+	plt.xlabel('percent')
+	plt.ylabel('Value')
+	plt.title('Robustness measure Average Path Lenght ')
+	plt.show()
+}	#plt.savefig('Results/Robustness/'+timestr+'_'+'measure'+fileOutput+'.png')	
 							
 if __name__ == "__main__":
    main(sys.argv[1:])
