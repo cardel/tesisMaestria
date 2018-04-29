@@ -109,39 +109,40 @@ def main(argv):
 	executionTime[0] = time.time()
 	logR, Indexzero,Tq, Dq, lnMrq = BCAlgorithm.BCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
 	executionTime[0] = time.time() - executionTime[0]
+	print "bcAlgorithm"
 	
 	executionTime[1] = time.time()
 	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
 	executionTime[1] = time.time() - executionTime[1]
-	
+	print "FSbcAlgorithm"
 	executionTime[2] = time.time()
 	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,repetitionsDeterminics)	
 	executionTime[2] = time.time() -  executionTime[2]
-	
+	print "SBAlgorithm"
 	executionTime[3] = time.time()	
 	logRC, IndexzeroC,TqC, DqC, lnMrqC,fitNessAverage,fitNessMax,fitNessMin = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'SB')	
 	executionTime[3] = time.time() - executionTime[3]
-	
+	print "Genetic"
 	executionTime[4] = time.time()
 	logRD, IndexzeroD,TqD, DqD, lnMrqD = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'SB')
 	executionTime[4] = time.time() - executionTime[4]
-
+	print "SimulatedAnnealing"
 	executionTime[5] = time.time()	
 	logRE, IndexzeroE,TqE, DqE, lnMrqE,fitNessAverageE,fitNessMaxE,fitNessMinE = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')	
 	executionTime[5] = time.time() - executionTime[5]
-	
+	print "Genetic2"
 	executionTime[6] = time.time()
 	logRF, IndexzeroF,TqF, DqF, lnMrqF = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BC')
 	executionTime[6] = time.time() - executionTime[6]
-
+	print "SimulatedAnnealing2"
 	executionTime[7] = time.time()	
 	logRG, IndexzeroG,TqG, DqG, lnMrqG,fitNessAverageG,fitNessMaxG,fitNessMinG = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BCFS')	
 	executionTime[7] = time.time() - executionTime[7]
-	
+	print "Genetic3"
 	executionTime[8] = time.time()
 	logRH, IndexzeroH,TqH, DqH, lnMrqH = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BCFS')
 	executionTime[8] = time.time() - executionTime[8]
-	
+	print "SimulatedAnnealing3"
 	dmFractal = CBBAlgorithm.CBBFractality(graph)
 	
 	timestr = time.strftime("%Y%m%d_%H%M%S")
