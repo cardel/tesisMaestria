@@ -73,14 +73,14 @@ def main(argv):
 	
 	#SandBox
 	percentOfBoxes = 0.4
-	iterations = 250
+	iterations = 50
 	#Genetic
 	
 	sizePopulation = 100 
 	percentCrossOver = 0.3
 	percentMutation = 0.05	
 	degreeOfBoring = 20	
-	iterationsGenetic = 200
+	iterationsGenetic = 100
 
 	#Simulated annealing
 	temperature = 3000
