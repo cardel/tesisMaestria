@@ -14,9 +14,6 @@ import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
 import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import robustness.robustness as robustness
 import utils.utils as utils
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
 import math
 import numpy
 import time
@@ -72,26 +69,35 @@ def main(argv):
 	maxq = 10
 	
 	#SandBox
-	percentOfBoxes = 0.4
-	iterations = 50
-	#Genetic
-	
-	sizePopulation = 100 
-	percentCrossOver = 0.3
-	percentMutation = 0.05	
-	degreeOfBoring = 20	
-	iterationsGenetic = 100
+	percentOfSandBoxes = 0.5
+	repetitionsSB = 100
 
+	#Genetic
+	iterationsGenetic = 100
+	sizePopulation = 200 
+	percentCrossOver = 0.4
+	percentMutation = 0.05	
+	degreeOfBoring = 20
+	
+	
+	#Box counting
+	percentNodesT = 0.6
+	
 	#Simulated annealing
-	temperature = 3000
+	temperature = 1500
 		
 	#Analysis with component gigaint
-	RTqA,measureGCA,measureAPLA=robustness.robustness_analysis(graph,'Random',minq,maxq,percentOfBoxes,iterations)
-	RTqB,measureGCB,measureAPLB=robustness.robustness_analysis(graph,'Degree',minq,maxq,percentOfBoxes,iterations)
-	RTqC,measureGCC,measureAPLC=robustness.robustness_analysis(graph,'Centrality',minq,maxq,percentOfBoxes,iterations)
-	RTqD,measureGCD,measureAPLD=robustness.robustness_analysis(graph,'Genetic',minq,maxq,percentOfBoxes,iterations,0,sizePopulation,iterationsGenetic,percentCrossOver,percentMutation,degreeOfBoring)
-	RTqE,measureGCE,measureAPLE=robustness.robustness_analysis(graph,'Simulated',minq,maxq,percentOfBoxes,iterations,temperature)
-
+	print("start")
+	RTqA,measureGCA,measureAPLA=robustness.robustness_analysis(graph,'Random',minq,maxq,percentOfSandBoxes,repetitionsSB)
+	print("random")
+	RTqB,measureGCB,measureAPLB=robustness.robustness_analysis(graph,'Degree',minq,maxq,percentOfSandBoxes,repetitionsSB)
+	print("degree")
+	RTqC,measureGCC,measureAPLC=robustness.robustness_analysis(graph,'Centrality',minq,maxq,percentOfSandBoxes,repetitionsSB)
+	print("Centrality")
+	RTqD,measureGCD,measureAPLD=robustness.robustness_analysis(graph,'Genetic',minq,maxq,percentOfSandBoxes,repetitionsSB,0,sizePopulation,iterationsGenetic,percentCrossOver,percentMutation,degreeOfBoring)
+	print("Genetic")
+	RTqE,measureGCE,measureAPLE=robustness.robustness_analysis(graph,'Simulated',minq,maxq,percentOfSandBoxes,repetitionsSB,temperature)
+	print("simulated")
 
 	r = numpy.arange(0.0, 1.0, 0.1)
 	

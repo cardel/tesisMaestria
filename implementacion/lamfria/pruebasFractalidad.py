@@ -17,9 +17,6 @@ import SimulatedAnnealing.SimulatedAnnealing as SimulatedAnnealing
 import robustness.robustness as robustness
 import CBBAlgorithm.CBBAlgorithm as CBBAlgorithm
 import utils.utils as utils
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
 import math
 import numpy
 numpy.set_printoptions(threshold=numpy.nan)
@@ -87,7 +84,7 @@ def main(argv):
 	
 	#SandBox
 	percentOfSandBoxes = 0.6
-	repetitionsDeterminics = 100
+	repetitionsSB = 50
 
 	#Genetic
 	iterations = 100
@@ -98,25 +95,25 @@ def main(argv):
 	
 	
 	#Box counting
-	percentNodesT = 0.7
+	percentNodesT = 20
 	
 	#Simulated annealing
-	Kmax = 3000
+	Kmax = 1500
 	
 
 	executionTime = numpy.zeros(9,dtype=float)
-	
+	print "Start"
 	executionTime[0] = time.time()
-	logR, Indexzero,Tq, Dq, lnMrq = BCAlgorithm.BCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
+	logR, Indexzero,Tq, Dq, lnMrq = BCAlgorithm.BCAlgorithm(graph,minq,maxq,percentNodesT)
 	executionTime[0] = time.time() - executionTime[0]
 	print "bcAlgorithm"
 	
 	executionTime[1] = time.time()
-	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT,repetitionsDeterminics)
+	logRA, IndexzeroA,TqA, DqA, lnMrqA = FSBCAlgorithm.FSBCAlgorithm(graph,minq,maxq,percentNodesT)
 	executionTime[1] = time.time() - executionTime[1]
 	print "FSbcAlgorithm"
 	executionTime[2] = time.time()
-	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,repetitionsDeterminics)	
+	logRB, IndexzeroB,TqB, DqB, lnMrqB = SBAlgorithm.SBAlgorithm(graph,minq,maxq,percentOfSandBoxes,repetitionsSB)	
 	executionTime[2] = time.time() -  executionTime[2]
 	print "SBAlgorithm"
 	executionTime[3] = time.time()	

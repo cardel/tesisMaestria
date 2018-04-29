@@ -314,7 +314,7 @@ def Genetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentMut
 			numpy.random.shuffle(nodes)
 			numpy.random.shuffle(centerNodes)
 			groupCenters.append(newNodes)
-		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
+		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1, groupCenters)
 	elif typeAlgorithm=='BC':
 		#Complete nodes
 		#This methos is too exactly, then I repeat 100 tiemes this process
@@ -327,7 +327,7 @@ def Genetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentMut
 			numpy.random.shuffle(nodes)
 			numpy.random.shuffle(centerNodes)
 			groupCenters.append(newNodes)
-		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
+		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1, groupCenters)
 	else:
 		print "SBGenetic: Invalid option of Algorithm"
 		sys.exit(0)

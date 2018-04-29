@@ -11,7 +11,7 @@ import lib.snap as snap
 import utils.utils as utils
 
 #Proceed
-def BCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.array([])):
+def BCAlgorithm(g,minq,maxq,percentNodesT, centerNodes = numpy.array([])):
 	
 	#graph = 
 	graph =snap.GetMxScc(g)
@@ -36,9 +36,6 @@ def BCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.arra
 	d = snap.GetBfsFullDiam(graph,1,False)
 	rangeQ = maxq-minq+1
 	
-	DqTotal = []
-	TqTotal = []
-	lnMrqTottal = []
 	#Calculate loge = logR/d
 	logR = numpy.array([])
 	for radius in range(1,d+1):
@@ -51,125 +48,117 @@ def BCAlgorithm(g,minq,maxq,percentNodesT, repetitions, centerNodes = numpy.arra
 	
 	RandomSequences = centerNodes
 	
-	for r in range(0,repetitions):
-		if(numpy.size(centerNodes)==0):
-		
-			RandomSequences = numpy.empty([T,numNodes])
-			randomN = numpy.arange(0,numNodes)
-			
-			for i in range(0,T):
-				numpy.random.shuffle(randomN)
-				RandomSequences[i] = randomN
-				
-		#Total boxes content all boxes for T repetitions
-		totalBoxes = []		
-		#We take T repetitions
-		#Mass Exponents
-		Tq = numpy.zeros([rangeQ])
-		
-		#Generalized dimensions
-		Dq = numpy.zeros([rangeQ])
-		
-		#Total q
-		lnMrq = numpy.zeros([rangeQ,d],dtype=float)		
-		for randomSequence in RandomSequences:
-			#I select 40 percent of nodes
-			#sandBoxes = numpy.zeros([d,numberOfBoxes])	
-			BoxesRadio = []
-			
-			for radius in range(1,d+1):		
-				nodesMark = numpy.zeros([numNodes])	
-				RBoxes = numpy.array([],dtype=float)	
-				for i in range(0, numNodes):				
-					currentNode = randomSequence[i]
-					box = numpy.array([], dtype=int)					
-					
-					if nodesMark[int(currentNode)]==0:
-						countNodes = 0.
-						for ni in range(0, numNodes):		
-							if nodesMark[ni] == 0:				
-								distance = Bnxn[int(currentNode)][ni]						
-								if  distance <= radius:
-									countNodes+=1
-									box=numpy.append(box,ni)
-						if countNodes>0:
-							RBoxes = numpy.append(RBoxes,countNodes/numNodes)
-							nodesMark[box] = 1	
-		
-				BoxesRadio.append(RBoxes)
-			totalBoxes.append(BoxesRadio)	
-		
-		#Sequence for a random order of centers, I find the box coverting with miminal number of boxes
-		
-		#Find minimal number of boxes
-		minimalCovering = [None]*d
-		for boxesSequence in totalBoxes:
-			r = 0
-			for boxesByRadio in boxesSequence:
-				if minimalCovering[r] is None:
-					minimalCovering[r] = boxesByRadio
-				else:
-					if len(boxesByRadio) <  len(minimalCovering[r]):
-						minimalCovering[r]= boxesByRadio
-				r+=1
-				
+	if(numpy.size(centerNodes)==0):
 	
-		#Bidimensional array q rows, r columns
-		Zrq = numpy.zeros([rangeQ,d])
+		RandomSequences = numpy.empty([T,numNodes])
+		randomN = numpy.arange(0,numNodes)
 		
-		countQ = 0
-		for q in range(minq,maxq+1):
-			countR = 0
-			for mini in minimalCovering:
-				if mini is None:
-					mini = numpy.array([1.])
-				Zrq[countQ][countR] = numpy.sum(numpy.power(mini,q))
-				countR+=1
-			countQ+=1
+		for i in range(0,T):
+			numpy.random.shuffle(randomN)
+			RandomSequences[i] = randomN
+			
+	#Total boxes content all boxes for T repetitions
+	totalBoxes = []		
+	#We take T repetitions
+	#Mass Exponents
+	Tq = numpy.zeros([rangeQ])
+	
+	#Generalized dimensions
+	Dq = numpy.zeros([rangeQ])
+	
+	#Total q
+	lnMrq = numpy.zeros([rangeQ,d],dtype=float)		
+	for randomSequence in RandomSequences:
+		#I select 40 percent of nodes
+		#sandBoxes = numpy.zeros([d,numberOfBoxes])	
+		BoxesRadio = []
 		
-		Zre = numpy.zeros([d])
+		for radius in range(1,d+1):		
+			nodesMark = numpy.zeros([numNodes])	
+			RBoxes = numpy.array([],dtype=float)	
+			for i in range(0, numNodes):				
+				currentNode = randomSequence[i]
+				box = numpy.array([], dtype=int)					
+				
+				if nodesMark[int(currentNode)]==0:
+					countNodes = 0.
+					for ni in range(0, numNodes):		
+						if nodesMark[ni] == 0:				
+							distance = Bnxn[int(currentNode)][ni]						
+							if  distance <= radius:
+								countNodes+=1
+								box=numpy.append(box,ni)
+					if countNodes>0:
+						RBoxes = numpy.append(RBoxes,countNodes/numNodes)
+						nodesMark[box] = 1	
+	
+			BoxesRadio.append(RBoxes)
+		totalBoxes.append(BoxesRadio)	
+	
+	#Sequence for a random order of centers, I find the box coverting with miminal number of boxes
+	
+	#Find minimal number of boxes
+	minimalCovering = [None]*d
+	for boxesSequence in totalBoxes:
+		r = 0
+		for boxesByRadio in boxesSequence:
+			if minimalCovering[r] is None:
+				minimalCovering[r] = boxesByRadio
+			else:
+				if len(boxesByRadio) <  len(minimalCovering[r]):
+					minimalCovering[r]= boxesByRadio
+			r+=1
+			
+
+	#Bidimensional array q rows, r columns
+	Zrq = numpy.zeros([rangeQ,d])
+	
+	countQ = 0
+	for q in range(minq,maxq+1):
 		countR = 0
 		for mini in minimalCovering:
 			if mini is None:
 				mini = numpy.array([1.])
-			Zre[countR] = numpy.sum(mini*numpy.log(mini))
+			Zrq[countQ][countR] = numpy.sum(numpy.power(mini,q))
 			countR+=1
-
-
-		count = 0
-		Indexzero  = 0 		
-
-		for q in range(minq,maxq+1,1):
-			i = 0
-			box = Zrq[count]
-			lnMrq[count]= numpy.log(box)	
-				
-			m,b = utils.linealRegresssion(logR,lnMrq[count])
-			#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
-			#Find the mass exponents
-			if q == 0: 
-				countDim = count;		
-
-			Tq[count] = m
-			
-			#Find the Generalizated Fractal dimensions
-			if q != 1:
-				#m,b = utils.linealRegresssion(logR,lnMrq[count]/(q-1))
-				m = Tq[count]/(q-1)
-			else:	
-				m,b = utils.linealRegresssion(logR,Zre)	
-			Dq[count] = m
-			
-			if q == 0:
-				Indexzero = count
-			count+=1
+		countQ+=1
 	
-		DqTotal.append(Dq)
-		TqTotal.append(Tq)
-		lnMrqTottal.append(lnMrq)
-	#print TqTotal, DqTotal,lnMrqTottal
-	DqTotal = numpy.average(DqTotal, axis=0)
-	TqTotal = numpy.average(TqTotal, axis=0)
-	lnMrqTottal = numpy.average(lnMrqTottal, axis=0)
-	return logR, Indexzero,TqTotal, DqTotal,lnMrqTottal
+	Zre = numpy.zeros([d])
+	countR = 0
+	for mini in minimalCovering:
+		if mini is None:
+			mini = numpy.array([1.])
+		Zre[countR] = numpy.sum(mini*numpy.log(mini))
+		countR+=1
+
+
+	count = 0
+	Indexzero  = 0 		
+
+	for q in range(minq,maxq+1,1):
+		i = 0
+		box = Zrq[count]
+		lnMrq[count]= numpy.log(box)	
+			
+		m,b = utils.linealRegresssion(logR,lnMrq[count])
+		#Adjust due to size of array (q is a Real number, and index of array is a integer number >=0)
+		#Find the mass exponents
+		if q == 0: 
+			countDim = count;		
+
+		Tq[count] = m
+		
+		#Find the Generalizated Fractal dimensions
+		if q != 1:
+			#m,b = utils.linealRegresssion(logR,lnMrq[count]/(q-1))
+			m = Tq[count]/(q-1)
+		else:	
+			m,b = utils.linealRegresssion(logR,Zre)	
+		Dq[count] = m
+		
+		if q == 0:
+			Indexzero = count
+		count+=1
+
+	return logR, Indexzero,Tq, Dq,lnMrq
 

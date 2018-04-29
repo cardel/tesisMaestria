@@ -20,7 +20,7 @@ import lib.snap as snap
 #http://w.pnas.org/cgi/doi/10.1073/pnas.1009440108
 # Article Robustness surfaces of complex networks
 #https://www.nature.com/articles/srep06133
-def robustness_analysis(graph,typeRemoval,minq,maxq,percentNodesT,repetitionsDeterminics, temperature=0, sizePopulation=0, iterationsGenetic=0, percentCrossOver=0,percentMutation=0,degreeOfBoring=0):
+def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, temperature=0, sizePopulation=0, iterationsGenetic=0, percentCrossOver=0,percentMutation=0,degreeOfBoring=0):
 	#Remove per percent of nodes 0.1 to 1.0
 	
 	r = numpy.arange(0.1, 1.0,0.1)
@@ -41,7 +41,7 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentNodesT,repetitionsDet
 	robustnessGC = numpy.array([N],dtype=float)
 	robustnessAPL = numpy.array([d],dtype=float)	
 		
-	logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)
+	logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentSandBox,repetitions)
 	RTq = Dq
 	
 	sizeChromosome = int(0.1*N)
@@ -80,7 +80,7 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentNodesT,repetitionsDet
 		
 		measureGC,measureAPL=utils.removeNodes(g,typeRemoval, p, numberNodesToRemove, ClosenessCentrality,listID,nodesToRemove)
 		try:
-			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentNodesT,repetitionsDeterminics)
+			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentSandBox,repetitions)
 			RTq = numpy.vstack((RTq,Dq))
 		except:
 			print "It is not possible to calculate fractal dimensiones ",typeRemoval, " remove percent= ",p 

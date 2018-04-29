@@ -154,7 +154,7 @@ def SA(g,minq,maxq,percentNodes,sizePopulation, Kmax, typeAlgorithm):
 			groupCenters.append(newNodes)
 		
 		groupCenters = numpy.array(groupCenters)
-		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,1, groupCenters)
+		logR, Indexzero,Tq, Dq, lnMrq = FSBCAlgorithm.FSBCAlgorithm(g,minq,maxq,1,groupCenters)
 		
 	elif typeAlgorithm=='BC':
 		groupCenters = []
@@ -167,7 +167,7 @@ def SA(g,minq,maxq,percentNodes,sizePopulation, Kmax, typeAlgorithm):
 			groupCenters.append(newNodes)
 		
 		groupCenters = numpy.array(groupCenters)
-		logR, Indexzero,Tq, Dq, lnMrq = BCAlgorithm.BCAlgorithm(g,minq,maxq,1,1, groupCenters)
+		logR, Indexzero,Tq, Dq, lnMrq = BCAlgorithm.BCAlgorithm(g,minq,maxq,1,groupCenters)
 	else:
 		print "SimulatedAnnealing: Invalid option of Algorithm"
 		sys.exit(0)
