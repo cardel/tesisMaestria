@@ -95,7 +95,7 @@ def main(argv):
 	
 	
 	#Box counting
-	percentNodesT = 20
+	percentNodesT = 2
 	
 	#Simulated annealing
 	Kmax = 1500
