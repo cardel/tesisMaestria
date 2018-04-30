@@ -37,9 +37,13 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 	#Initial distance
 	d = snap.GetBfsFullDiam(g,10,False)	
 	
+	#Average PathLenght
+
+	meanAverageIni = utils.getAveragePathLength(g)		
+	
 	#Outputs
 	robustnessGC = numpy.array([N],dtype=float)
-	robustnessAPL = numpy.array([d],dtype=float)	
+	robustnessAPL = numpy.array([meanAverageIni],dtype=float)	
 		
 	logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentSandBox,repetitions)
 	RTq = Dq
@@ -88,5 +92,5 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 		robustnessGC = numpy.append(robustnessGC,measureGC)
 		robustnessAPL = numpy.append(robustnessAPL,measureAPL)
 
-	return RTq, robustnessGC/N, robustnessAPL/d
+	return RTq, robustnessGC/N, robustnessAPL/meanAverageIni
 	

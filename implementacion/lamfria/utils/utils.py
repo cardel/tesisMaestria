@@ -66,20 +66,16 @@ def getSizeOfGiantComponent(graph):
 
 # Get average path lenght in the giant component
 def getAveragePathLength(graph):
-	g = snap.GetMxScc(graph)
-	NumNodes = g.GetNodes()	
-	average = 0.
-	maxDistance = 0.
-	for ni in g.Nodes():
-		for nj in g.Nodes():
-			dist = snap.GetShortPath(g,ni.GetId(),nj.GetId())
-			average+=dist
-			if dist > maxDistance:
-				maxDistance = dist
-			
-	average=average/(2.*NumNodes)		
-			
-	return float(average)
+	
+	#Test nodes are 40 percent of numNodes
+	
+	numNodes = graph.GetNodes()
+	
+	testNodes = int(float(numNodes)*0.4)	
+	if testNodes == 0: testNodes = 1
+	
+	meanAverage = snap.GetBfsEffDiam(graph, testNodes, False)					
+	return meanAverage
 #Copy a graph
 
 def copyGraph(graph):
