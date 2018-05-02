@@ -50,8 +50,7 @@ python pruebasRobustez.py --file ../datos/RedesReales/Celengs.net  --type Pajek 
 
 #Maquina 13
 python pruebasRobustez.py --file ../datos/RedesReales/cerevisiae.net  --type Pajek --output cerevisiae  
-python pruebasRobustez.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi   ESTA FALLANDO (Revisar)
-
+python pruebasRobustez.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi  
 #Maquina 14
 python pruebasRobustez.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2 
 python pruebasRobustez.py --file ../datos/Fractales/floweru1v3.net  --type Pajek --output floweru1v3 

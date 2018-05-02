@@ -117,9 +117,10 @@ def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, 
 	elif typeRemoval == 'Centrality':
 		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
-			nodesToErase.Add(ClosenessCentrality[i][0])				
-			
-		snap.DelNodes(graph,nodesToErase)	
+			try:
+				graph.DelNode(node)	(ClosenessCentrality[i][0])				
+			except:
+				print "error trying to delete node ",ClosenessCentrality[i][0]
 			
 	elif typeRemoval == 'Random':		
 		
