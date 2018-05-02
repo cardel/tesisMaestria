@@ -96,10 +96,18 @@ def getOrderedClosenessCentrality(graph,N):
 	index=0
 	for NI in g.Nodes():
 		ClosenessCentrality[index][0]=NI.GetId()
-		ClosenessCentrality[index][1]=snap.GetClosenessCentr(graph,NI.GetId())
-		index+=1
+		cen = snap.GetClosenessCentr(graph,NI.GetId())
 		
+		if cen is None:
+			ClosenessCentrality[index][1]=0
+		else:
+			ClosenessCentrality[index][1]=snap.GetClosenessCentr(graph,NI.GetId())
+		index+=1
+	
+	#ClosenessCentrality = ClosenessCentrality[numpy.logical_not(numpy.isnan(ClosenessCentrality))]
+	#print ClosenessCentrality
 	ClosenessCentrality = ClosenessCentrality[ClosenessCentrality[:,1].argsort()]
+	#print ClosenessCentrality
 	return ClosenessCentrality
 	
 #Remove nodes
@@ -112,16 +120,19 @@ def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, 
 	if typeRemoval == 'Degree':		
 		for i in range(0, TotalRemoved):
 			node = snap.GetMxDegNId(graph)
-			graph.DelNode(node)	
-						
+			try:
+				graph.DelNode(node)	
+			except:
+				print "error trying to delete node ",int(ClosenessCentrality[i][0]), node 	
+					
 	elif typeRemoval == 'Centrality':
 		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
 			try:
-				graph.DelNode(node)	(ClosenessCentrality[i][0])				
+				graph.DelNode(int(ClosenessCentrality[i][0]))			
 			except:
-				print "error trying to delete node ",ClosenessCentrality[i][0]
-			
+				print "error trying to delete node ",int(ClosenessCentrality[i][0]), typeRemoval	
+				
 	elif typeRemoval == 'Random':		
 		
 		nodesToRemoveRandom=numpy.array([listID[rnd.randint(0, numNodes-1)]],dtype=int)
@@ -130,19 +141,22 @@ def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, 
 			Rnd = rnd.randint(0, numNodes-1)
 			nodesToRemoveRandom = numpy.unique(numpy.append(nodesToRemoveRandom, listID[int(Rnd)]))
 		
-		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
-			nodesToErase.Add(nodesToRemoveRandom[i])
-		
-		snap.DelNodes(graph,nodesToErase)	
+			try:
+				graph.DelNode(int(nodesToRemoveRandom[i]))			
+			except:
+				print "error trying to delete node ",nodesToRemoveRandom[i], typeRemoval	
+		#snap.DelNodes(graph,nodesToErase)	
 			
 	elif typeRemoval ==  'Genetic' or typeRemoval == 'Simulated':
 		
 		nodesToErase = snap.TIntV()
 		for i in range(0, TotalRemoved):
-			nodesToErase.Add(listID[int(nodesToRemove[i])])
-						
-		snap.DelNodes(graph,nodesToErase)	
+			try:
+				graph.DelNode(listID[int(nodesToRemove[i])])
+			except:
+				print "error trying to delete node ",nodesToRemove[i], typeOfRemoval							
+		#snap.DelNodes(graph,nodesToErase)	
 		
 	else:
 		print 'Error: Invalid option of robustness attack'
