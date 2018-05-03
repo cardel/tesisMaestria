@@ -104,10 +104,7 @@ def getOrderedClosenessCentrality(graph,N):
 			ClosenessCentrality[index][1]=snap.GetClosenessCentr(graph,NI.GetId())
 		index+=1
 	
-	#ClosenessCentrality = ClosenessCentrality[numpy.logical_not(numpy.isnan(ClosenessCentrality))]
-	#print ClosenessCentrality
 	ClosenessCentrality = ClosenessCentrality[ClosenessCentrality[:,1].argsort()]
-	#print ClosenessCentrality
 	return ClosenessCentrality
 	
 #Remove nodes
@@ -131,7 +128,7 @@ def removeNodes(graph,typeRemoval, p, numberNodesToRemove, ClosenessCentrality, 
 			try:
 				graph.DelNode(int(ClosenessCentrality[i][0]))			
 			except:
-				print "error trying to delete node ",int(ClosenessCentrality[i][0]), typeRemoval	
+				print "error trying to delete node ",ClosenessCentrality[i][0], typeRemoval	
 				
 	elif typeRemoval == 'Random':		
 		
