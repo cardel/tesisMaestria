@@ -2,7 +2,7 @@
 #!/bin/sh
 
 #Maquina 1 
-python pruebasFractalidad.py --file ../datos/Generadas/ScaleFree2000Nodes.txt --type Edge  --output ScaleFree2000Nodes  
+python pruebasFractalidadFaltantes.py --file ../datos/Generadas/ScaleFree2000Nodes.txt --type Edge  --output ScaleFree2000Nodes  Haciendo faltantes
 python pruebasFractalidad.py --file ../datos/Generadas/ScaleFree4000Nodes.txt --type Edge  --output ScaleFree4000Nodes 
 
 #Maquina 2
@@ -14,7 +14,7 @@ python pruebasFractalidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire
 python pruebasFractalidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire02.txt --type Edge  --output SmallWorld5000NodesRewire02  
 
 #Maquina 4
-python pruebasFractalidad.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939  
+python pruebasFractalidadFaltantes.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939  Haciendo faltantes en maquina 8
 python pruebasFractalidad.py --file ../datos/Generadas/Random3373Nodes5978.txt --type Edge  --output Random3373Nodes5978
 
 #Maquina 5

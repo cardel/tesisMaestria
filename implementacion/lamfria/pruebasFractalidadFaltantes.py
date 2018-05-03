@@ -104,13 +104,10 @@ def main(argv):
 
 	logRE, IndexzeroE,TqE, DqE, lnMrqE,fitNessAverageE,fitNessMaxE,fitNessMinE = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')	
 	print "Genetic2"
-	executionTime[6] = time.time()
 	logRF, IndexzeroF,TqF, DqF, lnMrqF = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BC')
 	print "SimulatedAnnealing2"
-	executionTime[7] = time.time()	
 	logRG, IndexzeroG,TqG, DqG, lnMrqG,fitNessAverageG,fitNessMaxG,fitNessMinG = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BCFS')	
 	print "Genetic3"
-	executionTime[8] = time.time()
 	logRH, IndexzeroH,TqH, DqH, lnMrqH = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BCFS')
 	print "SimulatedAnnealing3"
 	

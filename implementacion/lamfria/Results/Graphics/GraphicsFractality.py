@@ -13,7 +13,7 @@ logRA=numpy.array(
 [-2.63905733,-1.94591015,-1.54044504,-1.25276297,-1.02961942,-0.84729786,
  -0.69314718,-0.55961579,-0.44183275,-0.33647224,-0.24116206,-0.15415068,
  -0.07410797, 0.        ])
-IndexZero=10
+IndexZeroA=10
 TqA=numpy.array(
 [ -3.59962610e+01, -3.26863896e+01, -2.93767884e+01, -2.60677361e+01,
   -2.27598061e+01, -1.94541960e+01, -1.61534547e+01, -1.28631475e+01,
@@ -761,6 +761,7 @@ for q in range(minq,maxq+1):
 plt.ylabel('ln(<Z(r)>)^q')
 plt.title("Mass exponents BC")
 plt.xlabel('ln(r/d)')
+
 fontP = FontProperties()
 fontP.set_size('small')
 plt.legend(prop=fontP)
@@ -815,18 +816,22 @@ plt.xlabel('q')
 plt.ylabel('D(q)')	
 plt.title("Generalizated Fractal dimensions")
 
-plt.plot(range(minq,maxq+1), DqA,'b<-', label='Box Counting (BC)')
-plt.plot(range(minq,maxq+1), DqB,'g<-', label='Box Counting Fixed (BCF)')
-plt.plot(range(minq,maxq+1), DqC,'r>-', label='SandBox')
-plt.plot(range(minq,maxq+1), DqD,'c>-', label='Simulated SB')
+plt.plot(range(0,maxq), DqA[IndexZeroA:-1],'b<-', label='Box Counting (BC)')
+plt.plot(range(0,maxq), DqB[IndexZeroB:-1],'g<-', label='Box Counting Fixed (BCF)')
+plt.plot(range(0,maxq), DqC[IndexZeroC:-1],'r>-', label='SandBox')
+plt.plot(range(0,maxq), DqD[IndexZeroD:-1],'c>-', label='Simulated SB')
 #plt.plot(range(minq,maxq+1), DqE,'mo-', label='Evolutive SB')
 #plt.plot(range(minq,maxq+1), DqF,'y>-', label='Simulated BC')
 #plt.plot(range(minq,maxq+1), DqG,'ko-', label='Evolutive BC')
 #plt.plot(range(minq,maxq+1), DqH,'k*-', label='Simulated BCF')
 #plt.plot(range(minq,maxq+1), DqI,'g*-', label='Evolutive BCF')
+
+
 ymin, ymax = plt.ylim()
 xmin, xmax = plt.xlim()
-plt.ylim((ymin, 1.1*ymax))
+plt.xticks([i for i in range(0,int(math.ceil(xmax))+1)]) 
+plt.yticks(numpy.arange(int(math.floor(ymin))-0.5,int(math.ceil(ymax))+0.5,0.5))
+plt.grid(alpha=0.5)
 fontP = FontProperties()
 fontP.set_size('small')
 plt.legend(prop=fontP)
