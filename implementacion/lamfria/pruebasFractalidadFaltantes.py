@@ -113,7 +113,7 @@ def main(argv):
 	print "SimulatedAnnealing3"
 	
 	timestr = time.strftime("%Y%m%d_%H%M%S")
-
+	file_object = open("Results/Fractality/"+timestr+fileOutput, 'w') 
 	
 	file_object.write("\n BoxCounting Genetic\n")	
 	file_object.write("logR\n")
