@@ -14,7 +14,7 @@ python pruebasFractalidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire
 python pruebasFractalidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire02.txt --type Edge  --output SmallWorld5000NodesRewire02  
 
 #Maquina 4
-python pruebasFractalidadFaltantes.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939  Haciendo faltantes en maquina 8
+COMPLETA python pruebasFractalidadFaltantes.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939  
 python pruebasFractalidad.py --file ../datos/Generadas/Random3373Nodes5978.txt --type Edge  --output Random3373Nodes5978
 
 #Maquina 5
@@ -22,8 +22,8 @@ python pruebasFractalidad.py --file ../datos/Generadas/Random5620Nodes8804.txt -
 python pruebasFractalidad.py --file ../datos/RedesReales/Celengs.net  --type Pajek --output Celengs  Haciendo faltantes
 
 #Maquina 6
-python pruebasFractalidad.py --file ../datos/RedesReales/cerevisiae.net  --type Pajek --output cerevisiae
-python pruebasFractalidad.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi
+python pruebasFractalidadFaltantes.py --file ../datos/RedesReales/cerevisiae.net  --type Pajek --output cerevisiae Haciendo faltantes
+python pruebasFractalidad.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi   Haciendo faltantes en 
 
 #Maquina 7
 python pruebasFractalidad.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2
