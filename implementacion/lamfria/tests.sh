@@ -19,7 +19,7 @@ python pruebasFractalidad.py --file ../datos/Generadas/Random3373Nodes5978.txt -
 
 #Maquina 5
 python pruebasFractalidad.py --file ../datos/Generadas/Random5620Nodes8804.txt --type Edge  --output Random5620Nodes8804
-python pruebasFractalidad.py --file ../datos/RedesReales/Celengs.net  --type Pajek --output Celengs
+python pruebasFractalidad.py --file ../datos/RedesReales/Celengs.net  --type Pajek --output Celengs  Haciendo faltantes
 
 #Maquina 6
 python pruebasFractalidad.py --file ../datos/RedesReales/cerevisiae.net  --type Pajek --output cerevisiae
