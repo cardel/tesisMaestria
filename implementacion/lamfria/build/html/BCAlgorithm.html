@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>FSBCAlgorithm package &mdash; LAMFRIA 1 documentation</title>
+  <title>BCAlgorithm module &mdash; LAMFRIA 1 documentation</title>
   
 
   
@@ -34,8 +34,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
-        <link rel="next" title="CBBAlgorithm package" href="CBBAlgorithm.html"/>
-        <link rel="prev" title="BCAlgorithm module" href="BCAlgorithm.html"/> 
+        <link rel="next" title="FSBCAlgorithm package" href="FSBCAlgorithm.html"/>
+        <link rel="prev" title="Welcome to LAMFRIA’s documentation!" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,12 +85,12 @@
             
             
                 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">FSBCAlgorithm package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-FSBCAlgorithm.FSBCAlgorithm">Box Counting Fixed Size module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BCAlgorithm module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-BCAlgorithm.BCAlgorithm">BoxCounting algorithm:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
@@ -127,7 +127,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>FSBCAlgorithm package</li>
+    <li>BCAlgorithm module</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -139,15 +139,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="fsbcalgorithm-package">
-<h1>FSBCAlgorithm package<a class="headerlink" href="#fsbcalgorithm-package" title="Permalink to this headline">¶</a></h1>
-<p>This package provides multifractal analysis with Box Counting Fixed Size Algorithm proposed in journal article: Multifractal analysis of complex networks DOI: 10.1088/1674-1056/21/8/080504</p>
-<div class="section" id="module-FSBCAlgorithm.FSBCAlgorithm">
-<span id="box-counting-fixed-size-module"></span><h2>Box Counting Fixed Size module<a class="headerlink" href="#module-FSBCAlgorithm.FSBCAlgorithm" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="bcalgorithm-module">
+<h1>BCAlgorithm module<a class="headerlink" href="#bcalgorithm-module" title="Permalink to this headline">¶</a></h1>
+<p>This package provides multifractal analysis with Box Counting Algorithm proposed in journal article: Fractal and multifractal properties of a family of fractal networks DOI: 10.1088/1742-5468/2014/02/P02020</p>
+<div class="section" id="module-BCAlgorithm.BCAlgorithm">
+<span id="boxcounting-algorithm"></span><h2>BoxCounting algorithm:<a class="headerlink" href="#module-BCAlgorithm.BCAlgorithm" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="FSBCAlgorithm.FSBCAlgorithm.FSBCAlgorithm">
-<code class="descclassname">FSBCAlgorithm.FSBCAlgorithm.</code><code class="descname">FSBCAlgorithm</code><span class="sig-paren">(</span><em>g</em>, <em>minq</em>, <em>maxq</em>, <em>percentNodesT</em>, <em>centerNodes=array([]</em>, <em>dtype=float64)</em><span class="sig-paren">)</span><a class="headerlink" href="#FSBCAlgorithm.FSBCAlgorithm.FSBCAlgorithm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate fractal dimension with BoxCounting fixed size method</p>
+<dt id="BCAlgorithm.BCAlgorithm.BCAlgorithm">
+<code class="descclassname">BCAlgorithm.BCAlgorithm.</code><code class="descname">BCAlgorithm</code><span class="sig-paren">(</span><em>g</em>, <em>minq</em>, <em>maxq</em>, <em>percentNodesT</em>, <em>centerNodes=array([]</em>, <em>dtype=float64)</em><span class="sig-paren">)</span><a class="headerlink" href="#BCAlgorithm.BCAlgorithm.BCAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate fractal dimension with BoxCounting method</p>
 <p>Inputs are parameters to configure algorithm behaviour.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -201,7 +201,7 @@
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="hll"><span class="kn">import</span> <span class="nn">lib.snap</span> <span class="kn">as</span> <span class="nn">snap</span>
-</span><span class="kn">import</span> <span class="nn">FSBCAlgorithm.FSBCAlgorithm</span> <span class="kn">as</span> <span class="nn">FSBCAlgorithm</span>
+</span><span class="kn">import</span> <span class="nn">BCAlgorithm.BCAlgorithm</span> <span class="kn">as</span> <span class="nn">BCAlgorithm</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="n">minq</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
@@ -210,7 +210,7 @@
 <span class="n">Rnd</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">TRnd</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">graph</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">GenPrefAttach</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="n">Rnd</span><span class="p">)</span>  <span class="c1">#ScaleFree with 10 edges per node</span>
 
-<span class="n">logR</span><span class="p">,</span> <span class="n">Indexzero</span><span class="p">,</span><span class="n">Tq</span><span class="p">,</span> <span class="n">Dq</span><span class="p">,</span> <span class="n">lnMrq</span> <span class="o">=</span> <span class="n">FSBCAlgorithm</span><span class="o">.</span><span class="n">FSBCAlgorithm</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="n">minq</span><span class="p">,</span><span class="n">maxq</span><span class="p">,</span><span class="n">percentNodesT</span><span class="p">)</span>
+<span class="n">logR</span><span class="p">,</span> <span class="n">Indexzero</span><span class="p">,</span><span class="n">Tq</span><span class="p">,</span> <span class="n">Dq</span><span class="p">,</span> <span class="n">lnMrq</span> <span class="o">=</span> <span class="n">BCAlgorithm</span><span class="o">.</span><span class="n">BCAlgorithm</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="n">minq</span><span class="p">,</span><span class="n">maxq</span><span class="p">,</span><span class="n">percentNodesT</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -223,10 +223,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="CBBAlgorithm.html" class="btn btn-neutral float-right" title="CBBAlgorithm package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="FSBCAlgorithm.html" class="btn btn-neutral float-right" title="FSBCAlgorithm package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="BCAlgorithm.html" class="btn btn-neutral" title="BCAlgorithm module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Welcome to LAMFRIA’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

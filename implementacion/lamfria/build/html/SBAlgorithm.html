@@ -34,7 +34,6 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
-        <link rel="up" title="lamfria" href="modules.html"/>
         <link rel="next" title="SimulatedAnnealing package" href="SimulatedAnnealing.html"/>
         <link rel="prev" title="Genetic package" href="Genetic.html"/> 
 
@@ -86,19 +85,19 @@
             
             
                 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">lamfria</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Multifractality with SBAlgorithm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#funcions">Funcions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-SBAlgorithm.SBAlgorithm">SBGenetic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-SBAlgorithm">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multifractality with SBAlgorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#funcions">Funcions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SBAlgorithm.SBAlgorithm">SBGenetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-SBAlgorithm">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robustness.html">robustness package</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
 </ul>
 
             
@@ -129,13 +128,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-          <li><a href="modules.html">lamfria</a> &raquo;</li>
-      
     <li>Multifractality with SBAlgorithm</li>
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/SBAlgorithm.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -154,7 +149,7 @@
 <span id="sbgenetic"></span><h2>SBGenetic<a class="headerlink" href="#module-SBAlgorithm.SBAlgorithm" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="SBAlgorithm.SBAlgorithm.SBAlgorithm">
-<code class="descclassname">SBAlgorithm.SBAlgorithm.</code><code class="descname">SBAlgorithm</code><span class="sig-paren">(</span><em>graph</em>, <em>minq</em>, <em>maxq</em>, <em>percentSandBox</em>, <em>repetitions</em><span class="sig-paren">)</span><a class="headerlink" href="#SBAlgorithm.SBAlgorithm.SBAlgorithm" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">SBAlgorithm.SBAlgorithm.</code><code class="descname">SBAlgorithm</code><span class="sig-paren">(</span><em>g</em>, <em>minq</em>, <em>maxq</em>, <em>percentSandBox</em>, <em>repetitions</em>, <em>centerNodes=array([]</em>, <em>dtype=float64)</em><span class="sig-paren">)</span><a class="headerlink" href="#SBAlgorithm.SBAlgorithm.SBAlgorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert a function and its arguments in process pool.</p>
 <p>Input is inserted in queues using a round-robin fashion. Every job is
 identified by and index that is returned by function. Not all parameters

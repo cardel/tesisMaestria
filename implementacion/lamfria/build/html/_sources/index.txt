@@ -15,11 +15,21 @@ Contents:
 .. toctree::
    :maxdepth: 4
    
+   BCAlgorithm
    FSBCAlgorithm
+   CBBAlgorithm
    Genetic
    SBAlgorithm
    SimulatedAnnealing
    robustness
+   utils
+
+Requeriments
+-------------------------
+	* numpy >= 1.12.1
+	* snap >= 0.5
+	* matplotlib >= 2.0
+	* python = 2.7
 
 
 Indices and tables

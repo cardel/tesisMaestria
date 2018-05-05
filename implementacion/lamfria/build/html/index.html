@@ -34,7 +34,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="#"/>
-        <link rel="next" title="FSBCAlgorithm package" href="FSBCAlgorithm.html"/> 
+        <link rel="next" title="BCAlgorithm module" href="BCAlgorithm.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -84,11 +84,14 @@
             
             
                 <ul>
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
 </ul>
 
             
@@ -123,8 +126,6 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
   </ul>
@@ -141,14 +142,24 @@
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="BCAlgorithm.html#module-BCAlgorithm.BCAlgorithm">BoxCounting algorithm:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BCAlgorithm.html#example">Example</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#module-FSBCAlgorithm.FSBCAlgorithm">FSBCAlgorithm.FSBCAlgorithm module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#module-FSBCAlgorithm">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#module-FSBCAlgorithm.FSBCAlgorithm">Box Counting Fixed Size module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CBBAlgorithm.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CBBAlgorithm.html#module-CBBAlgorithm.CBBAlgorithm">CBBAlgorithm.CBBAlgorithm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CBBAlgorithm.html#module-CBBAlgorithm">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Genetic.html#module-Genetic.SBGenetic">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Genetic.html#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a><ul>
@@ -169,8 +180,25 @@
 <li class="toctree-l2"><a class="reference internal" href="robustness.html#module-robustness">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils.utils">utils.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
+</div>
+<div class="section" id="requeriments">
+<h2>Requeriments<a class="headerlink" href="#requeriments" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>numpy &gt;= 1.12.1</li>
+<li>snap &gt;= 0.5</li>
+<li>matplotlib &gt;= 2.0</li>
+<li>python = 2.7</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -189,7 +217,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FSBCAlgorithm.html" class="btn btn-neutral float-right" title="FSBCAlgorithm package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="BCAlgorithm.html" class="btn btn-neutral float-right" title="BCAlgorithm module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

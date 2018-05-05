@@ -34,9 +34,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
-        <link rel="up" title="lamfria" href="modules.html"/>
         <link rel="next" title="Multifractality with SBAlgorithm" href="SBAlgorithm.html"/>
-        <link rel="prev" title="FSBCAlgorithm package" href="FSBCAlgorithm.html"/> 
+        <link rel="prev" title="CBBAlgorithm package" href="CBBAlgorithm.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -86,17 +85,17 @@
             
             
                 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">lamfria</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Genetic package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-Genetic.SBGenetic">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Genetic package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robustness.html">robustness package</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
 </ul>
 
             
@@ -127,13 +126,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-          <li><a href="modules.html">lamfria</a> &raquo;</li>
-      
     <li>Genetic package</li>
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/Genetic.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -146,36 +141,9 @@
   <div class="section" id="genetic-package">
 <h1>Genetic package<a class="headerlink" href="#genetic-package" title="Permalink to this headline">¶</a></h1>
 <p>Module contents</p>
-<div class="section" id="module-Genetic.SBGenetic">
-<span id="functions"></span><h2>Functions<a class="headerlink" href="#module-Genetic.SBGenetic" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="Genetic.SBGenetic.SBGenetic">
-<code class="descclassname">Genetic.SBGenetic.</code><code class="descname">SBGenetic</code><span class="sig-paren">(</span><em>graph</em>, <em>minq</em>, <em>maxq</em>, <em>sizePopulation</em>, <em>iterations</em>, <em>percentCrossOver</em>, <em>percentMutation</em><span class="sig-paren">)</span><a class="headerlink" href="#Genetic.SBGenetic.SBGenetic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert a function and its arguments in process pool.</p>
-<p>Input is inserted in queues using a round-robin fashion. Every job is
-identified by and index that is returned by function. Not all parameters
-of original multiprocessing.Pool.apply_aync are implemented so far.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>func</strong> (<em>Callable.</em>) &#8211; Function to process.</li>
-<li><strong>args</strong> (<em>Tuple.</em>) &#8211; Arguments for the function to process.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Assigned job id.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Int.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-Genetic.SBGenetic"></span></div>
 </div>
 
 
@@ -188,7 +156,7 @@ of original multiprocessing.Pool.apply_aync are implemented so far.</p>
         <a href="SBAlgorithm.html" class="btn btn-neutral float-right" title="Multifractality with SBAlgorithm" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="FSBCAlgorithm.html" class="btn btn-neutral" title="FSBCAlgorithm package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="CBBAlgorithm.html" class="btn btn-neutral" title="CBBAlgorithm package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
