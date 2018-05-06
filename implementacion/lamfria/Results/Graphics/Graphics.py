@@ -1,10 +1,13 @@
-
 import numpy
 numpy.set_printoptions(threshold=numpy.nan)
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import time
 from matplotlib.font_manager import FontProperties
+import math
 
+minq = -10
+maxq = 10
+symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 
 logRA=numpy.array(
 [-2.63905733,-1.94591015,-1.54044504,-1.25276297,-1.02961942,-0.84729786,
@@ -18,12 +21,12 @@ TqA=numpy.array(
    1.90763697e+00,  3.02611092e+00,  4.05237808e+00,  5.06950780e+00,
    6.08457497e+00,  7.09902923e+00,  8.11328956e+00,  9.12748719e+00,
    1.01416643e+01])
-DqA==numpy.array(
+DqA=numpy.array(
 [ 3.27238736, 3.26863896, 3.2640876 , 3.25846701, 3.25140087, 3.242366  ,
   3.23069095, 3.21578688, 3.19858958, 3.18971558, 3.22978787, 2.69952952,
   1.90763697, 1.51305546, 1.35079269, 1.26737695, 1.21691499, 1.18317154,
   1.15904137, 1.1409359 , 1.12685159])
-lnMrqA==numpy.array(
+lnMrqA=numpy.array(
 [[  8.26175153e+01,  8.11215783e+01,  8.08613255e+01,  7.96986193e+01,
     7.93416849e+01,  7.83119063e+01,  7.78009470e+01,  7.71076369e+01,
     7.60090246e+01,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
@@ -293,7 +296,7 @@ lnMrqC=numpy.array(
    68.08936048, 68.25591598]])
 
 
-logRD==numpy.array(
+logRD=numpy.array(
 [-2.7080502 ,-2.01490302,-1.60943791,-1.32175584,-1.09861229,-0.91629073,
  -0.76214005,-0.62860866,-0.51082562,-0.40546511,-0.31015493,-0.22314355,
  -0.14310084,-0.06899287, 0.        ])
@@ -373,19 +376,19 @@ lnMrqD=numpy.array(
  [ 35.09158512, 47.58702134, 54.56494345, 59.05772342, 62.34286727,
    64.38215787, 65.74252365, 66.69303471, 67.3497766 , 67.7905375 ,
    68.0768551 , 68.25081997, 68.34302104, 68.38374181, 68.40036122]])
-fitNessAverageA=numpy.array(
+fitNessAverageD=numpy.array(
 [ 0.83213128, 0.83041617, 0.83144363, 0.83218883, 0.8314815 , 0.84390245,
   0.84957108, 0.84923409, 0.84672259, 0.84325012, 0.84204653, 0.84090708,
   0.83951336, 0.83757171, 0.83605246, 0.83440285, 0.84089542, 0.84385792,
   0.84779599, 0.84863758, 0.85005283, 0.85051631, 0.85138761, 0.84902145,
   0.84961847, 0.85017426, 0.8522818 ])
-fitNessMaxA=numpy.array(
+fitNessMaxD=numpy.array(
 [ 0.8632885 , 0.88729167, 0.89002753, 0.88539773, 0.88490648, 0.91338802,
   0.91338802, 0.91338802, 0.91338802, 0.91338802, 0.91338802, 0.91338802,
   0.91338802, 0.89360032, 0.89360032, 0.88563084, 0.88563084, 0.89574203,
   0.88612462, 0.88557128, 0.88328028, 0.88328028, 0.88377959, 0.88108064,
   0.88810361, 0.89502364, 0.89502364])
-fitNessMinA==numpy.array(
+fitNessMinD=numpy.array(
 [ 0.79933747, 0.78479508, 0.77880042, 0.78479508, 0.78479508, 0.79055748,
   0.79055748, 0.79055748, 0.79055748, 0.79055748, 0.79055748, 0.79588588,
   0.79588588, 0.78859151, 0.77121562, 0.77121562, 0.77121562, 0.78439999,
@@ -742,6 +745,10 @@ lnMrqG=numpy.array(
    -9.78492585e-02, -3.82419682e-02, -1.17406843e-02, -2.72339870e-03,
    -3.96947891e-04, -4.98888943e-05]])
 
+executionTime = numpy.array([ 10715.4421041 , 10788.23034215,  1193.07546496,  6653.85819316,
+   4644.57977009,  6324.84645796,  4995.68548489,  7097.02490091,
+   5092.54276204])
+
 fileOutput = "scaleFree2000Nodes"
 timestr = time.strftime("%Y%m%d_%H%M%S")
 
@@ -766,7 +773,7 @@ for q in range(minq,maxq+1):
 		plt.plot(logRB,lnMrqB[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
 	i+=1
 plt.ylabel('ln(<M(r)>)^q')
-plt.title("Mass exponents SB")
+plt.title("Mass exponents BCFS")
 plt.xlabel('ln(r/d)')
 fontP = FontProperties()
 fontP.set_size('small')
@@ -780,12 +787,28 @@ for q in range(minq,maxq+1):
 		plt.plot(logRC,lnMrqC[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
 	i+=1
 plt.ylabel('ln(<M(r)>)^q')
-plt.title("Mass exponents Genetic")
+plt.title("Mass exponents SB")
 plt.xlabel('ln(r/d)')
 fontP = FontProperties()
 fontP.set_size('small')
 plt.legend(prop=fontP)
 plt.savefig(timestr+'_'+'TqLnrGenetic'+fileOutput+'.png')	
+
+
+fig3A = plt.figure()
+i = 0
+for q in range(minq,maxq+1):
+	if q%2==0:
+		plt.plot(logRD,lnMrqD[i],symbols[int(math.fmod(i,numpy.size(symbols)))], label="q="+str(q))
+	i+=1
+plt.ylabel('ln(<M(r)>)^q')
+plt.title("Mass exponents SB Genetic")
+plt.xlabel('ln(r/d)')
+fontP = FontProperties()
+fontP.set_size('small')
+plt.legend(prop=fontP)
+plt.savefig(timestr+'_'+'TqLnrGenetic'+fileOutput+'.png')	
+
 
 fig5 = plt.figure()
 plt.xlabel('q')
@@ -796,11 +819,11 @@ plt.plot(range(minq,maxq+1), DqA,'b<-', label='Box Counting (BC)')
 plt.plot(range(minq,maxq+1), DqB,'g<-', label='Box Counting Fixed (BCF)')
 plt.plot(range(minq,maxq+1), DqC,'r>-', label='SandBox')
 plt.plot(range(minq,maxq+1), DqD,'c>-', label='Simulated SB')
-plt.plot(range(minq,maxq+1), DqE,'mo-', label='Evolutive SB')
-plt.plot(range(minq,maxq+1), DqF,'y>-', label='Simulated BC')
-plt.plot(range(minq,maxq+1), DqG,'ko-', label='Evolutive BC')
-plt.plot(range(minq,maxq+1), DqH,'k*-', label='Simulated BCF')
-plt.plot(range(minq,maxq+1), DqI,'g*-', label='Evolutive BCF')
+#plt.plot(range(minq,maxq+1), DqE,'mo-', label='Evolutive SB')
+#plt.plot(range(minq,maxq+1), DqF,'y>-', label='Simulated BC')
+#plt.plot(range(minq,maxq+1), DqG,'ko-', label='Evolutive BC')
+#plt.plot(range(minq,maxq+1), DqH,'k*-', label='Simulated BCF')
+#plt.plot(range(minq,maxq+1), DqI,'g*-', label='Evolutive BCF')
 ymin, ymax = plt.ylim()
 xmin, xmax = plt.xlim()
 plt.ylim((ymin, 1.1*ymax))
@@ -809,31 +832,15 @@ fontP.set_size('small')
 plt.legend(prop=fontP)
 plt.savefig(timestr+'_'+'fractality'+fileOutput+'.png')
 #plt.show()
-np.savez(message+timestr+"file.txt", genetico=arr1, name2=arr2)
 
 fig6 = plt.figure()
 plt.xlabel('Strategy')
 plt.ylabel('Time(s)')
-x=numpy.arange(6)
+x=numpy.arange(9)
 plt.bar(x, executionTime)
 plt.xticks(x, ('Box counting', 'SBAlgorithm', 'Evolutive SB', 'Simulated SB', 'Evolutive BC', 'Simulated BC'))
 plt.savefig(timestr+'_'+'timeAlgorithms'+fileOutput+'.png')
 
 
-
-fig7 = plt.figure()
-plt.xlabel('iterations')
-plt.ylabel('Fitness')	
-plt.title("Behaviour genetic algorithm")	 
-plt.plot(range(0,numpy.size(fitNessAverage)), fitNessAverage,'r.-', label='Average')
-plt.plot(range(0,numpy.size(fitNessMax)), fitNessMax,'b.-', label='Max')
-plt.plot(range(0,numpy.size(fitNessMin)), fitNessMin,'m.-', label='min')
-ymin, ymax = plt.ylim()
-xmin, xmax = plt.xlim()
-plt.ylim((ymin, 1.1*ymax))
-fontP = FontProperties()
-fontP.set_size('small')
-plt.legend(prop=fontP)
-plt.savefig(timestr+'_'+'evolutiveBehaviour'+fileOutput+'.png')
 
 
