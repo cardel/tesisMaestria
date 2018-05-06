@@ -31,16 +31,16 @@ python pruebasFractalidadFaltantes.py --file ../datos/Fractales/floweru1v3.net  
 
 
 #Maquina 8
-python pruebasRobustez.py --file ../datos/Generadas/ScaleFree2000Nodes.txt --type Edge  --output ScaleFree2000Nodes   COMPLETA  Esta repetida
-python pruebasRobustez.py --file ../datos/Generadas/ScaleFree4000Nodes.txt --type Edge  --output ScaleFree4000Nodes   COMPLETA
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree2000Nodes.txt --type Edge  --output ScaleFree2000NodesCentralidad   COMPLETA  (Repitiendo centralidad en robustez1)
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree4000Nodes.txt --type Edge  --output ScaleFree4000NodesCentralidad   COMPLETA  (Repitiendo centralidad en robustez1)
 
 #Maquina 9
-python pruebasRobustez.py --file ../datos/Generadas/ScaleFree8000Nodes.txt --type Edge  --output ScaleFree8000Nodes  
-python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire005.txt --type Edge  --output SmallWorld5000NodesRewire005 
-
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree8000Nodes.txt --type Edge  --output ScaleFree8000NodesCentralidad      (Repitiendo centralidad en serverMaestrai3 lado 2)
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire005.txt --type Edge  --output SmallWorld5000NodesRewire005Centralidad   Repitiendo centralidad en serverMaestrai3 lado 2)
+ 
 #Maquina 10
-python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire01.txt --type Edge  --output SmallWorld5000NodesRewire01 
-python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire02.txt --type Edge  --output SmallWorld5000NodesRewire02 
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire01.txt --type Edge  --output SmallWorld5000NodesRewire01Centralidad (Repitiendo centralidad en robustez1-1)
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire02.txt --type Edge  --output SmallWorld5000NodesRewire02Centralidad (Repitiendo centralidad en robustez1-1)
 
 #Maquina 11
 python pruebasRobustez.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939     COMPLETA
