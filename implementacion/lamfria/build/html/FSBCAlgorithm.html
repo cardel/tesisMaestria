@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>FSBCAlgorithm package &mdash; LAMFRIA 1 documentation</title>
+  <title>Fixed Size Box Counting Algorithm &mdash; LAMFRIA 1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
         <link rel="next" title="CBBAlgorithm package" href="CBBAlgorithm.html"/>
-        <link rel="prev" title="BCAlgorithm module" href="BCAlgorithm.html"/> 
+        <link rel="prev" title="Box Counting algorithm" href="BCAlgorithm.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,15 +85,15 @@
             
             
                 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">FSBCAlgorithm package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">Box Counting algorithm</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Fixed Size Box Counting Algorithm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-FSBCAlgorithm.FSBCAlgorithm">Box Counting Fixed Size module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">SandBox Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
@@ -127,7 +127,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>FSBCAlgorithm package</li>
+    <li>Fixed Size Box Counting Algorithm</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -139,8 +139,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="fsbcalgorithm-package">
-<h1>FSBCAlgorithm package<a class="headerlink" href="#fsbcalgorithm-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fixed-size-box-counting-algorithm">
+<h1>Fixed Size Box Counting Algorithm<a class="headerlink" href="#fixed-size-box-counting-algorithm" title="Permalink to this headline">¶</a></h1>
 <p>This package provides multifractal analysis with Box Counting Fixed Size Algorithm proposed in journal article: Multifractal analysis of complex networks DOI: 10.1088/1674-1056/21/8/080504</p>
 <div class="section" id="module-FSBCAlgorithm.FSBCAlgorithm">
 <span id="box-counting-fixed-size-module"></span><h2>Box Counting Fixed Size module<a class="headerlink" href="#module-FSBCAlgorithm.FSBCAlgorithm" title="Permalink to this headline">¶</a></h2>
@@ -162,34 +162,24 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">logR, logarithm of r/d</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Indexzero, position of q=0 in Tq and Dq</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tq, mass exponents</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dq, fractal dimensions</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">lnMrq, logarithm of number of nodes in boxes by radio</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Numpy 2D array.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>logR: Numpy array</dt>
+<dd><p class="first last">logarithm of r/d</p>
+</dd>
+<dt>Indexzero: Integer</dt>
+<dd><p class="first last">position of q=0 in Tq and Dq</p>
+</dd>
+<dt>Tq: Numpy array</dt>
+<dd><p class="first last">mass exponents</p>
+</dd>
+<dt>Dq: Numpy array</dt>
+<dd><p class="first last">fractal dimensions</p>
+</dd>
+<dt>lnMrq: Numpy 2D array</dt>
+<dd><p class="first last">logarithm of number of nodes in boxes by radio</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
 </tbody>
@@ -226,7 +216,7 @@
         <a href="CBBAlgorithm.html" class="btn btn-neutral float-right" title="CBBAlgorithm package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="BCAlgorithm.html" class="btn btn-neutral" title="BCAlgorithm module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="BCAlgorithm.html" class="btn btn-neutral" title="Box Counting algorithm" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

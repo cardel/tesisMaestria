@@ -26,16 +26,17 @@ def FSBCAlgorithm(g,minq,maxq,percentNodesT, centerNodes = numpy.array([])):
 	:type maxq: Integer	
 	:param percentNodesT: Center of boxes. All centers have to different and the lenght array must be equal to number of nodes
 	:type maxq: Numpy 1D Array		
-	:returns: logR, logarithm of r/d
-	:rtype: Numpy array.
-	:returns: Indexzero, position of q=0 in Tq and Dq
-	:rtype: Numpy array.	
-	:returns: Tq, mass exponents
-	:rtype: Numpy array.
-	:returns: Dq, fractal dimensions
-	:rtype: Numpy array.
-	:returns: lnMrq, logarithm of number of nodes in boxes by radio
-	:rtype: Numpy 2D array.
+	:returns:				
+		logR: Numpy array
+			logarithm of r/d
+		Indexzero: Integer
+			position of q=0 in Tq and Dq
+		Tq: Numpy array
+			mass exponents		
+		Dq: Numpy array
+			fractal dimensions		
+		lnMrq: Numpy 2D array
+			logarithm of number of nodes in boxes by radio		
 		"""		
 	#graph = 
 	graph =snap.GetMxScc(g)

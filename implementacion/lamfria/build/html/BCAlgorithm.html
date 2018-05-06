@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BCAlgorithm module &mdash; LAMFRIA 1 documentation</title>
+  <title>Box Counting algorithm &mdash; LAMFRIA 1 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
-        <link rel="next" title="FSBCAlgorithm package" href="FSBCAlgorithm.html"/>
+        <link rel="next" title="Fixed Size Box Counting Algorithm" href="FSBCAlgorithm.html"/>
         <link rel="prev" title="Welcome to LAMFRIA’s documentation!" href="index.html"/> 
 
   
@@ -85,15 +85,15 @@
             
             
                 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">BCAlgorithm module</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Box Counting algorithm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-BCAlgorithm.BCAlgorithm">BoxCounting algorithm:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">Fixed Size Box Counting Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">SandBox Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
@@ -127,7 +127,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>BCAlgorithm module</li>
+    <li>Box Counting algorithm</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -139,8 +139,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="bcalgorithm-module">
-<h1>BCAlgorithm module<a class="headerlink" href="#bcalgorithm-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="box-counting-algorithm">
+<h1>Box Counting algorithm<a class="headerlink" href="#box-counting-algorithm" title="Permalink to this headline">¶</a></h1>
 <p>This package provides multifractal analysis with Box Counting Algorithm proposed in journal article: Fractal and multifractal properties of a family of fractal networks DOI: 10.1088/1742-5468/2014/02/P02020</p>
 <div class="section" id="module-BCAlgorithm.BCAlgorithm">
 <span id="boxcounting-algorithm"></span><h2>BoxCounting algorithm:<a class="headerlink" href="#module-BCAlgorithm.BCAlgorithm" title="Permalink to this headline">¶</a></h2>
@@ -157,39 +157,29 @@
 <li><strong>g</strong> (<em>Snap PUN Graph.</em>) &#8211; Network.</li>
 <li><strong>minq</strong> &#8211; Minimum value of q</li>
 <li><strong>minq</strong> &#8211; Maximum value of q</li>
-<li><strong>percentNodesT</strong> &#8211; Number of combinations of center nodes. This value is a percent of the total nodes</li>
-<li><strong>percentNodesT</strong> &#8211; Center of boxes. All centers have to different and the lenght array must be equal to number of nodes</li>
+<li><strong>percentNodesT</strong> (<em>Integer</em>) &#8211; Number of combinations of center nodes. This value is a percent of the total nodes</li>
+<li><strong>CenterNodes</strong> (<em>Numpy 1D Array</em>) &#8211; Calculated center. If this is null, then the centers are calculated</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">logR, logarithm of r/d</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Indexzero, position of q=0 in Tq and Dq</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tq, mass exponents</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dq, fractal dimensions</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Numpy array.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">lnMrq, logarithm of number of nodes in boxes by radio</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Numpy 2D array.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>logR: Numpy array</dt>
+<dd><p class="first last">logarithm of r/d</p>
+</dd>
+<dt>Indexzero: Integer</dt>
+<dd><p class="first last">position of q=0 in Tq and Dq</p>
+</dd>
+<dt>Tq: Numpy array</dt>
+<dd><p class="first last">mass exponents</p>
+</dd>
+<dt>Dq: Numpy array</dt>
+<dd><p class="first last">fractal dimensions</p>
+</dd>
+<dt>lnMrq: Numpy 2D array</dt>
+<dd><p class="first last">logarithm of number of nodes in boxes by radio</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
 </tbody>
@@ -223,7 +213,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FSBCAlgorithm.html" class="btn btn-neutral float-right" title="FSBCAlgorithm package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="FSBCAlgorithm.html" class="btn btn-neutral float-right" title="Fixed Size Box Counting Algorithm" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Welcome to LAMFRIA’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

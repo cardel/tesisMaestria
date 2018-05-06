@@ -1,5 +1,5 @@
-BCAlgorithm module
-===================
+Box Counting algorithm
+========================
 
 This package provides multifractal analysis with Box Counting Algorithm proposed in journal article: Fractal and multifractal properties of a family of fractal networks DOI: 10.1088/1742-5468/2014/02/P02020
 

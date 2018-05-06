@@ -1,5 +1,5 @@
-FSBCAlgorithm package
-=====================
+Fixed Size Box Counting Algorithm 
+===================================
 
 This package provides multifractal analysis with Box Counting Fixed Size Algorithm proposed in journal article: Multifractal analysis of complex networks DOI: 10.1088/1674-1056/21/8/080504
 

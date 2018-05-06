@@ -15,19 +15,34 @@ import random
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
 def SBAlgorithm(g,minq,maxq,percentSandBox,repetitions, centerNodes = numpy.array([])):
-	"""Insert a function and its arguments in process pool.
-  
-	Input is inserted in queues using a round-robin fashion. Every job is
-	identified by and index that is returned by function. Not all parameters
-	of original multiprocessing.Pool.apply_aync are implemented so far.
-  
-	:param func: Function to process.
-	:type func: Callable.
-	:param args: Arguments for the function to process.
-	:type args: Tuple.
-	:returns: Assigned job id.
-	:rtype: Int.
-        """	
+	"""Calculate fractal dimension with SandBox method
+
+	Inputs are parameters to configure algorithm behaviour.
+
+	:param g: Network.
+	:type g: Snap PUN Graph.
+	:param minq: Minimum value of q
+	:type args: Integer
+	:param minq: Maximum value of q
+	:type maxq: Integer	
+	:param percentSandBox: Number of combinations of center nodes. This value is a percent of the total nodes
+	:type percentSandBox: Double
+	:param repetitions: Number of repetitions of algorithm
+	:type repetitions: Integer		
+	:param CenterNodes: Calculated center. If this is null, then the centers are calculated
+	:type CenterNodes: Numpy 1D Array	
+	:returns:				
+		logR: Numpy array
+			logarithm of r/d
+		Indexzero: Integer
+			position of q=0 in Tq and Dq
+		Tq: Numpy array
+			mass exponents		
+		Dq: Numpy array
+			fractal dimensions		
+		lnMrq: Numpy 2D array
+			logarithm of number of nodes in boxes by radio
+		"""	
 	graph = g
 
 	if(numpy.size(centerNodes)==0):

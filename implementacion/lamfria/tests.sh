@@ -44,7 +44,7 @@ python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire02.
 
 #Maquina 11
 python pruebasRobustez.py --file ../datos/Generadas/Random1991Nodes5939.txt --type Edge --output Random1991Nodes5939     COMPLETA
-python pruebasRobustez.py --file ../datos/Generadas/Random3373Nodes5978.txt --type Edge  --output Random3373Nodes5978  
+python pruebasRobustez.py --file ../datos/Generadas/Random3373Nodes5978.txt --type Edge  --output Random3373Nodes5978  COMPLETA; Falla en Centralidad
 #Maquina 12
 python pruebasRobustez.py --file ../datos/Generadas/Random5620Nodes8804.txt --type Edge  --output Random5620Nodes8804 
 python pruebasRobustez.py --file ../datos/RedesReales/Celengs.net  --type Pajek --output Celengs (Ha fallado 3 veces en simulated, si vuelve a fallar quitarla)
@@ -53,6 +53,6 @@ python pruebasRobustez.py --file ../datos/RedesReales/Celengs.net  --type Pajek 
 python pruebasRobustez.py --file ../datos/RedesReales/cerevisiae.net  --type Pajek --output cerevisiae  
 python pruebasRobustez.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi  
 #Maquina 14
-python pruebasRobustez.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2   COMPLETA
+python pruebasRobustezCentralidad.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2   Haciendo centralidad de nuevo
 python pruebasRobustez.py --file ../datos/Fractales/floweru1v3.net  --type Pajek --output floweru1v3   COMPLETA
 

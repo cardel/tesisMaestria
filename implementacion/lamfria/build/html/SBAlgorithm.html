@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Multifractality with SBAlgorithm &mdash; LAMFRIA 1 documentation</title>
+  <title>SandBox Algorithm &mdash; LAMFRIA 1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
         <link rel="next" title="SimulatedAnnealing package" href="SimulatedAnnealing.html"/>
-        <link rel="prev" title="Genetic package" href="Genetic.html"/> 
+        <link rel="prev" title="Genetic module" href="Genetic.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,14 +85,13 @@
             
             
                 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">Box Counting algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">Fixed Size Box Counting Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Multifractality with SBAlgorithm</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#funcions">Funcions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-SBAlgorithm.SBAlgorithm">SBGenetic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-SBAlgorithm">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SandBox Algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-SBAlgorithm.SBAlgorithm">SBAlgorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
@@ -128,7 +127,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Multifractality with SBAlgorithm</li>
+    <li>SandBox Algorithm</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -140,34 +139,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="multifractality-with-sbalgorithm">
-<h1>Multifractality with SBAlgorithm<a class="headerlink" href="#multifractality-with-sbalgorithm" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="funcions">
-<h2>Funcions<a class="headerlink" href="#funcions" title="Permalink to this headline">¶</a></h2>
-</div>
+  <div class="section" id="sandbox-algorithm">
+<h1>SandBox Algorithm<a class="headerlink" href="#sandbox-algorithm" title="Permalink to this headline">¶</a></h1>
+<p>This package provides multifractal analysis with SandBox Algorithm proposed in journal article: Determination of multifractal dimensions of complex networks by means of the sandbox algorithm DOI: 10.1063/1.4907557</p>
 <div class="section" id="module-SBAlgorithm.SBAlgorithm">
-<span id="sbgenetic"></span><h2>SBGenetic<a class="headerlink" href="#module-SBAlgorithm.SBAlgorithm" title="Permalink to this headline">¶</a></h2>
+<span id="sbalgorithm"></span><h2>SBAlgorithm<a class="headerlink" href="#module-SBAlgorithm.SBAlgorithm" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="SBAlgorithm.SBAlgorithm.SBAlgorithm">
 <code class="descclassname">SBAlgorithm.SBAlgorithm.</code><code class="descname">SBAlgorithm</code><span class="sig-paren">(</span><em>g</em>, <em>minq</em>, <em>maxq</em>, <em>percentSandBox</em>, <em>repetitions</em>, <em>centerNodes=array([]</em>, <em>dtype=float64)</em><span class="sig-paren">)</span><a class="headerlink" href="#SBAlgorithm.SBAlgorithm.SBAlgorithm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert a function and its arguments in process pool.</p>
-<p>Input is inserted in queues using a round-robin fashion. Every job is
-identified by and index that is returned by function. Not all parameters
-of original multiprocessing.Pool.apply_aync are implemented so far.</p>
+<dd><p>Calculate fractal dimension with SandBox method</p>
+<p>Inputs are parameters to configure algorithm behaviour.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>func</strong> (<em>Callable.</em>) &#8211; Function to process.</li>
-<li><strong>args</strong> (<em>Tuple.</em>) &#8211; Arguments for the function to process.</li>
+<li><strong>g</strong> (<em>Snap PUN Graph.</em>) &#8211; Network.</li>
+<li><strong>minq</strong> &#8211; Minimum value of q</li>
+<li><strong>minq</strong> &#8211; Maximum value of q</li>
+<li><strong>percentSandBox</strong> (<em>Double</em>) &#8211; Number of combinations of center nodes. This value is a percent of the total nodes</li>
+<li><strong>repetitions</strong> (<em>Integer</em>) &#8211; Number of repetitions of algorithm</li>
+<li><strong>CenterNodes</strong> (<em>Numpy 1D Array</em>) &#8211; Calculated center. If this is null, then the centers are calculated</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Assigned job id.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Int.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>logR: Numpy array</dt>
+<dd><p class="first last">logarithm of r/d</p>
+</dd>
+<dt>Indexzero: Integer</dt>
+<dd><p class="first last">position of q=0 in Tq and Dq</p>
+</dd>
+<dt>Tq: Numpy array</dt>
+<dd><p class="first last">mass exponents</p>
+</dd>
+<dt>Dq: Numpy array</dt>
+<dd><p class="first last">fractal dimensions</p>
+</dd>
+<dt>lnMrq: Numpy 2D array</dt>
+<dd><p class="first last">logarithm of number of nodes in boxes by radio</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
 </tbody>
@@ -175,8 +188,23 @@ of original multiprocessing.Pool.apply_aync are implemented so far.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-SBAlgorithm">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SBAlgorithm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="hll"><span class="kn">import</span> <span class="nn">lib.snap</span> <span class="kn">as</span> <span class="nn">snap</span>
+</span><span class="kn">import</span> <span class="nn">SBAlgorithm.SBAlgorithm</span> <span class="kn">as</span> <span class="nn">SBAlgorithm</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">minq</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="hll"><span class="n">maxq</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class="n">percentOfSandBoxes</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">repetitionsSB</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">Rnd</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">TRnd</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">GenPrefAttach</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="n">Rnd</span><span class="p">)</span>  <span class="c1">#ScaleFree with 10 edges per node</span>
+
+<span class="n">logRB</span><span class="p">,</span> <span class="n">IndexzeroB</span><span class="p">,</span><span class="n">TqB</span><span class="p">,</span> <span class="n">DqB</span><span class="p">,</span> <span class="n">lnMrqB</span> <span class="o">=</span> <span class="n">SBAlgorithm</span><span class="o">.</span><span class="n">SBAlgorithm</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="n">minq</span><span class="p">,</span><span class="n">maxq</span><span class="p">,</span><span class="n">percentOfSandBoxes</span><span class="p">,</span><span class="n">repetitionsSB</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -190,7 +218,7 @@ of original multiprocessing.Pool.apply_aync are implemented so far.</p>
         <a href="SimulatedAnnealing.html" class="btn btn-neutral float-right" title="SimulatedAnnealing package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Genetic.html" class="btn btn-neutral" title="Genetic package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Genetic.html" class="btn btn-neutral" title="Genetic module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

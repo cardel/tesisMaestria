@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SimulatedAnnealing package &mdash; LAMFRIA 1 documentation</title>
+  <title>Simulated Annealing strategy &mdash; LAMFRIA 1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
         <link rel="next" title="robustness package" href="robustness.html"/>
-        <link rel="prev" title="Multifractality with SBAlgorithm" href="SBAlgorithm.html"/> 
+        <link rel="prev" title="SandBox Algorithm" href="SBAlgorithm.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,15 +85,14 @@
             
             
                 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">Box Counting algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">Fixed Size Box Counting Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">SimulatedAnnealing package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">SandBox Algorithm</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulated Annealing strategy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-SimulatedAnnealing.SimulatedAnnealing">SimulatedAnnealing.SimulatedAnnealing module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-SimulatedAnnealing">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
@@ -128,7 +127,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>SimulatedAnnealing package</li>
+    <li>Simulated Annealing strategy</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -140,36 +139,161 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="simulatedannealing-package">
-<h1>SimulatedAnnealing package<a class="headerlink" href="#simulatedannealing-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
+  <div class="section" id="simulated-annealing-strategy">
+<h1>Simulated Annealing strategy<a class="headerlink" href="#simulated-annealing-strategy" title="Permalink to this headline">¶</a></h1>
+<p>Simulated annealing algorithm for multifractal analysis</p>
 <div class="section" id="module-SimulatedAnnealing.SimulatedAnnealing">
 <span id="simulatedannealing-simulatedannealing-module"></span><h2>SimulatedAnnealing.SimulatedAnnealing module<a class="headerlink" href="#module-SimulatedAnnealing.SimulatedAnnealing" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="SimulatedAnnealing.SimulatedAnnealing.SA">
 <code class="descclassname">SimulatedAnnealing.SimulatedAnnealing.</code><code class="descname">SA</code><span class="sig-paren">(</span><em>g</em>, <em>minq</em>, <em>maxq</em>, <em>percentNodes</em>, <em>sizePopulation</em>, <em>Kmax</em>, <em>typeAlgorithm</em><span class="sig-paren">)</span><a class="headerlink" href="#SimulatedAnnealing.SimulatedAnnealing.SA" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The simulated annealing algorithm</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>Snap PUN Graph.</em>) &#8211; Network.</li>
+<li><strong>sizePopulation</strong> (<em>Integer</em>) &#8211; Size of population</li>
+<li><strong>Kmax</strong> (<em>Integer</em>) &#8211; Initial temperature</li>
+<li><strong>typeAlgorithm</strong> (<em>String</em>) &#8211; Method for calculate fractal dimensions: &#8216;SB&#8217; for Sandbox, &#8216;BC&#8217; for BoxCounting, &#8216;FSBC&#8217; for fixed size box counting</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>logR: Numpy array</dt>
+<dd><p class="first last">logarithm of r/d</p>
+</dd>
+<dt>Indexzero: Integer</dt>
+<dd><p class="first last">position of q=0 in Tq and Dq</p>
+</dd>
+<dt>Tq: Numpy array</dt>
+<dd><p class="first last">mass exponents</p>
+</dd>
+<dt>Dq: Numpy array</dt>
+<dd><p class="first last">fractal dimensions</p>
+</dd>
+<dt>lnMrq: Numpy 2D array</dt>
+<dd><p class="first last">logarithm of number of nodes in boxes by radio</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="SimulatedAnnealing.SimulatedAnnealing.calculateCenters">
 <code class="descclassname">SimulatedAnnealing.SimulatedAnnealing.</code><code class="descname">calculateCenters</code><span class="sig-paren">(</span><em>graph</em>, <em>numNodes</em>, <em>percentNodes</em>, <em>Kmax</em>, <em>d</em>, <em>distances</em>, <em>listID</em>, <em>listDegree</em>, <em>totalRemoved=0</em><span class="sig-paren">)</span><a class="headerlink" href="#SimulatedAnnealing.SimulatedAnnealing.calculateCenters" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate centers with a specified size</p>
+<p>The genetic algorithm:</p>
+<ol class="arabic simple">
+<li>Generate a poblation of ramdom nodes as centers of the boxes</li>
+<li>Select a neighbor state</li>
+<li>Select this state according its fitness and global temperature</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>Snap PUN Graph.</em>) &#8211; Network.</li>
+<li><strong>numNodes</strong> (<em>Integer</em>) &#8211; Number of nodes in the network.</li>
+<li><strong>percentNodes</strong> (<em>Integer</em>) &#8211; Size of population</li>
+<li><strong>Kmax</strong> (<em>Integer</em>) &#8211; System temperature</li>
+<li><strong>lisID</strong> (<em>Numpy 2D array of integers</em>) &#8211; ID of nodes</li>
+<li><strong>listDegree</strong> (<em>Numpy 2D array of integers</em>) &#8211; List of degree all nodes</li>
+<li><strong>totalRemoved</strong> (<em>Integer</em>) &#8211; Number of nodes in solution, only if you want apply robusness analysis</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>currentState: Numpy array</dt>
+<dd><p class="first last">current individual, select centers of boxes</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="SimulatedAnnealing.SimulatedAnnealing.calculateFitness">
 <code class="descclassname">SimulatedAnnealing.SimulatedAnnealing.</code><code class="descname">calculateFitness</code><span class="sig-paren">(</span><em>g</em>, <em>element</em>, <em>radius</em>, <em>distances</em>, <em>listID</em>, <em>listDegree</em><span class="sig-paren">)</span><a class="headerlink" href="#SimulatedAnnealing.SimulatedAnnealing.calculateFitness" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate fitness from a select node centers in a network</p>
+<p>Fitness is the average between distances of the centers and the average the degrees , the centers can be of different size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>Snap PUN Graph.</em>) &#8211; Network.</li>
+<li><strong>chromosome</strong> (<em>Numpy array of integers</em>) &#8211; Centers</li>
+<li><strong>radius</strong> (<em>Integer</em>) &#8211; Diameter of the network</li>
+<li><strong>distances</strong> (<em>Numpy 2D array of integers</em>) &#8211; Distance between all nodes</li>
+<li><strong>listDegree</strong> (<em>Numpy 1D Array</em>) &#8211; List of degree all nodes</li>
+<li><strong>maxDegree</strong> (<em>Integer</em>) &#8211; Max degree in the network</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Fitness of the centers</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">Double</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="SimulatedAnnealing.SimulatedAnnealing.createNeighbors">
 <code class="descclassname">SimulatedAnnealing.SimulatedAnnealing.</code><code class="descname">createNeighbors</code><span class="sig-paren">(</span><em>node</em>, <em>numNodes</em>, <em>distances</em><span class="sig-paren">)</span><a class="headerlink" href="#SimulatedAnnealing.SimulatedAnnealing.createNeighbors" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate fitness from a select node centers in a network</p>
+<p>Fitness is the average between distances of the centers and the average the degrees , the centers can be of different size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>Integer.</em>) &#8211; ID of node in the network.</li>
+<li><strong>numNodes</strong> (<em>Integer</em>) &#8211; Number of nodes</li>
+<li><strong>distances</strong> (<em>Numpy 2D array of integers</em>) &#8211; Distance between all nodes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">neighbors. Numpy ID array</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">Double</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
-<div class="section" id="module-SimulatedAnnealing">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SimulatedAnnealing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="hll"><span class="kn">import</span> <span class="nn">lib.snap</span> <span class="kn">as</span> <span class="nn">snap</span>
+</span><span class="kn">import</span> <span class="nn">SimulatedAnnealing.SimulatedAnnealing</span> <span class="kn">as</span> <span class="nn">SimulatedAnnealing</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">minq</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="hll"><span class="n">maxq</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class="n">sizePopulation</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">Kmax</span> <span class="o">=</span> <span class="mi">1500</span>
+<span class="n">Rnd</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">TRnd</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">GenPrefAttach</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="n">Rnd</span><span class="p">)</span>  <span class="c1">#ScaleFree with 10 edges per node</span>
+
+<span class="n">logRD</span><span class="p">,</span> <span class="n">IndexzeroD</span><span class="p">,</span><span class="n">TqD</span><span class="p">,</span> <span class="n">DqD</span><span class="p">,</span> <span class="n">lnMrqD</span> <span class="o">=</span> <span class="n">SimulatedAnnealing</span><span class="o">.</span><span class="n">SA</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="n">minq</span><span class="p">,</span><span class="n">maxq</span><span class="p">,</span><span class="n">percentOfSandBoxes</span><span class="p">,</span><span class="n">sizePopulation</span><span class="p">,</span> <span class="n">Kmax</span><span class="p">,</span> <span class="s1">&#39;BC&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -183,7 +307,7 @@
         <a href="robustness.html" class="btn btn-neutral float-right" title="robustness package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="SBAlgorithm.html" class="btn btn-neutral" title="Multifractality with SBAlgorithm" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="SBAlgorithm.html" class="btn btn-neutral" title="SandBox Algorithm" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
