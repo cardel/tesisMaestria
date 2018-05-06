@@ -18,7 +18,25 @@ import BCAlgorithm.BCAlgorithm as BCAlgorithm
 
 #Search profile about the algortihm
 def calculateFitness(graph, chromosome,radius, distances,listDegree,maxDegree):
+	"""Calculate fitness from a select node centers in a network
 	
+	Fitness is the average between distances of the centers and the average the degrees , the centers can be of different size
+	
+	:param graph: Network.
+	:type graph: Snap PUN Graph.
+	:param chromosome: Centers
+	:type chromosome: Numpy array of integers
+	:param radius: Diameter of the network
+	:type radius: Integer	
+	:param distances: Distance between all nodes
+	:type distances: Numpy 2D array of integers
+	:param listDegree: List of degree all nodes
+	:type listDegree: Numpy 1D Array	
+	:param maxDegree: Max degree in the network
+	:type maxDegree: Integer
+	:returns: Fitness of the centers
+	:type: Double
+		"""			
 	totalDegree = numpy.array([], dtype=float)
 	totalDistanceOtherNodes = numpy.array([], dtype=float)
 	sizeC = numpy.size(chromosome)
@@ -36,7 +54,43 @@ def calculateFitness(graph, chromosome,radius, distances,listDegree,maxDegree):
 	return 100*(totalDista*totalDeg)
 
 def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome,degreeOfBoring):
+	"""Calculate centers with a specified size
 	
+	The genetic algorithm:
+	
+	1. Generate a poblation of ramdom nodes as centers of the boxes
+	2. Evaluate each set of nodes with fitness funtion
+	3. Categorize poblation according fitness
+	4. Select two indivudues into population, then create a new individual
+	5. Remove worst individuals
+	6. Repeat 2 to 5 ultil a number of iterations or a boring degree
+
+	:param graph: Network.
+	:type graph: Snap PUN Graph.
+	:param numNodes: Number of nodes in the network.
+	:type numNodes: Integer
+	:param sizePopulation: Size of population
+	:type sizePopulation: Integer
+	:param radius: Diameter of the network
+	:type radius: Integer	
+	:param distances: Distance to other nodes
+	:type distances: Numpy 2D array of integers	
+	:param percentCrossOver: Percent (0 to 1) of individual select to cross
+	:type percentCrossOver: Double		
+	:param Percent: (0 to 1) of probability to apply mutation to an individual
+	:type Percent: Double
+	:param listDegree: List of degree all nodes
+	:type listDegree: Numpy 1D Array	
+	:param maxDegree: Max degree in the network
+	:type maxDegree: Integer
+	:param sizeChromosome: Number of centers of boxes
+	:type sizeChromosome: Integer	
+	:param degreeOfBoring: Number of iterations of boring
+	:type degreeOfBoring: Integer				
+	:returns:				
+		best: Numpy array
+			Best individual, select centers of boxes
+	"""				
 	population = numpy.zeros([sizePopulation,sizeChromosome])
 	fitNessAverage = numpy.array([])
 	fitNessMax =  numpy.array([])
@@ -133,7 +187,55 @@ def calculateCentersFixedSize(graph, numNodes,iterations, sizePopulation, radius
 	return best
 
 def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distances, percentCrossOver, percentMutation,listDegree,maxDegree,degreeOfBoring):
+	"""Calculate centers with a random size between 20% and 90% of number of nodes
 	
+	The genetic algorithm:
+	
+	1. Generate a poblation of ramdom nodes as centers of the boxes
+	2. Evaluate each set of nodes with fitness funtion
+	3. Categorize poblation according fitness
+	4. Select two indivudues into population, then create a new individual
+	5. Remove worst individuals
+	6. Repeat 2 to 5 ultil a number of iterations or a boring degree
+
+	:param graph: Network.
+	:type graph: Snap PUN Graph.
+	:param numNodes: Number of nodes in the network.
+	:type numNodes: Integer
+	:param sizePopulation: Size of population
+	:type sizePopulation: Integer
+	:param radius: Diameter of the network
+	:type radius: Integer	
+	:param distances: Distance to other nodes
+	:type distances: Numpy 2D array of integers	
+	:param percentCrossOver: Percent (0 to 1) of individual select to cross
+	:type percentCrossOver: Double		
+	:param percentMutation: (0 to 1) of probability to apply mutation to an individual
+	:type percentMutation: Double
+	:param listDegree: List of degree all nodes
+	:type listDegree: Numpy 1D Array	
+	:param maxDegree: Max degree in the network
+	:type maxDegree: Integer
+	:param degreeOfBoring: Number of iterations of boring
+	:type degreeOfBoring: Integer					
+	:returns:				
+		best: Numpy array
+			Best individual, select centers of boxes
+		Indexzero: Integer
+			position of q=0 in Tq and Dq
+		Tq: Numpy array
+			mass exponents		
+		Dq: Numpy array
+			fractal dimensions		
+		lnMrq: Numpy 2D array
+			logarithm of number of nodes in boxes by radio		
+		fitNessAverage: Numpy array
+			Average fitness across iterations		
+		fitNessMax: Numpy array
+			Maximum fitness across iterations		
+		fitNessMin: Numpy array:
+			Minimal fitness across iterations	
+		"""		
 	population = []
 	fitNessAverage = numpy.array([])
 	fitNessMax =  numpy.array([])
@@ -245,19 +347,40 @@ def calculateCenters(graph, numNodes,iterations, sizePopulation, radius, distanc
 #Initially, make sure all nodes in the entire network are not selected as a center of a sandbox
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
 def Genetic(g,minq,maxq,sizePopulation, iterations, percentCrossOver, percentMutation, degreeOfBoring, typeAlgorithm):
-	"""Insert a function and its arguments in process pool.
-  
-	Input is inserted in queues using a round-robin fashion. Every job is
-	identified by and index that is returned by function. Not all parameters
-	of original multiprocessing.Pool.apply_aync are implemented so far.
-  
-	:param func: Function to process.
-	:type func: Callable.
-	:param args: Arguments for the function to process.
-	:type args: Tuple.
-	:returns: Assigned job id.
-	:rtype: Int.
-        """		
+	"""The genetic algorithm
+
+	:param graph: Network.
+	:type graph: Snap PUN Graph.
+	:param iterations: Number of max iterations
+	:type iterations: Integer
+	:param sizePopulation: Size of population
+	:type sizePopulation: Integer
+	:param percentCrossOver: Percent (0 to 1) of individual select to cross
+	:type percentCrossOver: Double		
+	:param percentMutation: (0 to 1) of probability to apply mutation to an individual
+	:type percentMutation: Double
+	:param degreeOfBoring: Number of iterations of boring
+	:type degreeOfBoring: Integer	
+	:param typeAlgorithm: Method for calculate fractal dimensions: 'SB' for Sandbox, 'BC' for BoxCounting, 'FSBC' for fixed size box counting
+	:type typeAlgorithm: String	
+	:returns:				
+		logR: Numpy array
+			logarithm of r/d
+		Indexzero: Integer
+			position of q=0 in Tq and Dq
+		Tq: Numpy array
+			mass exponents		
+		Dq: Numpy array
+			fractal dimensions		
+		lnMrq: Numpy 2D array
+			logarithm of number of nodes in boxes by radio		
+		fitNessAverage: Numpy array
+			Average fitness across iterations		
+		fitNessMax: Numpy array
+			Maximum fitness across iterations		
+		fitNessMin: Numpy array:
+			Minimal fitness across iterations
+		"""	
 	graph = snap.GetMxScc(g)
 	numNodes = graph.GetNodes()
 	

@@ -100,9 +100,6 @@ def main(argv):
 	#Simulated annealing
 	Kmax = 1500
 	
-	timestr = time.strftime("%Y%m%d_%H%M%S")
-	file_object = open("Results/Fractality/"+timestr+fileOutput, 'w') 
-
 	logRE, IndexzeroE,TqE, DqE, lnMrqE,fitNessAverageE,fitNessMaxE,fitNessMinE = Genetic.Genetic(graph,minq,maxq,sizePopulation,iterations, percentCrossOver, percentMutation,degreeOfBoring, 'BC')	
 	print "Genetic2"
 	logRF, IndexzeroF,TqF, DqF, lnMrqF = SimulatedAnnealing.SA(graph,minq,maxq,percentOfSandBoxes,sizePopulation, Kmax, 'BC')
