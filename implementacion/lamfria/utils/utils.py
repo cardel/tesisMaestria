@@ -91,20 +91,16 @@ def copyGraph(graph):
 #Get ordered closeness Centrality with node ID
 
 def getOrderedClosenessCentrality(graph,N):
-	g = snap.GetMxScc(graph)
+	#g = snap.GetMxScc(graph)
 	ClosenessCentrality = numpy.empty([N,2], dtype=float)
 	index=0
-	for NI in g.Nodes():
+	for NI in graph.Nodes():
 		ClosenessCentrality[index][0]=NI.GetId()
 		cen = snap.GetClosenessCentr(graph,NI.GetId())
-		
-		if cen is None:
-			ClosenessCentrality[index][1]=0
-		else:
-			ClosenessCentrality[index][1]=snap.GetClosenessCentr(graph,NI.GetId())
+		ClosenessCentrality[index][1]=snap.GetClosenessCentr(graph,NI.GetId())
 		index+=1
-	
-	ClosenessCentrality = ClosenessCentrality[ClosenessCentrality[:,1].argsort()]
+
+	ClosenessCentrality = ClosenessCentrality[ClosenessCentrality[:,1].argsort()][::-1]
 	return ClosenessCentrality
 	
 #Remove nodes

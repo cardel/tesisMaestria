@@ -51,7 +51,7 @@ python pruebasRobustez.py --file ../datos/RedesReales/Celengs.net  --type Pajek 
 
 #Maquina 13
 python pruebasRobustez.py --file ../datos/RedesReales/cerevisiae.net  --type Pajek --output cerevisiae  
-python pruebasRobustez.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi  
+python pruebasRobustez.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi   COMPLETA; Falla en Centralidad
 #Maquina 14
 python pruebasRobustezCentralidad.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2   Haciendo centralidad de nuevo
 python pruebasRobustez.py --file ../datos/Fractales/floweru1v3.net  --type Pajek --output floweru1v3   COMPLETA
