@@ -26,13 +26,13 @@ python pruebasFractalidadFaltantes.py --file ../datos/RedesReales/cerevisiae.net
 python pruebasFractalidadFaltantesECOLI.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColi  COMPLETA 
 
 #Maquina 7
-python pruebasFractalidadFaltantes.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2  OK   Haciendo faltantes (Faltantes3)
-python pruebasFractalidadFaltantes.py --file ../datos/Fractales/floweru1v3.net  --type Pajek --output floweru1v3  OK   Haciendo faltantes (Faltantes3)
+python pruebasFractalidadFaltantes.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2  OK  Faltantes terminadas
+python pruebasFractalidadFaltantes.py --file ../datos/Fractales/floweru1v3.net  --type Pajek --output floweru1v3  OK   Faltantes terminadas
 
 
 #Maquina 8
-python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree2000Nodes.txt --type Edge  --output ScaleFree2000NodesCentralidad   COMPLETA  (Repitiendo centralidad en robustez1)
-python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree4000Nodes.txt --type Edge  --output ScaleFree4000NodesCentralidad   COMPLETA  (Repitiendo centralidad en robustez1)
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree2000Nodes.txt --type Edge  --output ScaleFree2000NodesCentralidad   TOTAL COMPLETA
+python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree4000Nodes.txt --type Edge  --output ScaleFree4000NodesCentralidad   TOTAL COMPLETA
 
 #Maquina 9
 python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree8000Nodes.txt --type Edge  --output ScaleFree8000NodesCentralidad      (Repitiendo centralidad en serverMaestrai3 lado 2)
@@ -53,7 +53,7 @@ python pruebasRobustezCentralidad.py --file ../datos/RedesReales/Celengs.net  --
 python pruebasRobustezCentralidad.py --file ../datos/RedesReales/cerevisiae.net  --type Pajek --output cerevisiaeCentralidad     (Repitiendo centralidad en serverMaestria3)
 python pruebasRobustezCentralidad.py --file ../datos/RedesReales/EColi.net  --type Pajek --output EColiCentralidad     (Repitiendo centralidad en serverMaestria3)
 #Maquina 14
-python pruebasRobustezCentralidad.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2Centralidad  COMPLETA (Repitiendo centralidad en serverMaestria5)
-python pruebasRobustezCentralidad.py --file ../datos/Fractales/floweru1v3.net  --type Pajek --output floweru1v3Centralidad   COMPLETA (Repitiendo centralidad en serverMaestria5)
+python pruebasRobustezCentralidad.py --file ../datos/Fractales/floweru2v2.net  --type Pajek --output floweru2v2Centralidad  TOTAL COMPLETA
+python pruebasRobustezCentralidad.py --file ../datos/Fractales/floweru1v3.net  --type Pajek --output floweru1v3Centralidad   TOTAL COMPLETA
 #Maquina 14
 
