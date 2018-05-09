@@ -12,7 +12,34 @@ import utils.utils as utils
 
 #Proceed
 def BCAlgorithm(g,minq,maxq,percentNodesT, centerNodes = numpy.array([])):
-	
+	"""Calculate fractal dimension with BoxCounting method
+
+	Inputs are parameters to configure algorithm behaviour.
+
+	:param g: Network.
+	:type g: Snap PUN Graph.
+	:param minq: Minimum value of q
+	:type args: Integer
+	:param minq: Maximum value of q
+	:type maxq: Integer	
+	:param percentNodesT: Number of combinations of center nodes. This value is a percent of the total nodes
+	:type percentNodesT: Integer	
+	:param CenterNodes: Calculated center. If this is null, then the centers are calculated
+	:type CenterNodes: Numpy 1D Array		
+	:returns:				
+		logR: Numpy array
+			logarithm of r/d
+		Indexzero: Integer
+			position of q=0 in Tq and Dq
+		Tq: Numpy array
+			mass exponents		
+		Dq: Numpy array
+			fractal dimensions		
+		lnMrq: Numpy 2D array
+			logarithm of number of nodes in boxes by radio	
+		"""	
+		
+	logR, Indexzero,Tq, Dq,lnMrq	
 	#graph = 
 	graph =snap.GetMxScc(g)
 	numNodes = graph.GetNodes()

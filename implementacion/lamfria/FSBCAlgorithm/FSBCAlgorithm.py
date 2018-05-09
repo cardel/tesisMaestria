@@ -12,7 +12,32 @@ import utils.utils as utils
 
 #Proceed
 def FSBCAlgorithm(g,minq,maxq,percentNodesT, centerNodes = numpy.array([])):
-	
+	"""Calculate fractal dimension with BoxCounting fixed size method
+
+	Inputs are parameters to configure algorithm behaviour.
+
+	:param g: Network.
+	:type g: Snap PUN Graph.
+	:param minq: Minimum value of q
+	:type args: Integer
+	:param minq: Maximum value of q
+	:type maxq: Integer	
+	:param percentNodesT: Number of combinations of center nodes. This value is a percent of the total nodes
+	:type maxq: Integer	
+	:param percentNodesT: Center of boxes. All centers have to different and the lenght array must be equal to number of nodes
+	:type maxq: Numpy 1D Array		
+	:returns:				
+		logR: Numpy array
+			logarithm of r/d
+		Indexzero: Integer
+			position of q=0 in Tq and Dq
+		Tq: Numpy array
+			mass exponents		
+		Dq: Numpy array
+			fractal dimensions		
+		lnMrq: Numpy 2D array
+			logarithm of number of nodes in boxes by radio		
+		"""		
 	#graph = 
 	graph =snap.GetMxScc(g)
 	numNodes = graph.GetNodes()

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lamfria &mdash; LAMFRIA 1 documentation</title>
+  <title>CBBAlgorithm package &mdash; LAMFRIA 1 documentation</title>
   
 
   
@@ -33,7 +33,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/> 
+    <link rel="top" title="LAMFRIA 1 documentation" href="index.html"/>
+        <link rel="next" title="Genetic package" href="Genetic.html"/>
+        <link rel="prev" title="FSBCAlgorithm package" href="FSBCAlgorithm.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -82,12 +84,20 @@
           
             
             
-                <ul>
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">BCAlgorithm module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CBBAlgorithm package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-CBBAlgorithm.CBBAlgorithm">CBBAlgorithm.CBBAlgorithm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-CBBAlgorithm">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
 </ul>
 
             
@@ -118,11 +128,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>lamfria</li>
+    <li>CBBAlgorithm package</li>
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/modules.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -132,39 +140,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="lamfria">
-<h1>lamfria<a class="headerlink" href="#lamfria" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">FSBCAlgorithm package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#module-FSBCAlgorithm.FSBCAlgorithm">FSBCAlgorithm.FSBCAlgorithm module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="FSBCAlgorithm.html#module-FSBCAlgorithm">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Genetic.html">Genetic package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Genetic.html#module-Genetic.SBGenetic">Functions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">Multifractality with SBAlgorithm</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SBAlgorithm.html#funcions">Funcions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SBAlgorithm.html#module-SBAlgorithm.SBAlgorithm">SBGenetic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SBAlgorithm.html#module-SBAlgorithm">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">SimulatedAnnealing package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SimulatedAnnealing.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SimulatedAnnealing.html#module-SimulatedAnnealing.SimulatedAnnealing">SimulatedAnnealing.SimulatedAnnealing module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SimulatedAnnealing.html#module-SimulatedAnnealing">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="robustness.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robustness.html#module-robustness.robustness">robustness.robustness module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="robustness.html#module-robustness">Module contents</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="cbbalgorithm-package">
+<h1>CBBAlgorithm package<a class="headerlink" href="#cbbalgorithm-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-CBBAlgorithm.CBBAlgorithm">
+<span id="cbbalgorithm-cbbalgorithm-module"></span><h2>CBBAlgorithm.CBBAlgorithm module<a class="headerlink" href="#module-CBBAlgorithm.CBBAlgorithm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="CBBAlgorithm.CBBAlgorithm.CBBFractality">
+<code class="descclassname">CBBAlgorithm.CBBAlgorithm.</code><code class="descname">CBBFractality</code><span class="sig-paren">(</span><em>graph</em><span class="sig-paren">)</span><a class="headerlink" href="#CBBAlgorithm.CBBAlgorithm.CBBFractality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="CBBAlgorithm.CBBAlgorithm.calculateLb">
+<code class="descclassname">CBBAlgorithm.CBBAlgorithm.</code><code class="descname">calculateLb</code><span class="sig-paren">(</span><em>boxes</em><span class="sig-paren">)</span><a class="headerlink" href="#CBBAlgorithm.CBBAlgorithm.calculateLb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-CBBAlgorithm">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-CBBAlgorithm" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -172,6 +167,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Genetic.html" class="btn btn-neutral float-right" title="Genetic package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="FSBCAlgorithm.html" class="btn btn-neutral" title="FSBCAlgorithm package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

@@ -17,6 +17,25 @@ import FSBCAlgorithm.FSBCAlgorithm as FSBCAlgorithm
 
 	
 def calculateFitness(g, element, radius, distances, listID,listDegree):
+	"""Calculate fitness from a select node centers in a network
+	
+	Fitness is the average between distances of the centers and the average the degrees , the centers can be of different size
+	
+	:param graph: Network.
+	:type graph: Snap PUN Graph.
+	:param chromosome: Centers
+	:type chromosome: Numpy array of integers
+	:param radius: Diameter of the network
+	:type radius: Integer	
+	:param distances: Distance between all nodes
+	:type distances: Numpy 2D array of integers
+	:param listDegree: List of degree all nodes
+	:type listDegree: Numpy 1D Array	
+	:param maxDegree: Max degree in the network
+	:type maxDegree: Integer
+	:returns: Fitness of the centers
+	:type: Double
+		"""			
 	graph = snap.GetMxScc(g)
 	
 	numNodes = graph.GetNodes()	
@@ -48,6 +67,19 @@ def calculateFitness(g, element, radius, distances, listID,listDegree):
 	
 #Return neighbors of a specific node
 def createNeighbors(node,numNodes, distances):
+	"""Calculate fitness from a select node centers in a network
+	
+	Fitness is the average between distances of the centers and the average the degrees , the centers can be of different size
+	
+	:param node: ID of node in the network.
+	:type node: Integer.
+	:param numNodes: Number of nodes
+	:type numNodes: Integer
+	:param distances: Distance between all nodes
+	:type distances: Numpy 2D array of integers
+	:returns: neighbors. Numpy ID array
+	:type: Double
+		"""			
 	neighbors = numpy.array([])
 				
 	for i in range(0,numNodes):
@@ -57,7 +89,32 @@ def createNeighbors(node,numNodes, distances):
 	return neighbors
 
 def calculateCenters(graph, numNodes,percentNodes, Kmax, d,distances, listID,listDegree, totalRemoved=0):
+	"""Calculate centers with a specified size
 	
+	The genetic algorithm:
+	
+	1. Generate a poblation of ramdom nodes as centers of the boxes
+	2. Select a neighbor state
+	3. Select this state according its fitness and global temperature
+	
+	:param graph: Network.
+	:type graph: Snap PUN Graph.
+	:param numNodes: Number of nodes in the network.
+	:type numNodes: Integer
+	:param percentNodes: Size of population
+	:type percentNodes: Integer
+	:param Kmax: System temperature
+	:type Kmax: Integer	
+	:param lisID: ID of nodes
+	:type lisID: Numpy 2D array of integers
+	:param listDegree: List of degree all nodes
+	:type listDegree: Numpy 2D array of integers	
+	:param totalRemoved: Number of nodes in solution, only if you want apply robusness analysis
+	:type totalRemoved: Integer				
+	:returns:				
+		currentState: Numpy array
+			current individual, select centers of boxes
+	"""			
 	numberNodosState = int(percentNodes*numNodes);
 	
 	if totalRemoved > 0:
@@ -107,6 +164,28 @@ def calculateCenters(graph, numNodes,percentNodes, Kmax, d,distances, listID,lis
 #Set the radius r of the sandbox which will be used to cover the nodes in the range r [1, d], where d is the diameter of the network
 #Algorithm Simulated Annealing
 def SA(g,minq,maxq,percentNodes,sizePopulation, Kmax, typeAlgorithm):
+	"""The simulated annealing algorithm
+
+	:param graph: Network.
+	:type graph: Snap PUN Graph.
+	:param sizePopulation: Size of population
+	:type sizePopulation: Integer
+	:param Kmax: Initial temperature
+	:type Kmax: Integer	
+	:param typeAlgorithm: Method for calculate fractal dimensions: 'SB' for Sandbox, 'BC' for BoxCounting, 'FSBC' for fixed size box counting
+	:type typeAlgorithm: String	
+	:returns:				
+		logR: Numpy array
+			logarithm of r/d
+		Indexzero: Integer
+			position of q=0 in Tq and Dq
+		Tq: Numpy array
+			mass exponents		
+		Dq: Numpy array
+			fractal dimensions		
+		lnMrq: Numpy 2D array
+			logarithm of number of nodes in boxes by radio		
+		"""	
 	graph = snap.GetMxScc(g)
 	numNodes = graph.GetNodes()
 	
