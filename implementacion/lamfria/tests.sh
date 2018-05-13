@@ -36,7 +36,7 @@ python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree4000Node
 
 #Maquina 9
 python pruebasRobustezCentralidad.py --file ../datos/Generadas/ScaleFree8000Nodes.txt --type Edge  --output ScaleFree8000NodesCentralidad      (Repitiendo centralidad en serverMaestrai3 lado 2)
-python pruebasRobustezCentralidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire005.txt --type Edge  --output SmallWorld5000NodesRewire005Centralidad   Repitiendo centralidad en serverMaestrai3 lado 2)
+python pruebasRobustez.py --file ../datos/Generadas/SmallWorld5000NodesRewire005.txt --type Edge  --output SmallWorld5000NodesRewire005  Repitiendo centralidad en serverMaestrai3 lado 2)  Haciendo pruebas robustez server 6, lado 2
  
 #Maquina 10
 python pruebasRobustezCentralidad.py --file ../datos/Generadas/SmallWorld5000NodesRewire01.txt --type Edge  --output SmallWorld5000NodesRewire01Centralidad (Repitiendo centralidad en robustez1-1)
