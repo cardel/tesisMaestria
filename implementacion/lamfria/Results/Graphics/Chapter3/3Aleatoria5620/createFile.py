@@ -11,78 +11,134 @@ fileInput = open("data","r")
 fileInput.readline() 
 fileInput.readline() 
 
-logRA = fileInput.readline()+fileInput.readline()
-fileInput.readline() 
+cadena = ""
+while True:
+	aux = fileInput.readline()
+	if aux=="IndexZero\n":
+		break
+	cadena+=aux
+logRA = cadena
+
+
 indexZero=fileInput.readline()
 
 fileInput.readline() 
 
-TqA = fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()
-
-fileInput.readline() 
-
-DqA = fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()
-
-fileInput.readline() 
+cadena = ""
+while True:
+	aux = fileInput.readline()
+	if aux=="Dq\n":
+		break
+	cadena+=aux
+	
+TqA = cadena
 
 cadena = ""
-for i in range(0,63):
-	cadena+=fileInput.readline()
-	
+while True:
+	aux = fileInput.readline()
+	if aux=="lnMrq\n":
+		break
+	cadena+=aux
+
+DqA = cadena
+
+cadena = ""
+while True:
+	aux = fileInput.readline()
+	if aux=="BCAlgorithm\n":
+		break
+	cadena+=aux
 lnMrqA = cadena
 
 #BCC algorithm
 
 fileInput.readline() 
-fileInput.readline() 
 
-logRB = fileInput.readline()+fileInput.readline()
+cadena = ""
+while True:
+	aux = fileInput.readline()
+	if aux=="IndexZero\n":
+		break
+	cadena+=aux
+logRB = cadena
 
-fileInput.readline() 
-fileInput.readline()
 
-fileInput.readline() 
-
-TqB = fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()
-
-fileInput.readline() 
-
-DqB = fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()
+indexZero=fileInput.readline()
 
 fileInput.readline() 
 
 cadena = ""
-for i in range(0,42):
-	cadena+=fileInput.readline()
+while True:
+	aux = fileInput.readline()
+	if aux=="Dq\n":
+		break
+	cadena+=aux
 	
-lnMrqB = cadena
+TqB = cadena
 
+cadena = ""
+
+while True:
+	aux = fileInput.readline()
+
+	if aux=="lnMrq\n" :
+		break
+	cadena+=aux
+
+DqB = cadena
+
+
+cadena = ""
+while True:
+	aux = fileInput.readline()
+	if aux=="SBAlgorithm\n":
+		break
+	cadena+=aux
+lnMrqB = cadena
 #SandBox Algorithm
 
 
 fileInput.readline() 
-fileInput.readline() 
 
-logRC = fileInput.readline()+fileInput.readline()
+cadena = ""
+while True:
+	aux = fileInput.readline()
+	if aux=="IndexZero\n":
+		break
+	cadena+=aux
+logRC = cadena
 
-fileInput.readline() 
-fileInput.readline()
-fileInput.readline() 
 
-TqC = fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()
-
-fileInput.readline() 
-
-DqC = fileInput.readline()+fileInput.readline()+fileInput.readline()+fileInput.readline()
+indexZero=fileInput.readline()
 
 fileInput.readline() 
 
 cadena = ""
-for i in range(0,43):
-	cadena+=fileInput.readline()
+while True:
+	aux = fileInput.readline()
+	if aux=="Dq\n":
+		break
+	cadena+=aux
 	
-lnMrqC = cadena
+TqC = cadena
 
+cadena = ""
+while True:
+	aux = fileInput.readline()
+	if aux=="lnMrq\n":
+		break
+	cadena+=aux
+
+DqC = cadena
+
+cadena = ""
+
+while True:
+	aux = fileInput.readline()
+	if aux=="end\n":
+		break
+	cadena+=aux
+lnMrqC = cadena
 
 fileInput.close()
 
@@ -117,7 +173,7 @@ fileOutput.write("DqC=numpy.array("+DqC+")\n")
 fileOutput.write("lnMrqC=numpy.array("+lnMrqC+")\n")
 
 
-fileOutput.write("fileOutput = 'smallWorld4000p10'\n")
+fileOutput.write("fileOutput = 'random5620'\n")
 #fileOutput.write("timestr = time.strftime('%Y%m%d_%H%M%S')\n")
 fileOutput.write("timestr = 'a'\n")
 
@@ -160,13 +216,10 @@ fileOutput.write("plt.ylabel(r'$\\ln(\\overline{Z(r)^q)}$')\n")
 #fileOutput.write("plt.title(u'Sandbox algorithm')\n")
 fileOutput.write("plt.xlabel(r'$ln(\\frac{r}{d})$')\n")
 fileOutput.write("plt.grid(True)\n")
-fileOutput.write("plt.suptitle(u'Regresión lineal para red libre de escala 4000 nodos', fontsize=11)\n")
+fileOutput.write("plt.suptitle(u'Regresión lineal para red aleatoria 5620 nodos', fontsize=11)\n")
 
 fileOutput.write("plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25, wspace=0.35)\n")
 fileOutput.write("plt.savefig(timestr+'_'+'TqLnrBC'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
-
-
-
 
 fileOutput.write("fig2 = plt.figure()\n")
 fileOutput.write("plt.xlabel('q')\n")
