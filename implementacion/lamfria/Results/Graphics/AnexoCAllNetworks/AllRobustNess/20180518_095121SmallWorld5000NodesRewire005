@@ -1,20 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*- 
-import numpy
-numpy.set_printoptions(threshold=numpy.nan)
-import matplotlib.pyplot as plt
-import time
-import math
-from matplotlib.font_manager import FontProperties
-minq = -10
-maxq = 10
-IndexZero = 10
-symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
-nan=float('nan')
-percentNodes=[ 0. , 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+PercentOfNodes
+[ 0. , 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
-
-DqRandom=numpy.array([[ 3.01420955, 3.01908219, 3.02437137, 3.03007727, 3.0360994 , 3.04209685,
+RandomAttack
+Tq
+[[ 3.01420955, 3.01908219, 3.02437137, 3.03007727, 3.0360994 , 3.04209685,
    3.04742031, 3.05128801, 3.05316516, 3.05298481, 3.05101231, 3.04760385,
    3.04308727, 3.0377487 , 3.03184696, 3.02561899, 3.01927274, 3.01297671,
    3.00685457, 3.00098739, 2.9954209 ],
@@ -54,15 +43,16 @@ DqRandom=numpy.array([[ 3.01420955, 3.01908219, 3.02437137, 3.03007727, 3.036099
    0.80874575, 0.79974503, 0.78963362, 0.77862537, 0.76707366, 0.75545035,
    0.74426783, 0.7339555 , 0.72476259, 0.71674681, 0.70983163, 0.70387876,
    0.6987406 , 0.69428573, 0.69040576]]
-)
-GCRandom=numpy.array([ 1.    , 0.9   , 0.8   , 0.7   , 0.6   , 0.4928, 0.362 , 0.0892, 0.0062,
+measureGC
+[ 1.    , 0.9   , 0.8   , 0.7   , 0.6   , 0.4928, 0.362 , 0.0892, 0.0062,
   0.002 ]
-)
-APLRandom=numpy.array([ 1.        , 1.08542315, 1.1742431 , 1.3435485 , 1.59686564, 1.99421788,
+measureAPL
+[ 1.        , 1.08542315, 1.1742431 , 1.3435485 , 1.59686564, 1.99421788,
   3.0284708 , 4.09041299, 0.86918509, 0.30552338]
 
-)
-DqDegree=numpy.array([[ 3.01338898, 3.0183041 , 3.02365147, 3.02943586, 3.03556139, 3.0416842 ,
+Degree
+Tq
+[[ 3.01338898, 3.0183041 , 3.02365147, 3.02943586, 3.03556139, 3.0416842 ,
    3.04713898, 3.05112112, 3.05308122, 3.05295271, 3.05100992, 3.04761886,
    3.04311508, 3.03779017, 3.03190649, 3.02570253, 3.01938588, 3.01312323,
    3.00703575, 3.00120202, 2.99566589],
@@ -102,16 +92,17 @@ DqDegree=numpy.array([[ 3.01338898, 3.0183041 , 3.02365147, 3.02943586, 3.035561
           nan,        nan,        nan,        nan,        nan,        nan,
           nan,        nan,        nan,        nan,        nan,        nan,
           nan,        nan,        nan]]
-)
-GCDegree=numpy.array([  1.00000000e+00,  9.00000000e-01,  8.00000000e-01,  7.00000000e-01,
+measureGC
+[  1.00000000e+00,  9.00000000e-01,  8.00000000e-01,  7.00000000e-01,
    6.00000000e-01,  4.66200000e-01,  1.42000000e-02,  2.00000000e-03,
    4.00000000e-04,  2.00000000e-04]
-)
-APLDegree=numpy.array([ 1.        , 1.35967468, 1.77375785, 2.47812276, 3.95138353, 8.74579055,
+measureAPL
+[ 1.        , 1.35967468, 1.77375785, 2.47812276, 3.95138353, 8.74579055,
   1.9140703 , 0.23942056, 0.06242772, 0.12692774]
 
-)
-DqCentrality=numpy.array([[ 3.0139583 , 3.0188298 , 3.02412622, 3.02984959, 3.03589996, 3.04193396,
+Centrality
+Tq
+[[ 3.0139583 , 3.0188298 , 3.02412622, 3.02984959, 3.03589996, 3.04193396,
    3.04729582, 3.05119567, 3.05309449, 3.05292689, 3.05096167, 3.04755736,
    3.04304321, 3.03770632, 3.03180606, 3.02557913, 3.01923251, 3.01293336,
    3.00680405, 3.00092476, 2.99534089],
@@ -151,15 +142,16 @@ DqCentrality=numpy.array([[ 3.0139583 , 3.0188298 , 3.02412622, 3.02984959, 3.03
    0.80053696, 0.77339295, 0.73908158, 0.69763959, 0.65185675, 0.60708315,
    0.56810302, 0.5368162 , 0.5127257 , 0.49438068, 0.48030792, 0.46933183,
    0.46059632, 0.45349897, 0.44761928]]
-)
-GCCentrality=numpy.array([ 1.    , 0.9   , 0.7998, 0.6916, 0.5662, 0.411 , 0.1388, 0.0506, 0.0096,
+measureGC
+[ 1.    , 0.9   , 0.7998, 0.6916, 0.5662, 0.411 , 0.1388, 0.0506, 0.0096,
   0.0026]
-)
-APLCentrality=numpy.array([ 1.        , 1.23510681, 1.58409167, 2.38943501, 4.21630211, 6.32354698,
+measureAPL
+[ 1.        , 1.23510681, 1.58409167, 2.38943501, 4.21630211, 6.32354698,
   7.51598453, 2.66406711, 0.82807712, 0.32567501]
 
-)
-DqGenetic=numpy.array([[ 3.01369594, 3.0185805 , 3.02388625, 3.02961758, 3.03568298, 3.04174917,
+Genetic
+Tq
+[[ 3.01369594, 3.0185805 , 3.02388625, 3.02961758, 3.03568298, 3.04174917,
    3.04716268, 3.05112368, 3.05307787, 3.05294988, 3.05100766, 3.04761495,
    3.0431076 , 3.03777842, 3.03189102, 3.0256849 , 3.01936847, 3.01310897,
    3.00702784, 3.00120361, 2.99567987],
@@ -199,15 +191,16 @@ DqGenetic=numpy.array([[ 3.01369594, 3.0185805 , 3.02388625, 3.02961758, 3.03568
    0.6508332 , 0.63884696, 0.62373104, 0.60534907, 0.58437386, 0.56244512,
    0.54156143, 0.52315809, 0.5077559 , 0.49521027, 0.48508825, 0.47691359,
    0.47026977, 0.46482415, 0.46032071]]
-)
-GCGenetic=numpy.array([ 1.    , 0.9   , 0.8   , 0.7   , 0.6   , 0.498 , 0.3692, 0.0618, 0.0138,
+measureGC
+[ 1.    , 0.9   , 0.8   , 0.7   , 0.6   , 0.498 , 0.3692, 0.0618, 0.0138,
   0.0014]
-)
-APLGenetic=numpy.array([ 1.        , 1.08009543, 1.16534029, 1.30106116, 1.52084   , 1.96004377,
+measureAPL
+[ 1.        , 1.08009543, 1.16534029, 1.30106116, 1.52084   , 1.96004377,
   3.07014781, 3.29394575, 1.49109447, 0.20230937]
 
-)
-DqSimulated=numpy.array([[ 3.01383284, 3.01872225, 3.02403706, 3.02977977, 3.03585238, 3.04191211,
+Simulated
+Tq
+[[ 3.01383284, 3.01872225, 3.02403706, 3.02977977, 3.03585238, 3.04191211,
    3.04730018, 3.05122249, 3.05313821, 3.05298166, 3.05102148, 3.04761664,
    3.04309762, 3.03775342, 3.03184584, 3.02561422, 3.01926776, 3.01297501,
    3.00685875, 3.00099873, 2.99543942],
@@ -247,35 +240,9 @@ DqSimulated=numpy.array([[ 3.01383284, 3.01872225, 3.02403706, 3.02977977, 3.035
    0.71723419, 0.71320839, 0.70810341, 0.70180985, 0.69432151, 0.68583911,
    0.67685574, 0.66808938, 0.66021418, 0.65360623, 0.6483181 , 0.6442091 ,
    0.64107206, 0.63870264, 0.63692555]]
-)
-GCSimulated=numpy.array([ 1.    , 0.9   , 0.8   , 0.7   , 0.5998, 0.4926, 0.349 , 0.0746, 0.0056,
+measureGC
+[ 1.    , 0.9   , 0.8   , 0.7   , 0.5998, 0.4926, 0.349 , 0.0746, 0.0056,
   0.0014]
-)
-APLSimulated=numpy.array([ 1.        , 1.09009957, 1.1872864 , 1.3649347 , 1.61798858, 2.02785723,
-  3.11058906, 4.74398958, 0.80931818, 0.23156424])
-fileOutput = '20180518_095121SmallWorld5000NodesRewire005'
-timestr = 'grafica'
-fig1 = plt.figure()
-plt.xlabel('Porcentaje de nodos')
-plt.ylabel(u'Tamaño')
-plt.title(u'Medidas de robustez tamaño componente gigante')
-plt.plot(percentNodes[0:GCRandom.shape[0]], GCRandom,'b<-' ,label='Aleatorio R='+str(numpy.sum(GCRandom)))
-plt.plot(percentNodes[0:GCDegree.shape[0]], GCDegree,'g<-' ,label='Grado R='+str(numpy.sum(GCDegree)))
-plt.plot(percentNodes[0:GCCentrality.shape[0]], GCCentrality,'r<-' ,label='Centralidad R='+str(numpy.sum(GCCentrality)))
-plt.plot(percentNodes[0:GCGenetic.shape[0]], GCGenetic,'m<-' ,label='Genetico R='+str(numpy.sum(GCGenetic)))
-plt.plot(percentNodes[0:GCSimulated.shape[0]], GCSimulated,'k<-' ,label='Recocido R='+str(numpy.sum(GCSimulated)))
-lgd = plt.legend(loc='upper left', prop={'size':10}, bbox_to_anchor=(1,1))
-plt.grid(True)
-plt.savefig(timestr+'_'+'GC'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')
-fig2 = plt.figure()
-plt.xlabel('Porcentaje de nodos')
-plt.ylabel(u'Diámetro camino')
-plt.title(u'Medidas de robustez camino promedio en componente gigante')
-plt.plot(percentNodes[0:APLRandom.shape[0]], APLRandom,'b<-' ,label='Aleatorio R='+str(numpy.sum(APLRandom)))
-plt.plot(percentNodes[0:APLDegree.shape[0]], APLDegree,'g<-' ,label='Grado R='+str(numpy.sum(APLDegree)))
-plt.plot(percentNodes[0:APLCentrality.shape[0]], APLCentrality,'r<-' ,label='Centralidad R='+str(numpy.sum(APLCentrality)))
-plt.plot(percentNodes[0:APLGenetic.shape[0]], APLGenetic,'m<-' ,label='Genetico R='+str(numpy.sum(APLGenetic)))
-plt.plot(percentNodes[0:APLSimulated.shape[0]], APLSimulated,'k<-' ,label='Recocido R='+str(numpy.sum(APLSimulated)))
-lgd = plt.legend(loc='upper left', prop={'size':10}, bbox_to_anchor=(1,1))
-plt.grid(True)
-plt.savefig(timestr+'_'+'APL'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')
+measureAPL
+[ 1.        , 1.09009957, 1.1872864 , 1.3649347 , 1.61798858, 2.02785723,
+  3.11058906, 4.74398958, 0.80931818, 0.23156424]
