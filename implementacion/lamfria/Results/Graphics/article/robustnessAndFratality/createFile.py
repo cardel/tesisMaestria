@@ -239,24 +239,30 @@ fileOutput.write("timestr = 'grafica'\n")
 
 fileOutput.write("fig3 = plt.figure()\n")
 fileOutput.write("ax = fig3.add_subplot(111)\n")
-
+fileOutput.write("delta = numpy.array([])\n")
 fileOutput.write("for i in range(0,9):\n")
 fileOutput.write("	if i < DqRandom.shape[0]:\n")
-fileOutput.write("		plt.plot(range(0,maxq),DqRandom[i][IndexZero:-1],symbols[int(math.fmod(i,numpy.size(symbols)))], label='% nodes='+str(int(100*percentNodes[i]))+'%')\n")	
+fileOutput.write("		delta = numpy.append(delta, numpy.max(DqRandom[i][IndexZero:-1])-numpy.min(DqRandom[i][IndexZero:-1]))\n")
+#fileOutput.write("		plt.plot(range(0,maxq),DqRandom[i][IndexZero:-1],symbols[int(math.fmod(i,numpy.size(symbols)))], label='% nodes='+str(int(100*percentNodes[i]))+'%')\n")
+fileOutput.write("plt.plot(range(0,10*delta.shape[0],10),delta, label = r'$\Delta D_q$')\n")
+fileOutput.write("plt.plot(range(0,10*GCRandom.shape[0],10), GCRandom,'r-' ,label='Medida GC')\n")
+fileOutput.write("plt.plot(range(0,10*APLRandom.shape[0],10), APLRandom,'g-' ,label='Medida APL')\n")
 fileOutput.write("fontP = FontProperties()\n")
 fileOutput.write("fontP.set_size('small')\n")
-fileOutput.write("plt.legend(prop=fontP)\n")
-fileOutput.write("plt.xlabel('q')\n")
-fileOutput.write("plt.ylabel('D(q)')\n")
+#fileOutput.write("plt.legend(prop=fontP)\n")
+fileOutput.write("plt.xlabel('% Nodos perdidos')\n")
+#fileOutput.write("plt.ylabel(r'$\Delta D_q$')\n")
 fileOutput.write("plt.title(u'Dimensión fractal ataque Aleatorio')\n")
 
 
-fileOutput.write("plt.text(1, 0, 'Robustez GC='+str(numpy.around(numpy.sum(GCRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)\n")
-fileOutput.write("plt.text(1, 0.05, 'Robustez APL='+str(numpy.around(numpy.sum(APLRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)\n")
+fileOutput.write("plt.text(0.7, 0.95, 'Indice R GC='+str(numpy.around(numpy.sum(GCRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)\n")
+fileOutput.write("plt.text(0.7, 0.9, 'Indice R APL='+str(numpy.around(numpy.sum(APLRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)\n")
+
 fileOutput.write("lgd = plt.legend(loc='upper left', prop={'size':10}, bbox_to_anchor=(1,1))\n")
 fileOutput.write("plt.grid(True)\n")
 fileOutput.write("plt.savefig(timestr+'_'+'DqRandom'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
-	
+#fileOutput.write("plt.savefig(timestr+'_'+'DqRandom'+fileOutput+'.png')\n")
+		
 #fileOutput.write("fig4 = plt.figure()\n")
 #fileOutput.write("for i in range(0,9):\n")
 #fileOutput.write("	if i < DqDegree.shape[0]:\n")

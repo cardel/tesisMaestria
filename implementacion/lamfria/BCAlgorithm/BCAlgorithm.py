@@ -38,9 +38,7 @@ def BCAlgorithm(g,minq,maxq,percentNodesT, centerNodes = numpy.array([])):
 		lnMrq: Numpy 2D array
 			logarithm of number of nodes in boxes by radio	
 		"""	
-		
-	logR, Indexzero,Tq, Dq,lnMrq	
-	#graph = 
+
 	graph =snap.GetMxScc(g)
 	numNodes = graph.GetNodes()
 	
