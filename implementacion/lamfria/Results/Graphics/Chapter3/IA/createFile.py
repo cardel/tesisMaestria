@@ -473,10 +473,20 @@ cadena = ""
 
 while True:
 	aux = fileInput.readline()
-	if aux=="end\n" or aux=="Execution time\n":
+	if aux=="end\n" or aux=="fitnessSimulated\n":
 		break
 	cadena+=aux
 lnMrqI= cadena
+
+cadena = ""
+
+while True:
+	aux = fileInput.readline()
+	if aux=="end\n" or aux=="Execution time\n":
+		break
+	cadena+=aux
+fitnessSimulated= cadena
+
 
 fileInput.close()
 
@@ -520,7 +530,7 @@ fileOutput.write("lnMrqE=numpy.array("+lnMrqD+")\n")
 fileOutput.write("fitNessAverageD=numpy.array("+fitNessAverageD+")\n")
 fileOutput.write("fitNessMaxD=numpy.array("+fitNessMaxD+")\n")
 fileOutput.write("fitNessMinD=numpy.array("+fitNessMinD+")\n")
-
+fileOutput.write("fitnessSimulated=numpy.array("+fitnessSimulated+")\n")
 
 fileOutput.write("logRE=numpy.array("+logRE+")\n")
 fileOutput.write("TqE=numpy.array("+TqE+")\n")
@@ -587,5 +597,15 @@ fileOutput.write("plt.xticks(range(0,maxq))\n")
 fileOutput.write("lgd = plt.legend(loc='upper left', prop={'size':10}, bbox_to_anchor=(1,1))\n")
 fileOutput.write("plt.grid(True)\n")
 fileOutput.write("plt.savefig(timestr+'_'+'Dq'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
+
+
+fileOutput.write("fig4 = plt.figure()\n")
+fileOutput.write("plt.title(u'Función de evaluación recocido simulado')\n")
+fileOutput.write("plt.plot(range(0,fitnessSimulated.shape[0]), fitnessSimulated,'b-')\n")
+
+
+#fileOutput.write("lgd = plt.legend(loc='upper left', prop={'size':10}, bbox_to_anchor=(1,1))\n")
+fileOutput.write("plt.grid(True)\n")
+fileOutput.write("plt.savefig(timestr+'_'+'fitnessSimulated'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
 
 fileOutput.close()
