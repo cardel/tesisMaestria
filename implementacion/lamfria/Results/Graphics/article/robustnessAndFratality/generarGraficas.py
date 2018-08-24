@@ -263,19 +263,32 @@ fileOutput = '20180512_143117ScaleFree8000Nodes'
 timestr = 'grafica'
 fig3 = plt.figure()
 ax = fig3.add_subplot(111)
-delta = numpy.array([])
+deltaA = numpy.array([])
+deltaB = numpy.array([])
+deltaC = numpy.array([])
+deltaD = numpy.array([])
+deltaE = numpy.array([])
+deltaF = numpy.array([])
 for i in range(0,9):
 	if i < DqRandom.shape[0]:
-		delta = numpy.append(delta, numpy.max(DqRandom[i][IndexZero:-1])-numpy.min(DqRandom[i][IndexZero:-1]))
-plt.plot(range(0,10*delta.shape[0],10),delta, label = r'$\Delta D_q$')
-plt.plot(range(0,10*GCRandom.shape[0],10), GCRandom,'r-' ,label='Medida GC')
-plt.plot(range(0,10*APLRandom.shape[0],10), APLRandom,'g-' ,label='Medida APL')
+		deltaA = numpy.append(deltaA, numpy.max(DqRandom[i][IndexZero:-1])-numpy.min(DqRandom[i][IndexZero:-1]))
+	if i < DqDegree.shape[0]:
+		deltaB = numpy.append(deltaB, numpy.max(DqDegree[i][IndexZero:-1])-numpy.min(DqDegree[i][IndexZero:-1]))
+	if i < DqCentrality.shape[0]:
+		deltaC = numpy.append(deltaC, numpy.max(DqCentrality[i][IndexZero:-1])-numpy.min(DqCentrality[i][IndexZero:-1]))
+	if i < DqGenetic.shape[0]:
+		deltaD = numpy.append(deltaD, numpy.max(DqGenetic[i][IndexZero:-1])-numpy.min(DqGenetic[i][IndexZero:-1]))
+	if i < DqSimulated.shape[0]:
+		deltaE = numpy.append(deltaE, numpy.max(DqSimulated[i][IndexZero:-1])-numpy.min(DqSimulated[i][IndexZero:-1]))
+plt.plot(range(0,10*deltaA.shape[0],10),deltaA,'r-' , label = r'$\Delta D_q$ ataque aleatorio')
+plt.plot(range(0,10*deltaB.shape[0],10),deltaB,'g-' , label = r'$\Delta D_q$ ataque por grado')
+plt.plot(range(0,10*deltaC.shape[0],10),deltaC,'b-' , label = r'$\Delta D_q$ ataque centralidad')
+plt.plot(range(0,10*deltaD.shape[0],10),deltaD,'y-' , label = r'$\Delta D_q$ ataque genetico')
+plt.plot(range(0,10*deltaE.shape[0],10),deltaE,'k-' , label = r'$\Delta D_q$ ataque simulado')
 fontP = FontProperties()
 fontP.set_size('small')
 plt.xlabel('% Nodos perdidos')
-plt.title(u'Dimensión fractal ataque Aleatorio')
-plt.text(0.7, 0.95, 'Indice R GC='+str(numpy.around(numpy.sum(GCRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)
-plt.text(0.7, 0.9, 'Indice R APL='+str(numpy.around(numpy.sum(APLRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)
+plt.title(u'Multifractalidad y robustez')
 lgd = plt.legend(loc='upper left', prop={'size':10}, bbox_to_anchor=(1,1))
 plt.grid(True)
-plt.savefig(timestr+'_'+'DqRandom'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')
+plt.savefig(timestr+'_'+'multirobus'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')
