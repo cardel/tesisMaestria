@@ -1,0 +1,14 @@
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networkkarateremoved-0.14percent.txt
+# Nodes: 13 Edges: 11
+# NodeId	NodeId
+2	3
+2	14
+3	10
+3	14
+3	29
+3	33
+19	33
+23	33
+24	30
+24	33
+30	33

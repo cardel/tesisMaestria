@@ -86,7 +86,7 @@ def main(argv):
 	#Simulated annealing
 	temperature = 1500
 		
-	#Analysis with component gigaint
+	#Analysis
 	print("start")
 	RTqA,measureGCA,measureAPLA=robustness.robustness_analysis(graph,'Random',minq,maxq,percentOfSandBoxes,repetitionsSB)
 	print("random")

@@ -85,11 +85,18 @@ def main(argv):
 	
 	#Simulated annealing
 	temperature = 1500
-		
-	#Analysis with component gigaint
+	#Analysis
 	print("start")
-	RTqC,measureGCC,measureAPLC=robustness.robustness_analysis(graph,'Centrality',minq,maxq,percentOfSandBoxes,repetitionsSB)
+	RTqA,measureGCA,measureAPLA=robustness.robustness_analysis(graph,'Random',minq,maxq,percentOfSandBoxes,repetitionsSB, initialPercent= 0.02, finalPercent = 0.2, iteracionPercent = 0.02,nameFile=fileOutput)
+	print("random")
+	RTqB,measureGCB,measureAPLB=robustness.robustness_analysis(graph,'Degree',minq,maxq,percentOfSandBoxes,repetitionsSB, initialPercent= 0.02, finalPercent = 0.2, iteracionPercent = 0.02)
+	print("degree")
+	RTqC,measureGCC,measureAPLC=robustness.robustness_analysis(graph,'Centrality',minq,maxq,percentOfSandBoxes,repetitionsSB, initialPercent= 0.02, finalPercent = 0.2, iteracionPercent = 0.02)
 	print("Centrality")
+	RTqD,measureGCD,measureAPLD=robustness.robustness_analysis(graph,'Genetic',minq,maxq,percentOfSandBoxes,repetitionsSB,0,sizePopulation,iterationsGenetic,percentCrossOver,percentMutation,degreeOfBoring, initialPercent= 0.02, finalPercent = 0.2, iteracionPercent = 0.1)
+	print("Genetic")
+	RTqE,measureGCE,measureAPLE=robustness.robustness_analysis(graph,'Simulated',minq,maxq,percentOfSandBoxes,repetitionsSB,temperature, initialPercent= 0.02, finalPercent = 0.2, iteracionPercent = 0.02)
+	print("simulated" )
 
 	r = numpy.arange(0.0, 1.0, 0.1)
 	
@@ -99,6 +106,22 @@ def main(argv):
 	file_object.write("PercentOfNodes\n")
 	file_object.write(numpy.array2string(r , precision=8, separator=','))
 	
+	file_object.write("\n\nRandomAttack\n")
+	file_object.write("Tq\n")	
+	file_object.write(numpy.array2string(RTqA, precision=8, separator=','))
+	file_object.write("\nmeasureGC\n")	
+	file_object.write(numpy.array2string(measureGCA, precision=8, separator=','))
+	file_object.write("\nmeasureAPL\n")	
+	file_object.write(numpy.array2string(measureAPLA, precision=8, separator=','))
+
+
+	file_object.write("\n\nDegree\n")
+	file_object.write("Tq\n")	
+	file_object.write(numpy.array2string(RTqB, precision=8, separator=','))
+	file_object.write("\nmeasureGC\n")	
+	file_object.write(numpy.array2string(measureGCB, precision=8, separator=','))
+	file_object.write("\nmeasureAPL\n")	
+	file_object.write(numpy.array2string(measureAPLB, precision=8, separator=','))
 	
 	file_object.write("\n\nCentrality\n")
 	file_object.write("Tq\n")	
@@ -108,8 +131,22 @@ def main(argv):
 	file_object.write("\nmeasureAPL\n")	
 	file_object.write(numpy.array2string(measureAPLC, precision=8, separator=','))
 	
-
-	file_object.close()
+	file_object.write("\n\nGenetic\n")
+	file_object.write("Tq\n")	
+	file_object.write(numpy.array2string(RTqD, precision=8, separator=','))
+	file_object.write("\nmeasureGC\n")	
+	file_object.write(numpy.array2string(measureGCD, precision=8, separator=','))
+	file_object.write("\nmeasureAPL\n")	
+	file_object.write(numpy.array2string(measureAPLD, precision=8, separator=','))
+	
+	
+	file_object.write("\n\nSimulated\n")
+	file_object.write("Tq\n")	
+	file_object.write(numpy.array2string(RTqE, precision=8, separator=','))
+	file_object.write("\nmeasureGC\n")	
+	file_object.write(numpy.array2string(measureGCE, precision=8, separator=','))
+	file_object.write("\nmeasureAPL\n")	
+	file_object.write(numpy.array2string(measureAPLE, precision=8, separator=','))
 		
 	#symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']
 	#symbols = ['r-p','b-s','g-^','y-o','m->','c-<','g--','k-.','c--']

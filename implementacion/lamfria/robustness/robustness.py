@@ -20,10 +20,12 @@ import lib.snap as snap
 #http://w.pnas.org/cgi/doi/10.1073/pnas.1009440108
 # Article Robustness surfaces of complex networks
 #https://www.nature.com/articles/srep06133
-def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, temperature=0, sizePopulation=0, iterationsGenetic=0, percentCrossOver=0,percentMutation=0,degreeOfBoring=0):
-	#Remove per percent of nodes 0.1 to 1.0
+
+#13-09-2018: Add **options 
+def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, temperature=0, sizePopulation=0, iterationsGenetic=0, percentCrossOver=0,percentMutation=0,degreeOfBoring=0, percentOfNodes = 0.1, initialPercent= 0.1, finalPercent = 1.0, iteracionPercent = 0.1,nameFile="none"):
+
 	
-	r = numpy.arange(0.1, 1.0,0.1)
+	r = numpy.arange(initialPercent, finalPercent,iteracionPercent)
 	
 	#Copy graph
 	g = utils.copyGraph(graph)	
@@ -32,7 +34,7 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 	N = g.GetNodes()
 	
 	#Remove 10% of nodes	
-	numberNodesToRemove = int(0.1*float(N))
+	numberNodesToRemove = int(percentOfNodes*float(N))
 	
 	#Initial distance
 	d = snap.GetBfsFullDiam(g,10,False)	
@@ -82,7 +84,13 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 		elif typeRemoval=='Simulated':
 			nodesToRemove = SimulatedAnnealing.calculateCenters(g, Ng,0, temperature, diameterG,distances, listID, listDegree, sizeChromosome)	
 		
+		#Remove nodes
 		measureGC,measureAPL=utils.removeNodes(g,typeRemoval, p, numberNodesToRemove, ClosenessCentrality,listID,nodesToRemove)
+		
+		#15-09-2018: Save nodes
+		if nameFile != "none":
+			snap.SaveEdgeList(g, "Results/Robustness/network"+nameFile+"removed-"+str(p)+"percent.txt")
+		
 		try:
 			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentSandBox,repetitions)
 			RTq = numpy.vstack((RTq,Dq))
