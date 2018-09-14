@@ -1,0 +1,26 @@
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networkScaleFree2000Nremoved-0.18percent.txt
+# Nodes: 200 Edges: 23
+# NodeId	NodeId
+431	616
+431	1826
+25	267
+25	414
+25	858
+25	1007
+25	1145
+25	1384
+73	250
+73	309
+73	600
+73	863
+73	909
+1112	1898
+121	1792
+142	958
+60	1231
+958	1054
+958	1451
+1374	1971
+1478	1489
+616	1001
+648	1185
