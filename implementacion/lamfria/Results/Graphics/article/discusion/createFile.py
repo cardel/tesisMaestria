@@ -236,7 +236,7 @@ fileOutput.write("timestr = 'grafica'\n")
 #fileOutput.write("plt.grid(True)\n")
 #fileOutput.write("plt.savefig(timestr+'_'+'APL'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
 
-
+fileOutput.write("font = {'weight': 'normal', 'size': 8}\n")
 fileOutput.write("fig3 = plt.figure()\n")
 fileOutput.write("ax = fig3.add_subplot(111)\n")
 fileOutput.write("deltaA = numpy.array([])\n")
@@ -255,35 +255,36 @@ fileOutput.write("		deltaB = numpy.append(deltaB, numpy.max(DqDegree[i][IndexZer
 fileOutput.write("	if i < DqCentrality.shape[0]:\n")
 fileOutput.write("		deltaC = numpy.append(deltaC, numpy.max(DqCentrality[i][IndexZero:-1])-numpy.min(DqCentrality[i][IndexZero:-1]))\n")
 
-fileOutput.write("	if i < DqGenetic.shape[0]:\n")
-fileOutput.write("		deltaD = numpy.append(deltaD, numpy.max(DqGenetic[i][IndexZero:-1])-numpy.min(DqGenetic[i][IndexZero:-1]))\n")
+#fileOutput.write("	if i < DqGenetic.shape[0]:\n")
+#fileOutput.write("		deltaD = numpy.append(deltaD, numpy.max(DqGenetic[i][IndexZero:-1])-numpy.min(DqGenetic[i][IndexZero:-1]))\n")
 
-fileOutput.write("	if i < DqSimulated.shape[0]:\n")
-fileOutput.write("		deltaE = numpy.append(deltaE, numpy.max(DqSimulated[i][IndexZero:-1])-numpy.min(DqSimulated[i][IndexZero:-1]))\n")
+#fileOutput.write("	if i < DqSimulated.shape[0]:\n")
+#fileOutput.write("		deltaE = numpy.append(deltaE, numpy.max(DqSimulated[i][IndexZero:-1])-numpy.min(DqSimulated[i][IndexZero:-1]))\n")
 
 #fileOutput.write("		plt.plot(range(0,maxq),DqRandom[i][IndexZero:-1],symbols[int(math.fmod(i,numpy.size(symbols)))], label='% nodes='+str(int(100*percentNodes[i]))+'%')\n")
 fileOutput.write("plt.plot(range(0,10*deltaA.shape[0],10),deltaA,'r-' , label = r'$\Delta D_q$ ataque aleatorio')\n")
 fileOutput.write("plt.plot(range(0,10*deltaB.shape[0],10),deltaB,'g-' , label = r'$\Delta D_q$ ataque por grado')\n")
 fileOutput.write("plt.plot(range(0,10*deltaC.shape[0],10),deltaC,'b-' , label = r'$\Delta D_q$ ataque centralidad')\n")
-fileOutput.write("plt.plot(range(0,10*deltaD.shape[0],10),deltaD,'y-' , label = r'$\Delta D_q$ ataque genetico')\n")
-fileOutput.write("plt.plot(range(0,10*deltaE.shape[0],10),deltaE,'k-' , label = r'$\Delta D_q$ ataque simulado')\n")
+#fileOutput.write("plt.plot(range(0,10*deltaD.shape[0],10),deltaD,'y-' , label = r'$\Delta D_q$ ataque genetico')\n")
+#fileOutput.write("plt.plot(range(0,10*deltaE.shape[0],10),deltaE,'k-' , label = r'$\Delta D_q$ ataque simulado')\n")
 
 #fileOutput.write("plt.plot(range(0,10*GCRandom.shape[0],10), GCRandom,'r-' ,label='Medida GC')\n")
 #fileOutput.write("plt.plot(range(0,10*APLRandom.shape[0],10), APLRandom,'g-' ,label='Medida APL')\n")
 fileOutput.write("fontP = FontProperties()\n")
 fileOutput.write("fontP.set_size('small')\n")
 #fileOutput.write("plt.legend(prop=fontP)\n")
-fileOutput.write("plt.xlabel('% Nodos perdidos')\n")
-#fileOutput.write("plt.ylabel(r'$\Delta D_q$')\n")
-fileOutput.write("plt.title(u'Multifractalidad y robustez')\n")
+fileOutput.write("plt.xlabel('% Nodos perdidos', fontdict=font)\n")
+fileOutput.write("plt.ylabel(r'Diferencia maximo y minimo $\Delta D_q$', fontdict=font)\n")
+
+fileOutput.write("plt.title(u'Multifractalidad y robustez', fontdict=font)\n")
 
 
 #fileOutput.write("plt.text(0.7, 0.95, 'Indice R GC='+str(numpy.around(numpy.sum(GCRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)\n")
 #fileOutput.write("plt.text(0.7, 0.9, 'Indice R APL='+str(numpy.around(numpy.sum(APLRandom), decimals=3)), size=10, ha='left', va='top', transform=ax.transAxes)\n")
 
-fileOutput.write("lgd = plt.legend(loc='upper left', prop={'size':10}, bbox_to_anchor=(1,1))\n")
+fileOutput.write("lgd = plt.legend(loc='upper left', prop={'size':8}, bbox_to_anchor=(1,1))\n")
 fileOutput.write("plt.grid(True)\n")
-fileOutput.write("plt.savefig(timestr+'_'+'multirobus'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
+fileOutput.write("plt.savefig('multirobus'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
 #fileOutput.write("plt.savefig(timestr+'_'+'DqRandom'+fileOutput+'.png')\n")
 		
 #fileOutput.write("fig4 = plt.figure()\n")
