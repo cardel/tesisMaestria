@@ -1,0 +1,10 @@
+GC Grado, 4.515
+GC Aleatorio, 5.268
+GC Centralidad, 4.9766
+GC Genetico, 5.2948
+GC Simulado, 5.1574
+APL Grado, 15.46577426
+APL Aleatorio, 18.69682234
+APL Centralidad, 21.53642099
+APL Genetico, 16.62429885
+APL Simulado, 16.14873346
