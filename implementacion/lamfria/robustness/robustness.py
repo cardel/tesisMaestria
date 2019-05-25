@@ -89,7 +89,7 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 		
 		#15-09-2018: Save nodes
 		if nameFile != "none":
-			snap.SaveEdgeList(g, "Results/Robustness/network"+nameFile+"removed-"+str(p)+"percent.txt")
+			snap.SaveEdgeList(g, "Results/Robustness/networks/network"+nameFile+"strategy"+typeRemoval+"removed-"+str(p)+"percent.txt")
 		
 		try:
 			logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentSandBox,repetitions)

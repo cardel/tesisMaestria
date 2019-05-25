@@ -1,0 +1,29 @@
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networkRedJoshua1strategyRandomremoved-0.8percent.txt
+# Nodes: 200 Edges: 26
+# NodeId	NodeId
+860	870
+146	217
+146	222
+146	277
+146	322
+146	408
+146	418
+146	458
+146	544
+146	598
+146	860
+41	146
+62	146
+278	860
+543	860
+821	860
+439	860
+187	860
+713	860
+727	860
+36	860
+347	860
+352	860
+102	860
+110	860
+508	860
