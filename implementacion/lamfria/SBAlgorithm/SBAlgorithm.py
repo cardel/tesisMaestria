@@ -45,8 +45,8 @@ def SBAlgorithm(g,minq,maxq,percentSandBox,repetitions, centerNodes = numpy.arra
 		"""	
 	graph = g
 
-	if(numpy.size(centerNodes)==0):
-		graph = snap.GetMxScc(g)	
+	#if(numpy.size(centerNodes)==0):
+	#	graph = snap.GetMxScc(g)	
 	numNodes = graph.GetNodes()
 
 	listID = snap.TIntV(numNodes)

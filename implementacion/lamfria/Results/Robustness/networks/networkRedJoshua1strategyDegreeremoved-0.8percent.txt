@@ -1,3 +1,3 @@
-# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networkRedJoshua1strategyDegreeremoved-0.8percent.txt
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networks/networkRedJoshua1strategyDegreeremoved-0.8percent.txt
 # Nodes: 200 Edges: 0
 # NodeId	NodeId

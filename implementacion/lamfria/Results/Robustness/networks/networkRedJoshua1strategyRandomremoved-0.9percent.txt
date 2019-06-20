@@ -1,9 +1,8 @@
-# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networkRedJoshua1strategyRandomremoved-0.9percent.txt
-# Nodes: 100 Edges: 6
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networks/networkRedJoshua1strategyRandomremoved-0.9percent.txt
+# Nodes: 100 Edges: 5
 # NodeId	NodeId
-146	322
-146	408
-146	458
-146	544
-146	598
-62	146
+351	423
+351	460
+351	532
+351	778
+115	351
