@@ -1,0 +1,43 @@
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networks/networkYeastUNDstrategyCentralityremoved-0.8percent.txt
+# Nodes: 473 Edges: 40
+# NodeId	NodeId
+8	8
+9	9
+15	15
+16	16
+18	18
+22	22
+106	106
+119	119
+143	143
+173	173
+207	207
+211	211
+225	225
+434	434
+464	464
+466	466
+473	473
+481	481
+482	482
+513	513
+514	514
+515	515
+517	517
+520	520
+521	521
+522	522
+525	525
+526	526
+527	527
+528	528
+529	529
+534	534
+535	535
+536	536
+565	565
+572	572
+573	573
+580	580
+600	600
+602	602
