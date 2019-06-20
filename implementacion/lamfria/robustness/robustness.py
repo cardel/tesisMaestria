@@ -80,7 +80,7 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 		ClosenessCentrality = numpy.array([])
 		nodesToRemove = numpy.array([])	
 		
-		if typeRemoval = 'Centrality':
+		if typeRemoval == 'Centrality':
 			ClosenessCentrality = utils.getOrderedClosenessCentrality(g,Ng)
 		elif	typeRemoval=='Genetic':
 			nodesToRemove = Genetic.calculateCentersFixedSize(g, Ng, iterationsGenetic, sizePopulation, diameterG, distances, percentCrossOver, percentMutation,listDegree,maxDegree, sizeChromosome,degreeOfBoring)

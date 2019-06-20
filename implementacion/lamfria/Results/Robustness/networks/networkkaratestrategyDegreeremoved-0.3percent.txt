@@ -1,0 +1,10 @@
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networks/networkkaratestrategyDegreeremoved-0.3percent.txt
+# Nodes: 25 Edges: 7
+# NodeId	NodeId
+5	11
+6	11
+6	17
+9	31
+26	32
+27	30
+29	32

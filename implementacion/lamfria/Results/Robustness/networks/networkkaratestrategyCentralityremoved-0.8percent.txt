@@ -1,0 +1,3 @@
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networks/networkkaratestrategyCentralityremoved-0.8percent.txt
+# Nodes: 10 Edges: 0
+# NodeId	NodeId
