@@ -1,0 +1,3 @@
+# Undirected graph (each unordered pair of nodes is saved once): Results/Robustness/networks/networkYeastS.netstrategyRandomremoved-0.3percent.txt
+# Nodes: 1653 Edges: 0
+# NodeId	NodeId

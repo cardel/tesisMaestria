@@ -48,7 +48,7 @@ def SBAlgorithm(g,minq,maxq,percentSandBox,repetitions, centerNodes = numpy.arra
 	if(numpy.size(centerNodes)==0):
 		graph = snap.GetMxScc(g)	
 	numNodes = graph.GetNodes()
-	
+
 	listID = snap.TIntV(numNodes)
 	
 	index = 0
@@ -58,8 +58,7 @@ def SBAlgorithm(g,minq,maxq,percentSandBox,repetitions, centerNodes = numpy.arra
 		
 	#select random node
 	
-	d = snap.GetBfsFullDiam(graph,1,False)
-
+	d = snap.GetBfsFullDiam(graph,100,False)
 	rangeQ = maxq-minq+1	
 	#Mass Exponents
 	Tq = numpy.zeros([repetitions,rangeQ])
@@ -147,7 +146,7 @@ def SBAlgorithm(g,minq,maxq,percentSandBox,repetitions, centerNodes = numpy.arra
 			count+=1
 	
 	lnMrqTotalA = lnMrqTotal/repetitions
-	TqA = numpy.nanmean(Tq,axis=0)
-	DqA = numpy.nanmean(Dq,axis=0)
+	TqA = numpy.mean(Tq,axis=0)
+	DqA = numpy.mean(Dq,axis=0)
 
 	return logR, Indexzero,TqA, DqA,lnMrqTotalA

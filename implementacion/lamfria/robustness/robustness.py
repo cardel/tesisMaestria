@@ -32,7 +32,7 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 	
 	#NumNodes
 	N = g.GetNodes()
-	
+
 	#Remove 10% of nodes	
 	numberNodesToRemove = int(percentOfNodes*float(N))
 	
@@ -46,7 +46,7 @@ def robustness_analysis(graph,typeRemoval,minq,maxq,percentSandBox,repetitions, 
 	#Outputs
 	robustnessGC = numpy.array([N],dtype=float)
 	robustnessAPL = numpy.array([meanAverageIni],dtype=float)	
-		
+	print g.GetNodes()
 	logR, Indexzero,Tq, Dq,lnMrq = SBAlgorithm.SBAlgorithm(g,minq,maxq,percentSandBox,repetitions)
 	RTq = Dq
 	

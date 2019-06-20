@@ -1,0 +1,60 @@
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[         0,          0]
+NotebookDataLength[      1542,         59]
+NotebookOptionsPosition[      1042,         35]
+NotebookOutlinePosition[      1382,         50]
+CellTagsIndexPosition[      1339,         47]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{" ", 
+  RowBox[{"Import", "[", 
+   RowBox[{"\"\<bio-yeast.mtx\>\"", ",", "\"\<Graphics\>\""}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.769986493885549*^9, 3.7699865669411993`*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Import","nffil",
+   "\"File not found during \\!\\(\\*RowBox[{\\\"Import\\\"}]\\).\"",2,3,3,
+   31588651319347605928,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{{3.769986548492949*^9, 3.7699865672942944`*^9}, 
+   3.769986598609694*^9}],
+
+Cell[BoxData["$Failed"], "Output",
+ CellChangeTimes->{3.76998656731076*^9, 3.769986598628059*^9}]
+}, Open  ]]
+},
+WindowSize->{808, 621},
+WindowMargins->{{Automatic, 277}, {23, Automatic}},
+FrontEndVersion->"11.0 for Linux x86 (64-bit) (September 21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[422, 15, 208, 5, 34, "Input"],
+Cell[633, 22, 293, 7, 23, "Message"],
+Cell[929, 31, 97, 1, 32, "Output"]
+}, Open  ]]
+}
+]
+*)
+

@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
-
 #Author: Carlos Andres Delgado
 #Creation date 07th April 2018
 #Last edition date 24th May 2019
@@ -140,7 +139,7 @@ def main(argv):
 	#file_object.write("\nmeasureGC\n")	
 	#file_object.write(numpy.array2string(measureGCD, precision=8, separator=','))
 	#file_object.write("\nmeasureAPL\n")	
-	f#ile_object.write(numpy.array2string(measureAPLD, precision=8, separator=','))
+	#file_object.write(numpy.array2string(measureAPLD, precision=8, separator=','))
 	
 	
 	#file_object.write("\n\nSimulated\n")
