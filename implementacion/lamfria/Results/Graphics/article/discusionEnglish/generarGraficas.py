@@ -273,9 +273,9 @@ for i in range(0,9):
 		deltaB = numpy.append(deltaB, numpy.max(DqDegree[i][IndexZero:-1])-numpy.min(DqDegree[i][IndexZero:-1]))
 	if i < DqCentrality.shape[0]:
 		deltaC = numpy.append(deltaC, numpy.max(DqCentrality[i][IndexZero:-1])-numpy.min(DqCentrality[i][IndexZero:-1]))
-plt.plot(range(0,10*deltaA.shape[0],10),deltaA,'r-' , label = r'$\Delta D_q$ ataque aleatorio')
-plt.plot(range(0,10*deltaB.shape[0],10),deltaB,'g-' , label = r'$\Delta D_q$ ataque por grado')
-plt.plot(range(0,10*deltaC.shape[0],10),deltaC,'b-' , label = r'$\Delta D_q$ ataque centralidad')
+plt.plot(range(0,10*deltaA.shape[0],10),deltaA,'r-' , label = r'$\Delta D_q$ random')
+plt.plot(range(0,10*deltaB.shape[0],10),deltaB,'g-' , label = r'$\Delta D_q$ degree')
+plt.plot(range(0,10*deltaC.shape[0],10),deltaC,'b-' , label = r'$\Delta D_q$ centrality')
 fontP = FontProperties()
 fontP.set_size('small')
 plt.xlabel('Lost nodes (%)', fontdict=font)
