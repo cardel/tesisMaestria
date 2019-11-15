@@ -262,9 +262,9 @@ fileOutput.write("		deltaC = numpy.append(deltaC, numpy.max(DqCentrality[i][Inde
 #fileOutput.write("		deltaE = numpy.append(deltaE, numpy.max(DqSimulated[i][IndexZero:-1])-numpy.min(DqSimulated[i][IndexZero:-1]))\n")
 
 #fileOutput.write("		plt.plot(range(0,maxq),DqRandom[i][IndexZero:-1],symbols[int(math.fmod(i,numpy.size(symbols)))], label='% nodes='+str(int(100*percentNodes[i]))+'%')\n")
-fileOutput.write("plt.plot(range(0,10*deltaA.shape[0],10),deltaA,'r-' , label = r'$\Delta D_q$ ataque aleatorio')\n")
-fileOutput.write("plt.plot(range(0,10*deltaB.shape[0],10),deltaB,'g-' , label = r'$\Delta D_q$ ataque por grado')\n")
-fileOutput.write("plt.plot(range(0,10*deltaC.shape[0],10),deltaC,'b-' , label = r'$\Delta D_q$ ataque centralidad')\n")
+fileOutput.write("plt.plot(range(0,10*deltaA.shape[0],10),deltaA,'r-' , label = r'$\Delta D_q$ random')\n")
+fileOutput.write("plt.plot(range(0,10*deltaB.shape[0],10),deltaB,'g-' , label = r'$\Delta D_q$ degree')\n")
+fileOutput.write("plt.plot(range(0,10*deltaC.shape[0],10),deltaC,'b-' , label = r'$\Delta D_q$ centrality')\n")
 #fileOutput.write("plt.plot(range(0,10*deltaD.shape[0],10),deltaD,'y-' , label = r'$\Delta D_q$ ataque genetico')\n")
 #fileOutput.write("plt.plot(range(0,10*deltaE.shape[0],10),deltaE,'k-' , label = r'$\Delta D_q$ ataque simulado')\n")
 
