@@ -275,7 +275,9 @@ fileOutput.write("lgd = plt.legend(loc='upper left', prop={'size':8}, bbox_to_an
 fileOutput.write("plt.grid(True)\n")
 fileOutput.write("plt.savefig('multirobus'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
 #fileOutput.write("plt.savefig(timestr+'_'+'DqRandom'+fileOutput+'.png')\n")
-		
+fileOutput.write("data=numpy.array([RRandom, RDegree, RCentrality])\n")
+
+fileOutput.write("numpy.save('Rindex'+fileOutput+'.npy',data)\n")		
 #fileOutput.write("fig4 = plt.figure()\n")
 #fileOutput.write("for i in range(0,9):\n")
 #fileOutput.write("	if i < DqDegree.shape[0]:\n")

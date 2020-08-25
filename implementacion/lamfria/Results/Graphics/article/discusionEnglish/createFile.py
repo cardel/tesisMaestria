@@ -285,6 +285,10 @@ fileOutput.write("plt.title(u'Multifractality and robustness', fontdict=font)\n"
 fileOutput.write("lgd = plt.legend(loc='upper left', prop={'size':8}, bbox_to_anchor=(1,1))\n")
 fileOutput.write("plt.grid(True)\n")
 fileOutput.write("plt.savefig('multirobus'+fileOutput+'.png', bbox_extra_artists=(lgd,),bbox_inches='tight')\n")
+
+fileOutput.write("data=numpy.array([deltaA, deltaB, deltaC])\n")
+
+fileOutput.write("numpy.save('RobustFract'+fileOutput+'.npy',data)\n")
 #fileOutput.write("plt.savefig(timestr+'_'+'DqRandom'+fileOutput+'.png')\n")
 		
 #fileOutput.write("fig4 = plt.figure()\n")
