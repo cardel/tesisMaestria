@@ -35,7 +35,7 @@ countx = 0
 fontP = FontProperties()
 fontP.set_size('small')
 
-my_suptitle= fig.suptitle('R index MFA', fontdict=font)
+#my_suptitle= fig.suptitle('R index MFA', fontdict=font)
 
 
 
@@ -80,17 +80,17 @@ for i in RIndex:
 	
 
 
-for ax in axs.flat:
-	ax.set_xlabel('R-index', fontdict=font)
-	ax.set_ylabel('q', fontdict=font)
-    
-for ax in axs.flat:
-    ax.label_outer()
+axs[1,0].set_xlabel('q', fontdict=font)
+axs[0,0].set_ylabel('R-index', fontdict=font)
+axs[1,1].set_xlabel('q', fontdict=font)
+axs[1,0].set_ylabel('R-index', fontdict=font)
+       
 
 
 lgd = axs[0,1].legend(loc='upper left', prop={'size':8}, bbox_to_anchor=(1,1))
 
-fig.savefig('composicionRIndex.png', bbox_extra_artists=(lgd,my_suptitle),bbox_inches='tight')
+#fig.savefig('composicionRIndex.png', bbox_extra_artists=(lgd,my_suptitle),bbox_inches='tight')
+fig.savefig('composicionRIndex.png', bbox_extra_artists=(lgd,),bbox_inches='tight')
 
 
 ##Segunda grafica
@@ -102,9 +102,9 @@ countx = 0
 fontP = FontProperties()
 fontP.set_size('small')
 
-my_suptitle=fig.suptitle(u'Multifractality and robustness', fontdict=font)
+#my_suptitle=fig.suptitle(u'Differential fractal', fontdict=font)
 
-for i in RIndex:
+for i in Robust:
 	name = ""
 	if "Small" in i:
 		name = "Small World"
@@ -119,7 +119,7 @@ for i in RIndex:
 	
 	font = {'weight': 'normal', 'size': 8}
 	
-	data = RIndex[i]
+	data = Robust[i]
 	
 	deltaA = data[0]
 	deltaB = data[1]
@@ -141,15 +141,17 @@ for i in RIndex:
 		county = 1
 	elif countx == 0 and county == 1:
 		countx = 1
+
+axs[1,0].set_xlabel(r'% nodes', fontdict=font)
+axs[0,0].set_ylabel(r'$\Delta D_q$', fontdict=font)
+axs[1,1].set_xlabel(r'% nodes', fontdict=font)
+axs[1,0].set_ylabel(r'$\Delta D_q$', fontdict=font)
+       
 		
-for ax in axs.flat:
-	ax.set_xlabel(r'% nodes', fontdict=font)
-	ax.set_ylabel(r'$\delta D_q$', fontdict=font)
-    
-for ax in axs.flat:
-    ax.label_outer()
-    
+
+
 
 lgd = axs[0,1].legend(loc='upper left', prop={'size':8}, bbox_to_anchor=(1,1))
 
-fig.savefig('composicionDqFractal.png', bbox_extra_artists=(lgd,my_suptitle),bbox_inches='tight')
+#fig.savefig('composicionDqFractal.png', bbox_extra_artists=(lgd,my_suptitle),bbox_inches='tight')
+fig.savefig('composicionDqFractal.png', bbox_extra_artists=(lgd,),bbox_inches='tight')
