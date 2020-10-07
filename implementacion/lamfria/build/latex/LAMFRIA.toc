@@ -1,0 +1,33 @@
+\babel@toc {english}{}
+\contentsline {chapter}{\numberline {1}Description}{1}{chapter.1}% 
+\contentsline {section}{\numberline {1.1}Box Counting algorithm}{1}{section.1.1}% 
+\contentsline {subsection}{\numberline {1.1.1}BoxCounting algorithm:}{1}{subsection.1.1.1}% 
+\contentsline {subsection}{\numberline {1.1.2}Example}{2}{subsection.1.1.2}% 
+\contentsline {section}{\numberline {1.2}Fixed Size Box Counting Algorithm}{2}{section.1.2}% 
+\contentsline {subsection}{\numberline {1.2.1}Box Counting Fixed Size module}{2}{subsection.1.2.1}% 
+\contentsline {subsection}{\numberline {1.2.2}Example}{3}{subsection.1.2.2}% 
+\contentsline {section}{\numberline {1.3}CBBAlgorithm package}{3}{section.1.3}% 
+\contentsline {subsection}{\numberline {1.3.1}Submodules}{3}{subsection.1.3.1}% 
+\contentsline {subsection}{\numberline {1.3.2}CBBAlgorithm.CBBAlgorithm module}{3}{subsection.1.3.2}% 
+\contentsline {subsection}{\numberline {1.3.3}Module contents}{3}{subsection.1.3.3}% 
+\contentsline {section}{\numberline {1.4}Genetic strategy}{3}{section.1.4}% 
+\contentsline {subsection}{\numberline {1.4.1}Genetic}{3}{subsection.1.4.1}% 
+\contentsline {subsection}{\numberline {1.4.2}Example}{6}{subsection.1.4.2}% 
+\contentsline {section}{\numberline {1.5}SandBox Algorithm}{6}{section.1.5}% 
+\contentsline {subsection}{\numberline {1.5.1}SBAlgorithm}{6}{subsection.1.5.1}% 
+\contentsline {subsection}{\numberline {1.5.2}Example}{7}{subsection.1.5.2}% 
+\contentsline {section}{\numberline {1.6}Simulated Annealing strategy}{7}{section.1.6}% 
+\contentsline {subsection}{\numberline {1.6.1}SimulatedAnnealing.SimulatedAnnealing module}{7}{subsection.1.6.1}% 
+\contentsline {subsection}{\numberline {1.6.2}Example}{9}{subsection.1.6.2}% 
+\contentsline {section}{\numberline {1.7}robustness package}{9}{section.1.7}% 
+\contentsline {subsection}{\numberline {1.7.1}Submodules}{9}{subsection.1.7.1}% 
+\contentsline {subsection}{\numberline {1.7.2}robustness.robustness module}{9}{subsection.1.7.2}% 
+\contentsline {subsection}{\numberline {1.7.3}Module contents}{10}{subsection.1.7.3}% 
+\contentsline {section}{\numberline {1.8}utils package}{10}{section.1.8}% 
+\contentsline {subsection}{\numberline {1.8.1}Submodules}{10}{subsection.1.8.1}% 
+\contentsline {subsection}{\numberline {1.8.2}utils.utils module}{10}{subsection.1.8.2}% 
+\contentsline {subsection}{\numberline {1.8.3}Module contents}{10}{subsection.1.8.3}% 
+\contentsline {chapter}{\numberline {2}Requeriments}{11}{chapter.2}% 
+\contentsline {chapter}{\numberline {3}Indices and tables}{13}{chapter.3}% 
+\contentsline {chapter}{Python Module Index}{15}{section*.25}% 
+\contentsline {chapter}{Index}{17}{section*.26}% 

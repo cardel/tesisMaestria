@@ -1,0 +1,438 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Genetic strategy &mdash; LAMFRIA 1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SandBox Algorithm" href="SBAlgorithm.html" />
+    <link rel="prev" title="CBBAlgorithm package" href="CBBAlgorithm.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> LAMFRIA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="BCAlgorithm.html">Box Counting algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FSBCAlgorithm.html">Fixed Size Box Counting Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CBBAlgorithm.html">CBBAlgorithm package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Genetic strategy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-Genetic.Genetic">Genetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SBAlgorithm.html">SandBox Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SimulatedAnnealing.html">Simulated Annealing strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robustness.html">robustness package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LAMFRIA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Genetic strategy</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genetic-strategy">
+<h1>Genetic strategy<a class="headerlink" href="#genetic-strategy" title="Permalink to this headline">¶</a></h1>
+<p>Genetic algorithm for multifractal analysis</p>
+<div class="section" id="module-Genetic.Genetic">
+<span id="genetic"></span><h2>Genetic<a class="headerlink" href="#module-Genetic.Genetic" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="Genetic.Genetic.Genetic">
+<code class="descclassname">Genetic.Genetic.</code><code class="descname">Genetic</code><span class="sig-paren">(</span><em>g</em>, <em>minq</em>, <em>maxq</em>, <em>sizePopulation</em>, <em>iterations</em>, <em>percentCrossOver</em>, <em>percentMutation</em>, <em>degreeOfBoring</em>, <em>typeAlgorithm</em><span class="sig-paren">)</span><a class="headerlink" href="#Genetic.Genetic.Genetic" title="Permalink to this definition">¶</a></dt>
+<dd><p>The genetic algorithm</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>Snap PUN Graph.</em>) – Network.</li>
+<li><strong>iterations</strong> (<em>Integer</em>) – Number of max iterations</li>
+<li><strong>sizePopulation</strong> (<em>Integer</em>) – Size of population</li>
+<li><strong>percentCrossOver</strong> (<em>Double</em>) – Percent (0 to 1) of individual select to cross</li>
+<li><strong>percentMutation</strong> (<em>Double</em>) – (0 to 1) of probability to apply mutation to an individual</li>
+<li><strong>degreeOfBoring</strong> (<em>Integer</em>) – Number of iterations of boring</li>
+<li><strong>typeAlgorithm</strong> (<em>String</em>) – Method for calculate fractal dimensions: ‘SB’ for Sandbox, ‘BC’ for BoxCounting, ‘FSBC’ for fixed size box counting</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>logR: Numpy array</dt>
+<dd><p class="first last">logarithm of r/d</p>
+</dd>
+<dt>Indexzero: Integer</dt>
+<dd><p class="first last">position of q=0 in Tq and Dq</p>
+</dd>
+<dt>Tq: Numpy array</dt>
+<dd><p class="first last">mass exponents</p>
+</dd>
+<dt>Dq: Numpy array</dt>
+<dd><p class="first last">fractal dimensions</p>
+</dd>
+<dt>lnMrq: Numpy 2D array</dt>
+<dd><p class="first last">logarithm of number of nodes in boxes by radio</p>
+</dd>
+<dt>fitNessAverage: Numpy array</dt>
+<dd><p class="first last">Average fitness across iterations</p>
+</dd>
+<dt>fitNessMax: Numpy array</dt>
+<dd><p class="first last">Maximum fitness across iterations</p>
+</dd>
+<dt>fitNessMin: Numpy array:</dt>
+<dd><p class="first last">Minimal fitness across iterations</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Genetic.Genetic.calculateCenters">
+<code class="descclassname">Genetic.Genetic.</code><code class="descname">calculateCenters</code><span class="sig-paren">(</span><em>graph</em>, <em>numNodes</em>, <em>iterations</em>, <em>sizePopulation</em>, <em>radius</em>, <em>distances</em>, <em>percentCrossOver</em>, <em>percentMutation</em>, <em>listDegree</em>, <em>maxDegree</em>, <em>degreeOfBoring</em><span class="sig-paren">)</span><a class="headerlink" href="#Genetic.Genetic.calculateCenters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate centers with a random size between 20% and 90% of number of nodes</p>
+<p>The genetic algorithm:</p>
+<ol class="arabic simple">
+<li>Generate a poblation of ramdom nodes as centers of the boxes</li>
+<li>Evaluate each set of nodes with fitness funtion</li>
+<li>Categorize poblation according fitness</li>
+<li>Select two indivudues into population, then create a new individual</li>
+<li>Remove worst individuals</li>
+<li>Repeat 2 to 5 ultil a number of iterations or a boring degree</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>Snap PUN Graph.</em>) – Network.</li>
+<li><strong>numNodes</strong> (<em>Integer</em>) – Number of nodes in the network.</li>
+<li><strong>sizePopulation</strong> (<em>Integer</em>) – Size of population</li>
+<li><strong>radius</strong> (<em>Integer</em>) – Diameter of the network</li>
+<li><strong>distances</strong> (<em>Numpy 2D array of integers</em>) – Distance to other nodes</li>
+<li><strong>percentCrossOver</strong> (<em>Double</em>) – Percent (0 to 1) of individual select to cross</li>
+<li><strong>percentMutation</strong> (<em>Double</em>) – (0 to 1) of probability to apply mutation to an individual</li>
+<li><strong>listDegree</strong> (<em>Numpy 1D Array</em>) – List of degree all nodes</li>
+<li><strong>maxDegree</strong> (<em>Integer</em>) – Max degree in the network</li>
+<li><strong>degreeOfBoring</strong> (<em>Integer</em>) – Number of iterations of boring</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>best: Numpy array</dt>
+<dd><p class="first last">Best individual, select centers of boxes</p>
+</dd>
+<dt>Indexzero: Integer</dt>
+<dd><p class="first last">position of q=0 in Tq and Dq</p>
+</dd>
+<dt>Tq: Numpy array</dt>
+<dd><p class="first last">mass exponents</p>
+</dd>
+<dt>Dq: Numpy array</dt>
+<dd><p class="first last">fractal dimensions</p>
+</dd>
+<dt>lnMrq: Numpy 2D array</dt>
+<dd><p class="first last">logarithm of number of nodes in boxes by radio</p>
+</dd>
+<dt>fitNessAverage: Numpy array</dt>
+<dd><p class="first last">Average fitness across iterations</p>
+</dd>
+<dt>fitNessMax: Numpy array</dt>
+<dd><p class="first last">Maximum fitness across iterations</p>
+</dd>
+<dt>fitNessMin: Numpy array:</dt>
+<dd><p class="first last">Minimal fitness across iterations</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Genetic.Genetic.calculateCentersFixedSize">
+<code class="descclassname">Genetic.Genetic.</code><code class="descname">calculateCentersFixedSize</code><span class="sig-paren">(</span><em>graph</em>, <em>numNodes</em>, <em>iterations</em>, <em>sizePopulation</em>, <em>radius</em>, <em>distances</em>, <em>percentCrossOver</em>, <em>percentMutation</em>, <em>listDegree</em>, <em>maxDegree</em>, <em>sizeChromosome</em>, <em>degreeOfBoring</em><span class="sig-paren">)</span><a class="headerlink" href="#Genetic.Genetic.calculateCentersFixedSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate centers with a specified size</p>
+<p>The genetic algorithm:</p>
+<ol class="arabic simple">
+<li>Generate a poblation of ramdom nodes as centers of the boxes</li>
+<li>Evaluate each set of nodes with fitness funtion</li>
+<li>Categorize poblation according fitness</li>
+<li>Select two indivudues into population, then create a new individual</li>
+<li>Remove worst individuals</li>
+<li>Repeat 2 to 5 ultil a number of iterations or a boring degree</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>Snap PUN Graph.</em>) – Network.</li>
+<li><strong>numNodes</strong> (<em>Integer</em>) – Number of nodes in the network.</li>
+<li><strong>sizePopulation</strong> (<em>Integer</em>) – Size of population</li>
+<li><strong>radius</strong> (<em>Integer</em>) – Diameter of the network</li>
+<li><strong>distances</strong> (<em>Numpy 2D array of integers</em>) – Distance to other nodes</li>
+<li><strong>percentCrossOver</strong> (<em>Double</em>) – Percent (0 to 1) of individual select to cross</li>
+<li><strong>Percent</strong> (<em>Double</em>) – (0 to 1) of probability to apply mutation to an individual</li>
+<li><strong>listDegree</strong> (<em>Numpy 1D Array</em>) – List of degree all nodes</li>
+<li><strong>maxDegree</strong> (<em>Integer</em>) – Max degree in the network</li>
+<li><strong>sizeChromosome</strong> (<em>Integer</em>) – Number of centers of boxes</li>
+<li><strong>degreeOfBoring</strong> (<em>Integer</em>) – Number of iterations of boring</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><dl class="docutils">
+<dt>best: Numpy array</dt>
+<dd><p class="first last">Best individual, select centers of boxes</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Genetic.Genetic.calculateFitness">
+<code class="descclassname">Genetic.Genetic.</code><code class="descname">calculateFitness</code><span class="sig-paren">(</span><em>graph</em>, <em>chromosome</em>, <em>radius</em>, <em>distances</em>, <em>listDegree</em>, <em>maxDegree</em><span class="sig-paren">)</span><a class="headerlink" href="#Genetic.Genetic.calculateFitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate fitness from a select node centers in a network</p>
+<p>Fitness is the average between distances of the centers and the average the degrees , the centers can be of different size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>Snap PUN Graph.</em>) – Network.</li>
+<li><strong>chromosome</strong> (<em>Numpy array of integers</em>) – Centers</li>
+<li><strong>radius</strong> (<em>Integer</em>) – Diameter of the network</li>
+<li><strong>distances</strong> (<em>Numpy 2D array of integers</em>) – Distance between all nodes</li>
+<li><strong>listDegree</strong> (<em>Numpy 1D Array</em>) – List of degree all nodes</li>
+<li><strong>maxDegree</strong> (<em>Integer</em>) – Max degree in the network</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Fitness of the centers</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">Double</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="hll"><span class="kn">import</span> <span class="nn">lib.snap</span> <span class="kn">as</span> <span class="nn">snap</span>
+</span><span class="kn">import</span> <span class="nn">Genetic.Genetic</span> <span class="kn">as</span> <span class="nn">Genetic</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">minq</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="hll"><span class="n">maxq</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class="n">sizePopulation</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">percentCrossOver</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">percentMutation</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">degreeOfBoring</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">Rnd</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">TRnd</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">snap</span><span class="o">.</span><span class="n">GenPrefAttach</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="n">Rnd</span><span class="p">)</span>  <span class="c1">#ScaleFree with 10 edges per node</span>
+
+<span class="n">logR</span><span class="p">,</span> <span class="n">Indexzero</span><span class="p">,</span><span class="n">Tq</span><span class="p">,</span> <span class="n">Dq</span><span class="p">,</span> <span class="n">lnMrq</span><span class="p">,</span><span class="n">fitNessAverage</span><span class="p">,</span><span class="n">fitNessMax</span><span class="p">,</span><span class="n">fitNessMin</span> <span class="o">=</span> <span class="n">Genetic</span><span class="o">.</span><span class="n">Genetic</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="n">minq</span><span class="p">,</span><span class="n">maxq</span><span class="p">,</span><span class="n">sizePopulation</span><span class="p">,</span><span class="n">iterations</span><span class="p">,</span> <span class="n">percentCrossOver</span><span class="p">,</span> <span class="n">percentMutation</span><span class="p">,</span><span class="n">degreeOfBoring</span><span class="p">,</span> <span class="s1">&#39;SB&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="SBAlgorithm.html" class="btn btn-neutral float-right" title="SandBox Algorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="CBBAlgorithm.html" class="btn btn-neutral float-left" title="CBBAlgorithm package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, Carlos Andres Delgado S
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
